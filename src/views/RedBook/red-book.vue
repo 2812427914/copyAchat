@@ -1,3 +1,4 @@
+
 <template>
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
         style="position: absolute; width: 0; height: 0" aria-hidden="true" id="__SVG_SPRITE_NODE__">
@@ -11,7 +12,7 @@
                 d="M8 2.88A4.126 4.126 0 005.447 2a4.12 4.12 0 00-2.906 1.192 4.053 4.053 0 00-.004 5.769l4.83 4.78a.901.901 0 001.266 0l4.826-4.776a4.055 4.055 0 000-5.773A4.122 4.122 0 0010.552 2C9.626 2 8.73 2.306 8 2.88z"
                 fill="#FF2442"></path>
         </symbol>
-        
+
         <symbol xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 28 28" id="collect">
             <path
                 d="M19.049 24.906a2.127 2.127 0 002.1-.229c.61-.443.938-1.176.86-1.924l-.526-5.115a.583.583 0 01.147-.45l3.493-3.873a2.11 2.11 0 00.44-2.066 2.119 2.119 0 00-1.571-1.415l-5.138-1.102a.583.583 0 01-.38-.275L15.83 3.962a2.123 2.123 0 00-3.66 0L9.527 8.457a.583.583 0 01-.38.275L4.008 9.834a2.119 2.119 0 00-1.571 1.415 2.11 2.11 0 00.44 2.066l3.494 3.872c.11.123.164.287.147.45l-.527 5.116c-.077.748.25 1.481.86 1.924.61.444 1.41.53 2.1.229l4.816-2.102a.583.583 0 01.466 0l4.816 2.102zM4.177 12.143a.36.36 0 01-.076-.353.369.369 0 01.275-.245l5.138-1.102a2.333 2.333 0 001.522-1.099l2.643-4.495A.372.372 0 0114 4.667c.135 0 .256.07.322.182l2.643 4.495c.33.563.883.962 1.522 1.099l5.138 1.102a.369.369 0 01.274.245.36.36 0 01-.076.353l-3.493 3.872a2.333 2.333 0 00-.588 1.802l.527 5.115a.362.362 0 01-.148.33.377.377 0 01-.372.04L14.934 21.2a2.333 2.333 0 00-1.867 0l-4.815 2.102a.377.377 0 01-.372-.04.362.362 0 01-.149-.33l.528-5.115a2.333 2.333 0 00-.589-1.802l-3.493-3.873z"
@@ -54,64 +55,72 @@
             <path clip-rule="evenodd" d="M12 20.5a8.5 8.5 0 100-17 8.5 8.5 0 000 17z" stroke="currentColor"
                 stroke-width="1.5"></path>
         </symbol>
-        
+
         <symbol xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 25" id="thanks">
             <rect y=".5" width="24" height="24" rx="12" fill="#FF2442"></rect>
             <path d="M6 13l4 4 8-8" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
         </symbol>
     </svg>
     <div data-v-024e536f="" class="note-detail-mask"
-        style="transition: background-color 0.4s ease 0s; background: var(--mask-paper);"><!---->
+        style="transition: background-color 0.4s ease 0s; background: var(--mask-paper);">
         <div data-v-70c71a67="" data-v-024e536f="" id="" data-v-956360f6="" class="note-container" data-type="normal">
-            <!-- <div data-v-70c71a67="" class="author">
-                <div data-v-ebd8abd4="" data-v-70c71a67="" class="author">
-                    <div data-v-ebd8abd4="" class="info"><a data-v-1d0a8701="" data-v-ebd8abd4=""
-                            href="/user/profile/5d40204000000000110311e0" class="" target="_blank"><img data-v-1d0a8701=""
-                                class="avatar"
-                                src="https://sns-avatar-qc.xhscdn.com/avatar/5e0f7fff9b48a000011e78bb.jpg?imageView2/2/w/120/format/webp|imageMogr2/strip"
-                                style="width: 40px; height: 40px;"></a><a data-v-ebd8abd4=""
-                            href="/user/profile/5d40204000000000110311e0" class="name" target="_blank"><span
-                                data-v-ebd8abd4="">Tree New Bee</span></a></div>
-                    <div data-v-ebd8abd4="" class="follow">关注</div>
-                </div>
-            </div> -->
             <div data-v-11b921ce="" data-v-70c71a67="" class="">
                 <div data-v-d21d8bf9="" data-v-11b921ce="" class="note-scroller">
                     <div data-v-5245913a="" data-v-11b921ce="" class="note-content">
-                        <div data-v-5245913a="" id="detail-title" class="title">其实参加酒局多了，都差不多</div>
-                        <div data-v-5245913a="" class="desc">没那么惊讶<br>人生不就是一场行为艺术吗<br> </div>
-                        <!-- <div data-v-5245913a="" class="desc"><span data-v-5245913a="" class="tag">#艺术</span><span
-                                data-v-5245913a="" class="tag">#行为艺术</span><span data-v-5245913a=""
-                                class="tag">#生活</span><span data-v-5245913a="" class="tag">#酒局</span><span
-                                data-v-5245913a="" class="tag">#快乐老家</span><span data-v-5245913a=""
-                                class="tag">#电影</span><span data-v-5245913a="" class="tag">#金棕榈</span><span
-                                data-v-5245913a="" class="tag">#戛纳</span></div>
-                        <div data-v-5245913a="" class="date">2023-07-31 北京</div> -->
+                        <!-- <van-cell-group> -->
+                        <van-field v-model="title" autosize rows="1" type="textarea" placeholder="请输入标题" data-v-5245913a=""
+                            id="detail-title" class="title" />
+                        <van-field v-model="description" autosize rows="1" type="textarea" placeholder="请输入描述"
+                            data-v-5245913a="" class="desc" />
+                        <!-- </van-cell-group> -->
+                        <!-- <div data-v-5245913a="" id="detail-title" class="title">其实参加酒局多了，都差不多</div>
+                        <div data-v-5245913a="" class="desc">没那么惊讶<br>人生不就是一场行为艺术吗<br> </div> -->
                     </div>
                     <div data-v-6b20f11f="" data-v-11b921ce="" class="comments-el">
                         <div data-v-6b20f11f="" class="comments-container">
                             <div data-v-6b20f11f="" class="total">共 819 条评论</div>
                             <div data-v-6b20f11f="" tag="div" name="list" class="list-container">
-                                <div data-v-67377e58="" data-v-6b20f11f="" class="comment-item"><!---->
+                                <div data-v-67377e58="" data-v-6b20f11f="" class="comment-item"
+                                    v-for="(item, index) in list" :key="item.id">
                                     <div data-v-67377e58="" class="comment-inner-container">
                                         <div data-v-67377e58="" class="avatar"><a data-v-1d0a8701="" data-v-67377e58=""
                                                 href="/user/profile/6042256c000000000100152b" class="" target="_blank"><img
-                                                    data-v-1d0a8701="" class="avatar"
-                                                    src="https://sns-avatar-qc.xhscdn.com/avatar/60422705807a1757121566d2.jpg?imageView2/2/w/120/format/jpg|imageMogr2/strip"
+                                                    data-v-1d0a8701="" class="avatar" :src="item.avatar"
                                                     style="width: 32px; height: 32px;"></a></div>
                                         <div data-v-67377e58="" class="right">
                                             <div data-v-67377e58="" class="author-wrapper">
-                                                <div data-v-67377e58="" class="author"><a data-v-67377e58=""
-                                                        href="/user/profile/6042256c000000000100152b" class="name"
-                                                        target="_blank">平凡之石</a><!----></div><!---->
+                                                <div data-v-67377e58="" class="author">
+                                                    <a data-v-67377e58="" href="/user/profile/6042256c000000000100152b"
+                                                        class="name" target="_blank">{{ item.username }}</a>
+                                                    <span data-v-67377e58="" style="font-size: 12px; color:rgba(51, 51, 51, 0.6); margin-left: 4px;">
+                                                        第1楼
+                                                    </span>
+                                                </div>
+                                                <div data-v-67377e58="" class="interactions" style="font-size: 12px">
+                                                    <div data-v-67377e58="" class="reply icon-container">
+                                                        <span data-v-67377e58="" style="margin-right: 4px;"
+                                                            @click="copy_comment(item.content)">复制</span>
+                                                        <svg data-v-7c2d5134="" data-v-67377e58=""
+                                                            class="reds-icon reply-icon" width="16" height="16">
+                                                            <use data-v-7c2d5134="" xlink:href="#reply"></use>
+                                                        </svg>
+                                                        <span data-v-67377e58="" class="count">{{ item.reply_cnt ?
+                                                            item.reply_cnt : 100 }}
+                                                        </span>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div data-v-67377e58="" class="content"><img class="note-content-emoji"
-                                                    src="https://picasso-static.xiaohongshu.com/fe-platform/ca75b2fc85b0a3e171fe5df1cbf90efdcd3ba571.png">他这个状态很可怕，我大学同学就是这样，然后突然脱了裤子边唱边尿，本来有个阿姨在那拖地板，看着他这样过来直接吓跑了
+                                            <div data-v-67377e58="" class="content">{{ item.content }}
                                             </div>
-                                            <div data-v-67377e58="" class="labels"><!----></div>
-                                            <div data-v-67377e58="" class="info">
-                                                <div data-v-67377e58=""><span data-v-67377e58="">今天 15:07</span><span
-                                                        data-v-67377e58="" class="location">上海</span></div>
+                                            <div data-v-67377e58="" class="labels"></div>
+                                            <!-- <div data-v-67377e58="" class="info">
+                                                <div data-v-67377e58="">
+                                                    <span data-v-67377e58="">
+                                                        {{ item.date }}
+                                                        第1楼
+                                                    </span>
+                                                    <span data-v-67377e58="" class="location">上海</span>
+                                                </div>
                                                 <div data-v-67377e58="" class="interactions">
                                                     <div data-v-67377e58="" class="like"><span data-v-809eb46a=""
                                                             data-v-67377e58="" class="like-wrapper" points="[object Object]"
@@ -123,41 +132,68 @@
                                                                 <use data-v-7c2d5134="" xlink:href="#like"></use>
                                                             </svg><span data-v-809eb46a="" class="count">1138</span></span>
                                                     </div>
-                                                    <div data-v-67377e58="" class="reply icon-container"><svg
-                                                            data-v-7c2d5134="" data-v-67377e58=""
+                                                    <div data-v-67377e58="" class="reply icon-container">
+                                                        <span data-v-67377e58="" style="margin-right: 4px;"
+                                                            @click="copy_comment(item.content)">复制</span>
+                                                        <svg data-v-7c2d5134="" data-v-67377e58=""
                                                             class="reds-icon reply-icon" width="16" height="16">
                                                             <use data-v-7c2d5134="" xlink:href="#reply"></use>
-                                                        </svg><span data-v-67377e58="" class="count">110</span></div>
+                                                        </svg>
+                                                        <span data-v-67377e58="" class="count">{{ item.reply_cnt ?
+                                                            item.reply_cnt : 100 }}
+                                                        </span>
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                             <div data-v-67377e58="" class="reply-container">
                                                 <div data-v-6b20f11f="" data-v-67377e58-s="" tag="div" name="list"
                                                     class="list-container">
                                                     <div data-v-67377e58="" data-v-6b20f11f="" data-v-67377e58-s=""
-                                                        class="comment-item"><!---->
+                                                        class="comment-item" v-for="(comment_reply, idx) in item.replys"
+                                                        :key="comment_reply.id">
                                                         <div data-v-67377e58="" class="comment-inner-container">
                                                             <div data-v-67377e58="" class="avatar"><a data-v-1d0a8701=""
                                                                     data-v-67377e58=""
                                                                     href="/user/profile/559a20e467bc6501eaa4443f" class=""
                                                                     target="_blank"><img data-v-1d0a8701="" class="avatar"
-                                                                        src="https://sns-avatar-qc.xhscdn.com/avatar/62a6ec081f83d1a23573f8c8.jpg?imageView2/2/w/120/format/jpg|imageMogr2/strip"
+                                                                        :src="comment_reply.avatar"
                                                                         style="width: 24px; height: 24px;"></a></div>
                                                             <div data-v-67377e58="" class="right">
                                                                 <div data-v-67377e58="" class="author-wrapper">
-                                                                    <div data-v-67377e58="" class="author"><a
-                                                                            data-v-67377e58=""
+                                                                    <div data-v-67377e58="" class="author">
+                                                                        <a data-v-67377e58=""
                                                                             href="/user/profile/559a20e467bc6501eaa4443f"
-                                                                            class="name" target="_blank">我有两只小猫哦</a><!---->
-                                                                    </div><!---->
+                                                                            class="name" target="_blank">{{comment_reply.username }}
+                                                                        </a>
+                                                                        
+                                                                        <span data-v-67377e58="" style="font-size: 12px; color:rgba(51, 51, 51, 0.6); margin-left: 4px;">
+                                                                            第{{ idx + 2 }}楼
+                                                    </span>
+                                                </div>
+                                                <div data-v-67377e58="" class="interactions" style="font-size: 12px">
+                                                    <div data-v-67377e58="" class="reply icon-container">
+                                                        <span data-v-67377e58="" style="margin-right: 4px;"
+                                                            @click="copy_comment(comment_reply.content)">复制</span>
+                                                        <svg data-v-7c2d5134="" data-v-67377e58=""
+                                                            class="reds-icon reply-icon" width="16" height="16">
+                                                            <use data-v-7c2d5134="" xlink:href="#reply"></use>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                                                    
                                                                 </div>
                                                                 <div data-v-67377e58="" class="content">
-                                                                    我以前公司团建有个老板喝多了，在厕所拉屎并且用手抓出来涂满了整个厕所。关键那个房子是我们为了团建租的，打扫卫生阿姨看到当场报警了
+                                                                    <span data-v-67377e58="">回复</span>
+                                                                    <span data-v-67377e58="" style="margin-left: 2px; color: #13386c">{{ comment_reply.reply_to_floor+"楼 "+comment_reply.reply_to_username }}</span>
+                                                                    {{ comment_reply.content }}
                                                                 </div>
-                                                                <div data-v-67377e58="" class="labels"><!----></div>
-                                                                <div data-v-67377e58="" class="info">
-                                                                    <div data-v-67377e58=""><span data-v-67377e58="">今天
-                                                                            15:17</span><span data-v-67377e58=""
-                                                                            class="location">浙江</span></div>
+                                                                <div data-v-67377e58="" class="labels"></div>
+                                                                <!-- <div data-v-67377e58="" class="info">
+                                                                    <div data-v-67377e58="">
+                                                                        <span data-v-67377e58="">第{{ idx + 2 }}楼</span>
+                                                                        <span data-v-67377e58="">{{ comment_reply.date }}</span>
+                                                                        <span data-v-67377e58="" class="location">浙江</span>
+                                                                    </div>
                                                                     <div data-v-67377e58="" class="interactions">
                                                                         <div data-v-67377e58="" class="like"><span
                                                                                 data-v-809eb46a="" data-v-67377e58=""
@@ -174,137 +210,32 @@
                                                                                 </svg><span data-v-809eb46a=""
                                                                                     class="count">746</span></span></div>
                                                                         <div data-v-67377e58=""
-                                                                            class="reply icon-container"><svg
-                                                                                data-v-7c2d5134="" data-v-67377e58=""
+                                                                            class="reply icon-container">
+                                                                            <span data-v-67377e58=""
+                                                                                style="margin-right: 4px;"
+                                                                                @click="copy_comment(comment_reply.content)">复制</span>
+                                                                            <svg data-v-7c2d5134="" data-v-67377e58=""
                                                                                 class="reds-icon reply-icon" width="16"
                                                                                 height="16">
                                                                                 <use data-v-7c2d5134="" xlink:href="#reply">
                                                                                 </use>
-                                                                            </svg><!----></div>
+                                                                            </svg>
+                                                                        </div>
                                                                     </div>
-                                                                </div><!---->
+                                                                </div> -->
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div data-v-67377e58="" data-v-6b20f11f="" data-v-67377e58-s=""
-                                                        class="comment-item"><!---->
-                                                        <div data-v-67377e58="" class="comment-inner-container">
-                                                            <div data-v-67377e58="" class="avatar"><a data-v-1d0a8701=""
-                                                                    data-v-67377e58=""
-                                                                    href="/user/profile/5fd4bfcf000000000101c1cb" class=""
-                                                                    target="_blank"><img data-v-1d0a8701="" class="avatar"
-                                                                        src="https://sns-avatar-qc.xhscdn.com/avatar/5fd4bfcf000000000101c1cb.jpg?imageView2/2/w/120/format/jpg|imageMogr2/strip"
-                                                                        style="width: 24px; height: 24px;"></a></div>
-                                                            <div data-v-67377e58="" class="right">
-                                                                <div data-v-67377e58="" class="author-wrapper">
-                                                                    <div data-v-67377e58="" class="author"><a
-                                                                            data-v-67377e58=""
-                                                                            href="/user/profile/5fd4bfcf000000000101c1cb"
-                                                                            class="name" target="_blank">Patrick</a><!---->
-                                                                    </div><!---->
-                                                                </div>
-                                                                <div data-v-67377e58="" class="content">回复 <span
-                                                                        class="nickname">我有两只小猫哦</span>: <a
-                                                                        class="note-content-user"
-                                                                        href="/user/profile/59f3eb7cb1da145f1a66ad15"
-                                                                        target="_blank">@莱利不能不喝咖啡</a></div>
-                                                                <div data-v-67377e58="" class="labels"><!----></div>
-                                                                <div data-v-67377e58="" class="info">
-                                                                    <div data-v-67377e58=""><span data-v-67377e58="">今天
-                                                                            15:42</span><span data-v-67377e58=""
-                                                                            class="location">广东</span></div>
-                                                                    <div data-v-67377e58="" class="interactions">
-                                                                        <div data-v-67377e58="" class="like"><span
-                                                                                data-v-809eb46a="" data-v-67377e58=""
-                                                                                class="like-wrapper"
-                                                                                points="[object Object]"
-                                                                                track-data="[object Object]"><span
-                                                                                    data-v-809eb46a="" class="like-lottie"
-                                                                                    style="width: 16px; height: 16px;"></span><svg
-                                                                                    data-v-7c2d5134="" data-v-809eb46a=""
-                                                                                    class="reds-icon like-icon" width="16"
-                                                                                    height="16">
-                                                                                    <use data-v-7c2d5134=""
-                                                                                        xlink:href="#like"></use>
-                                                                                </svg><span data-v-809eb46a=""
-                                                                                    class="count">1</span></span></div>
-                                                                        <div data-v-67377e58=""
-                                                                            class="reply icon-container"><svg
-                                                                                data-v-7c2d5134="" data-v-67377e58=""
-                                                                                class="reds-icon reply-icon" width="16"
-                                                                                height="16">
-                                                                                <use data-v-7c2d5134="" xlink:href="#reply">
-                                                                                </use>
-                                                                            </svg><!----></div>
-                                                                    </div>
-                                                                </div><!---->
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div data-v-67377e58="" data-v-6b20f11f="" data-v-67377e58-s=""
-                                                        class="comment-item"><!---->
-                                                        <div data-v-67377e58="" class="comment-inner-container">
-                                                            <div data-v-67377e58="" class="avatar"><a data-v-1d0a8701=""
-                                                                    data-v-67377e58=""
-                                                                    href="/user/profile/5555a9eb67bc656df54f3887" class=""
-                                                                    target="_blank"><img data-v-1d0a8701="" class="avatar"
-                                                                        src="https://sns-avatar-qc.xhscdn.com/avatar/637cf1b4f9b4e1f217d22b8c.jpg?imageView2/2/w/120/format/jpg|imageMogr2/strip"
-                                                                        style="width: 24px; height: 24px;"></a></div>
-                                                            <div data-v-67377e58="" class="right">
-                                                                <div data-v-67377e58="" class="author-wrapper">
-                                                                    <div data-v-67377e58="" class="author"><a
-                                                                            data-v-67377e58=""
-                                                                            href="/user/profile/5555a9eb67bc656df54f3887"
-                                                                            class="name" target="_blank">伊斯特赛</a><!---->
-                                                                    </div><!---->
-                                                                </div>
-                                                                <div data-v-67377e58="" class="content">回复 <span
-                                                                        class="nickname">我有两只小猫哦</span>: 救命<img
-                                                                        class="note-content-emoji"
-                                                                        src="https://picasso-static.xiaohongshu.com/fe-platform/ca75b2fc85b0a3e171fe5df1cbf90efdcd3ba571.png">
-                                                                </div>
-                                                                <div data-v-67377e58="" class="labels"><!----></div>
-                                                                <div data-v-67377e58="" class="info">
-                                                                    <div data-v-67377e58=""><span data-v-67377e58="">今天
-                                                                            15:50</span><span data-v-67377e58=""
-                                                                            class="location">河南</span></div>
-                                                                    <div data-v-67377e58="" class="interactions">
-                                                                        <div data-v-67377e58="" class="like"><span
-                                                                                data-v-809eb46a="" data-v-67377e58=""
-                                                                                class="like-wrapper"
-                                                                                points="[object Object]"
-                                                                                track-data="[object Object]"><span
-                                                                                    data-v-809eb46a="" class="like-lottie"
-                                                                                    style="width: 16px; height: 16px;"></span><svg
-                                                                                    data-v-7c2d5134="" data-v-809eb46a=""
-                                                                                    class="reds-icon like-icon" width="16"
-                                                                                    height="16">
-                                                                                    <use data-v-7c2d5134=""
-                                                                                        xlink:href="#like"></use>
-                                                                                </svg><span data-v-809eb46a=""
-                                                                                    class="count">10</span></span></div>
-                                                                        <div data-v-67377e58=""
-                                                                            class="reply icon-container"><svg
-                                                                                data-v-7c2d5134="" data-v-67377e58=""
-                                                                                class="reds-icon reply-icon" width="16"
-                                                                                height="16">
-                                                                                <use data-v-7c2d5134="" xlink:href="#reply">
-                                                                                </use>
-                                                                            </svg><!----></div>
-                                                                    </div>
-                                                                </div><!---->
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div><!---->
-                                                <div data-v-6b20f11f="" data-v-67377e58-s="" class="show-more">展开 107 条回复
+                                                </div>
+                                                <div v-if="item.reply_cnt-item.replys.length>0" data-v-6b20f11f="" data-v-67377e58-s="" class="show-more"
+                                                    @click="text_expand(index)">展开 {{ item.reply_cnt-item.replys.length }} 条回复
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div><!----><!----><!---->
-                        </div><!----><!---->
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div data-v-11b921ce="" class="interactions">
@@ -324,13 +255,13 @@
                                     height="28">
                                     <use data-v-7c2d5134="" xlink:href="#chat"></use>
                                 </svg><span data-v-36e1f3e7="" class="count">819</span></span></div>
-                        <div data-v-36e1f3e7="" class="share-wrapper"><!----><svg data-v-7c2d5134="" data-v-36e1f3e7=""
+                        <div data-v-36e1f3e7="" class="share-wrapper"><svg data-v-7c2d5134="" data-v-36e1f3e7=""
                                 class="reds-icon share-icon" width="28" height="28" id="shareIcon">
                                 <use data-v-7c2d5134="" xlink:href="#share"></use>
                             </svg></div>
                     </div>
                     <div data-v-e6930618="" data-v-e223d0aa="" data-v-11b921ce="" class="comment-wrapper comment-comp">
-                        <!---->
+
                         <div data-v-e6930618="" class="mention-select-container close"></div>
                         <div data-v-e6930618="" class="input-wrapper"><input data-v-e6930618="" class="comment-input"
                                 type="text" placeholder="说点什么..." data-tribute="true">
@@ -346,13 +277,72 @@
                 </div>
             </div>
         </div>
-        <!-- <div data-v-237ed470="" class="close-box">
-            <svg data-v-7c2d5134="" data-v-237ed470="" class="reds-icon" width="18"
-                height="18">
-                <use data-v-7c2d5134="" xlink:href="#exit"></use>
-            </svg></div> -->
     </div>
 </template>
+
+<script setup>
+import { ref, onMounted, computed } from 'vue'
+import { getRedBookCommentsList, getCommentsReplyList } from "@/api/index";
+
+const list = ref([]);
+const names = ref([]);
+const reply_ids = ref([]);
+onMounted(async () => {
+    const { data } = await getRedBookCommentsList();
+    list.value = data.result.items;
+    let comments_length = data.result.items.length;
+    for (let i=0; i<comments_length; i++){
+        let replys_length = data.result.items[i].replys.length;
+        let tmp_reply_ids = []
+        let tmp_names = []
+        let comment = data.result.items[i]
+        tmp_reply_ids.push(comment.id)
+        tmp_names.push(comment.username)
+        for (let j=0; j<replys_length; j++){
+            // console.log(tmp_reply_ids, comment[j].reply_to)
+            let reply_to_floor = tmp_reply_ids.indexOf(comment.replys[j].reply_to)+1
+            list.value[i].replys[j].reply_to_floor = reply_to_floor
+            list.value[i].replys[j].reply_to_username = tmp_names[reply_to_floor-1]
+            tmp_reply_ids.push(comment.replys[j].id)
+            tmp_names.push(comment.replys[j].username)
+        }
+        // console.log(data.result.items[i])
+        names.value.push(tmp_names)
+        reply_ids.value.push(tmp_reply_ids)
+    }
+    // console.log(names.value)
+    // console.log(reply_ids.value)
+});
+
+const title = ref('其实参加酒局多了，都差不多')
+const description = ref('没那么惊讶\n人生不就是一场行为艺术吗')
+
+const text_expand = async (comment_index) => {
+    const { data } = await getCommentsReplyList(list.value[comment_index].id);
+    let replys_more = data.result.items
+    let replys_length = replys_more.length
+    // list.value[comment_index].replys = list.value[comment_index].replys.concat(data.result.items);
+    let tmp_reply_ids = reply_ids.value[comment_index]
+    let tmp_names = names.value[comment_index]
+    for (let j=0; j<replys_length; j++){
+        let reply_to_floor = tmp_reply_ids.indexOf(replys_more[j].reply_to)+1
+        replys_more[j].reply_to_floor = reply_to_floor
+        replys_more[j].reply_to_username = tmp_names[reply_to_floor-1]
+        tmp_reply_ids.push(replys_more[j].id)
+        tmp_names.push(replys_more[j].username)
+    }
+    list.value[comment_index].replys = list.value[comment_index].replys.concat(replys_more)
+    console.log(list.value[comment_index])
+    // names.value.push(tmp_names)
+    // reply_ids.value.push(tmp_reply_ids)
+}
+
+const copy_comment = (content) => {
+    console.log(content)
+}
+
+</script>
+
 
 <style lang="less" scoped>
 .note-detail-mask[data-v-024e536f] {
@@ -453,16 +443,19 @@ html {
 
 .note-content[data-v-5245913a] {
     padding: 10px 0 20px;
-    margin: 0 30px;
+    margin: 0 5px;
     color: #333;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    // border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    // padding: 10px 0 0px;
 }
 
 .title[data-v-5245913a] {
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
     font-weight: 600;
     font-size: 20px;
     line-height: 32px;
+    // font-size: 15px;
+    // line-height: 16px;
 }
 
 .desc[data-v-5245913a] {
@@ -473,6 +466,8 @@ html {
     color: #333;
     white-space: pre-wrap;
     overflow-wrap: break-word;
+    // font-size: 13px;
+    // line-height: 15px;
 }
 
 .tag[data-v-5245913a] {
@@ -492,23 +487,20 @@ html {
 }
 
 .comments-container[data-v-6b20f11f] {
-    padding: 20px 30px;
+    // padding: 20px 30px;
+    padding: 0px 30px;
 }
 
 .total[data-v-6b20f11f] {
     font-size: 14px;
     line-height: 18px;
     color: rgba(51, 51, 51, 0.6);
+    // font-size: 11px;
+    // line-height: 15px;
 }
 
 .list-container[data-v-6b20f11f] {
     position: relative;
-}
-
-.comment-item[data-v-67377e58] {
-    position: relative;
-    display: flex;
-    margin-top: 16px;
 }
 
 .comment-inner-container[data-v-67377e58] {
@@ -525,36 +517,28 @@ html {
     flex-grow: 1;
 }
 
-.note-content {
-    padding: 10px 0 20px;
-    margin: 0 30px;
-    color: #333;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-}
+// .note-content {
+//     padding: 10px 0 20px;
+//     margin: 0 30px;
+//     color: #333;
+//     border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+// }
 
-.desc {
-    margin: 0;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 28px;
-    color: #333;
-    white-space: pre-wrap;
-    overflow-wrap: break-word;
-}
+// .desc {
+//     margin: 0;
+//     font-weight: 400;
+//     font-size: 16px;
+//     line-height: 28px;
+//     color: #333;
+//     white-space: pre-wrap;
+//     overflow-wrap: break-word;
+// }
 
-.comments-el {
-    position: relative;
-}
-
-.comments-container {
-    padding: 20px 30px;
-}
-
-.total[data-v-6b20f11f] {
-    font-size: 14px;
-    line-height: 18px;
-    color: rgba(51, 51, 51, 0.6);
-}
+// .total[data-v-6b20f11f] {
+//     font-size: 14px;
+//     line-height: 18px;
+//     color: rgba(51, 51, 51, 0.6);
+// }
 
 .list-container[data-v-6b20f11f] {
     position: relative;
@@ -563,7 +547,7 @@ html {
 .comment-item[data-v-67377e58] {
     position: relative;
     display: flex;
-    margin-top: 16px;
+    margin-top: 12px;
 }
 
 .comment-inner-container[data-v-67377e58] {
@@ -620,6 +604,7 @@ html {
     background-color: #fff;
     z-index: 1;
 }
+
 .interactions[data-v-11b921ce] {
     position: -webkit-sticky;
     position: sticky;
@@ -893,12 +878,12 @@ img {
 
 .right[data-v-67377e58] {
     margin-left: 12px;
-    padding-bottom: 16px;
+    // padding-bottom: 16px;
     display: flex;
     flex-direction: column;
     font-size: 14px;
     flex-grow: 1;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    // border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .author-wrapper[data-v-67377e58] {
@@ -932,6 +917,7 @@ img {
     justify-content: space-between;
     margin-top: 12px;
     font-size: 12px;
+    color: rgba(51, 51, 51, 0.6);
     line-height: 16px;
 }
 
@@ -967,6 +953,9 @@ img {
     margin-left: 4px;
 }
 
+// .comment-floor {
+//     margin-left;
+// }
 .reply[data-v-67377e58] {
     margin-left: 20px;
     display: flex;
@@ -978,12 +967,15 @@ img {
 .icon-container[data-v-67377e58] {
     color: rgba(51, 51, 51, 0.6);
 }
+
 [data-v-956360f6] .close-box {
     top: 72px;
 }
+
 .close-box[data-v-237ed470] {
     display: flex;
 }
+
 .close-box[data-v-237ed470] {
     width: 40px;
     height: 40px;
@@ -993,7 +985,7 @@ img {
     align-items: center;
     border-radius: 100%;
     background: #fff;
-    color: rgba(51,51,51,0.8);
+    color: rgba(51, 51, 51, 0.8);
     display: none;
     position: absolute;
     left: 0;
@@ -1001,15 +993,18 @@ img {
     margin: 12px;
     z-index: 5;
 }
+
 .reds-icon[data-v-7c2d5134] {
     display: inline-block;
     vertical-align: middle;
     fill: currentColor;
 }
+
 [data-v-956360f6] .note-container {
     box-shadow: none;
     transition: height .6s;
 }
+
 .note-container[data-v-70c71a67] {
     box-shadow: none;
     height: 100%;
@@ -1020,6 +1015,7 @@ img {
     overflow: scroll;
     transition: none;
 }
+
 .note-container[data-v-70c71a67] {
     display: flex;
     border: 1px solid var(--color-border);
@@ -1028,6 +1024,5 @@ img {
     background: var(--elevation-note-background);
     transform-origin: left top;
 }
-
 </style>
 

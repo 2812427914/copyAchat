@@ -51,5 +51,13 @@ export const getRedBookCommentsList = () => {
   return requests({
     url: "/redBookCommentsList",
     method: "get"
+  }); 　
+};
+
+export const getCommentsReplyList = () => {
+  return requests({
+    url: "/commentsReplyList",
+    method: "get"
   });
 };
+

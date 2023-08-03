@@ -6,6 +6,7 @@ import recommendList from './data/recommendList'
 import commentsList from './data/commentsList'
 import videoDetailList from './data/videoDetailList'
 import redBookCommentsList from './data/redBookCommentsList'
+import commentsReplyList from './data/commentsReplyList'
 
 // mock的配置
 Mock.setup({
@@ -58,7 +59,17 @@ Mock.mock(/\/redBookCommentsList/, 'get', () => {
     code: 0,
     result: {
       count: 454,
-      items: commentsList
+      items: redBookCommentsList
+    }
+  }
+})
+
+Mock.mock(/\/commentsReplyList/, 'get', () => {
+  return {
+    code: 0,
+    result: {
+      count: 454,
+      items: commentsReplyList
     }
   }
 })

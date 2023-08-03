@@ -13,7 +13,7 @@
 // createApp(App).mount('#app')
 
 import { createApp } from "vue";
-import { Tab, Tabs, Swipe, SwipeItem, Sticky } from "vant";
+import { Tab, Tabs, Swipe, SwipeItem, Sticky, Field, CellGroup} from "vant";
 import App from "./App.vue";
 import router from "./router";
 import 'vant/lib/index.css'
@@ -29,6 +29,8 @@ app.use(Tabs);
 app.use(Swipe);
 app.use(SwipeItem);
 app.use(Sticky);
+app.use(Field);
+app.use(CellGroup);
 
 app.use(router);
 app.mount("#app");
