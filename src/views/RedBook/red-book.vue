@@ -1,5 +1,7 @@
 
 <template>
+    <van-config-provider theme="">...</van-config-provider>
+
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
         style="position: absolute; width: 0; height: 0" aria-hidden="true" id="__SVG_SPRITE_NODE__">
         <symbol xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16" id="like">
@@ -78,10 +80,10 @@
                     </div>
                     <div data-v-6b20f11f="" data-v-11b921ce="" class="comments-el">
                         <div data-v-6b20f11f="" class="comments-container">
-                            <div data-v-6b20f11f="" class="total">共 819 条评论</div>
+                            <div data-v-6b20f11f="" class="total">共 {{ commentsList.length}} 条评论</div>
                             <div data-v-6b20f11f="" tag="div" name="list" class="list-container">
                                 <div data-v-67377e58="" data-v-6b20f11f="" class="comment-item"
-                                    v-for="(item, index) in list" :key="item.id">
+                                    v-for="(item, index) in commentsList" :key="item.id">
                                     <div data-v-67377e58="" class="comment-inner-container">
                                         <div data-v-67377e58="" class="avatar"><a data-v-1d0a8701="" data-v-67377e58=""
                                                 href="/user/profile/6042256c000000000100152b" class="" target="_blank"><img
@@ -92,26 +94,36 @@
                                                 <div data-v-67377e58="" class="author">
                                                     <a data-v-67377e58="" href="/user/profile/6042256c000000000100152b"
                                                         class="name" target="_blank">{{ item.username }}</a>
-                                                    <span data-v-67377e58="" style="font-size: 12px; color:rgba(51, 51, 51, 0.6); margin-left: 4px;">
-                                                        第1楼
+                                                    <span data-v-67377e58=""
+                                                        style="font-size: 12px; color:rgba(51, 51, 51, 0.6); margin-left: 4px;">
+                                                        1楼
                                                     </span>
                                                 </div>
                                                 <div data-v-67377e58="" class="interactions" style="font-size: 12px">
                                                     <div data-v-67377e58="" class="reply icon-container">
                                                         <span data-v-67377e58="" style="margin-right: 4px;"
-                                                            @click="copy_comment(item.content)">复制</span>
-                                                        <svg data-v-7c2d5134="" data-v-67377e58=""
+                                                            @click="copy_comment(index, item.content)">复制</span>
+
+                                                        <svg @click="replyComment(index, 1, item)" data-v-7c2d5134="" data-v-67377e58="" style = "margin-left: 8px"
                                                             class="reds-icon reply-icon" width="16" height="16">
                                                             <use data-v-7c2d5134="" xlink:href="#reply"></use>
                                                         </svg>
-                                                        <span data-v-67377e58="" class="count">{{ item.reply_cnt ?
-                                                            item.reply_cnt : 100 }}
+                                                        <span data-v-67377e58="" class="count">{{ item.reply_cnt}}
                                                         </span>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div data-v-67377e58="" class="content">{{ item.content }}
+                                            <div data-v-67377e58="" class="content">
+                                                <!-- {{ item.content }} -->
+                                                <van-text-ellipsis style="white-space: normal;" rows="5" :content="item.content" expand-text="展开"
+                                                    collapse-text="收起" position="middle" />
+                                                <!-- <vue-ellipsis-3
+                                                :visible-line="1"
+                                                use-inner-html
+                                                text="<b>这是一段</b><u>非常非常非常非常非常非常非常非常非常非常非常长</u>的话">
+                                                </vue-ellipsis-3> -->
                                             </div>
+
                                             <div data-v-67377e58="" class="labels"></div>
                                             <!-- <div data-v-67377e58="" class="info">
                                                 <div data-v-67377e58="">
@@ -163,34 +175,49 @@
                                                                     <div data-v-67377e58="" class="author">
                                                                         <a data-v-67377e58=""
                                                                             href="/user/profile/559a20e467bc6501eaa4443f"
-                                                                            class="name" target="_blank">{{comment_reply.username }}
+                                                                            class="name" target="_blank">{{
+                                                                                comment_reply.username }}
                                                                         </a>
-                                                                        
-                                                                        <span data-v-67377e58="" style="font-size: 12px; color:rgba(51, 51, 51, 0.6); margin-left: 4px;">
-                                                                            第{{ idx + 2 }}楼
-                                                    </span>
-                                                </div>
-                                                <div data-v-67377e58="" class="interactions" style="font-size: 12px">
-                                                    <div data-v-67377e58="" class="reply icon-container">
-                                                        <span data-v-67377e58="" style="margin-right: 4px;"
-                                                            @click="copy_comment(comment_reply.content)">复制</span>
-                                                        <svg data-v-7c2d5134="" data-v-67377e58=""
-                                                            class="reds-icon reply-icon" width="16" height="16">
-                                                            <use data-v-7c2d5134="" xlink:href="#reply"></use>
-                                                        </svg>
-                                                    </div>
-                                                </div>
-                                                                    
+
+                                                                        <span data-v-67377e58=""
+                                                                            style="font-size: 12px; color:rgba(51, 51, 51, 0.6); margin-left: 4px;">
+                                                                            {{ idx + 2 }}楼
+                                                                        </span>
+                                                                    </div>
+                                                                    <div data-v-67377e58="" class="interactions"
+                                                                        style="font-size: 12px">
+                                                                        <div data-v-67377e58=""
+                                                                            class="reply icon-container">
+                                                                            <span data-v-67377e58=""
+                                                                                style="margin-right: 4px;"
+                                                                                @click="copy_comment(comment_reply)">复制</span>
+
+                                                                            <svg @click="replyComment(index, idx+2, comment_reply)" data-v-7c2d5134="" data-v-67377e58=""
+                                                                                class="reds-icon reply-icon" width="16"
+                                                                                height="16"  style = "margin-left: 8px">
+                                                                                <use data-v-7c2d5134="" xlink:href="#reply">
+                                                                                </use>
+                                                                            </svg>
+                                                                        </div>
+                                                                    </div>
+
                                                                 </div>
-                                                                <div data-v-67377e58="" class="content">
+                                                                <!-- <div data-v-67377e58="" class="content">
                                                                     <span data-v-67377e58="">回复</span>
                                                                     <span data-v-67377e58="" style="margin-left: 2px; color: #13386c">{{ comment_reply.reply_to_floor+"楼 "+comment_reply.reply_to_username }}</span>
                                                                     {{ comment_reply.content }}
-                                                                </div>
+                                                                   
+                                                                </div> -->
+                                                                <van-text-ellipsis data-v-67377e58="" class="content"
+                                                                    style="white-space: normal;"
+                                                                    rows="5"
+                                                                    :content="'回复 ' + comment_reply.reply_to_floor + '楼 ' + comment_reply.reply_to_username + ': ' + comment_reply.content"
+                                                                    expand-text="展开" collapse-text="收起" position="middle">
+                                                                </van-text-ellipsis>
                                                                 <div data-v-67377e58="" class="labels"></div>
                                                                 <!-- <div data-v-67377e58="" class="info">
                                                                     <div data-v-67377e58="">
-                                                                        <span data-v-67377e58="">第{{ idx + 2 }}楼</span>
+                                                                        <span data-v-67377e58="">{{ idx + 2 }}楼</span>
                                                                         <span data-v-67377e58="">{{ comment_reply.date }}</span>
                                                                         <span data-v-67377e58="" class="location">浙江</span>
                                                                     </div>
@@ -207,7 +234,7 @@
                                                                                     height="16">
                                                                                     <use data-v-7c2d5134=""
                                                                                         xlink:href="#like"></use>
-                                                                                </svg><span data-v-809eb46a=""
+                                                                                </right-icon	svg><span data-v-809eb46a=""
                                                                                     class="count">746</span></span></div>
                                                                         <div data-v-67377e58=""
                                                                             class="reply icon-container">
@@ -227,8 +254,9 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div v-if="item.reply_cnt-item.replys.length>0" data-v-6b20f11f="" data-v-67377e58-s="" class="show-more"
-                                                    @click="text_expand(index)">展开 {{ item.reply_cnt-item.replys.length }} 条回复
+                                                <div v-if="item.reply_cnt - item.replys.length > 0" data-v-6b20f11f=""
+                                                    data-v-67377e58-s="" class="show-more" @click="text_expand(index)">展开 {{
+                                                        item.reply_cnt - item.replys.length }} 条回复
                                                 </div>
                                             </div>
                                         </div>
@@ -238,42 +266,104 @@
                         </div>
                     </div>
                 </div>
-                <div data-v-11b921ce="" class="interactions">
-                    <div data-v-36e1f3e7="" data-v-11b921ce="" class="buttons">
-                        <div data-v-36e1f3e7="" class="left"><span data-v-809eb46a="" data-v-36e1f3e7=""
-                                class="like-wrapper" points="[object Object]" track-data="[object Object]"><span
-                                    data-v-809eb46a="" class="like-lottie" style="width: 28px; height: 28px;"></span><svg
-                                    data-v-7c2d5134="" data-v-809eb46a="" class="reds-icon like-icon" width="28"
-                                    height="28">
-                                    <use data-v-7c2d5134="" xlink:href="#like"></use>
-                                </svg><span data-v-809eb46a="" class="count">6438</span></span><span data-v-ffc64454=""
-                                data-v-36e1f3e7="" class="collect-wrapper"><svg data-v-7c2d5134="" data-v-ffc64454=""
-                                    class="reds-icon collect-icon" width="28" height="28">
-                                    <use data-v-7c2d5134="" xlink:href="#collect"></use>
-                                </svg><span data-v-ffc64454="" class="count">612</span></span><span data-v-36e1f3e7=""
-                                class="chat-wrapper"><svg data-v-7c2d5134="" data-v-36e1f3e7="" class="reds-icon" width="28"
-                                    height="28">
-                                    <use data-v-7c2d5134="" xlink:href="#chat"></use>
-                                </svg><span data-v-36e1f3e7="" class="count">819</span></span></div>
-                        <div data-v-36e1f3e7="" class="share-wrapper"><svg data-v-7c2d5134="" data-v-36e1f3e7=""
-                                class="reds-icon share-icon" width="28" height="28" id="shareIcon">
-                                <use data-v-7c2d5134="" xlink:href="#share"></use>
-                            </svg></div>
-                    </div>
-                    <div data-v-e6930618="" data-v-e223d0aa="" data-v-11b921ce="" class="comment-wrapper comment-comp">
+                    <van-popup v-model:show="fromButton" position="bottom" :style="{ height: preShowIndex!=-1 ? '50%' : ''  }">
+                    <!-- <van-popup v-model:show="fromButton" position="bottom"> -->
+                        <template #default>
+                            <!-- <van-cell-group> -->
+                                <van-field :border="false" v-model="commentContent" :placeholder=commentContentPlaceHolder.content type="textarea" rows="3"/>
+                                <van-row style="padding-bottom:12px;">
+                                <van-col span="12">
+                                    <svg @click="bottomShow(0)" class="reds-icon" width="24" height="24"
+                                        :style="{'margin-left': '12px', 'color': preShowIndex == 0 ? '#13386c' : '#969799'}">
+                                        <use data-v-7c2d5134="" xlink:href="#chat"></use>
+                                    </svg>
+                                    <svg @click="bottomShow(1)" class="reds-icon" width="24" height="24"
+                                    :style="{'margin-left': '12px', 'color': preShowIndex == 1 ? '#13386c' : '#969799'}">
+                                        <use data-v-7c2d5134="" xlink:href="#mention"></use>
+                                    </svg>
+                                </van-col>
+                                <van-col span="12">    
+                                    <div  
+                                    @click="submitComment"
+                                    style="
+                                    background-color: #408af2;
+                                    font-size: 14px;
+                                    position: absolute;
+                                    right: 24px;
+                                    color: white;
+                                    border-radius: 18px;
+                                    padding-top: 3px;
+                                    padding-bottom: 3px;
+                                    padding-left: 18px;
+                                    padding-right: 18px;">发送</div>
+                                </van-col>
+                            </van-row>
+                            <!-- </van-cell-group> -->
+                            <!-- <van-field v-model="commentContent" placeholder="说点什么..." type="textarea" rows="3" boder="{{ false }}"/> -->
+                            
+                            <van-checkbox-group v-if="bottomShowList[0]" v-model="checkedClipBoard" >
+                                <van-cell-group >
+                                    <van-cell v-for="(item, idx) in clipBoardList" clickable :key="item"
+                                        @click="toggleClipBoard(idx)" >
+                                        <template #title>
+                                            <div>
+                                                <van-text-ellipsis :content="item" />
+                                            </div>
 
-                        <div data-v-e6930618="" class="mention-select-container close"></div>
-                        <div data-v-e6930618="" class="input-wrapper"><input data-v-e6930618="" class="comment-input"
-                                type="text" placeholder="说点什么..." data-tribute="true">
-                            <div data-v-e6930618="" class="input-buttons"><svg data-v-7c2d5134="" data-v-e6930618=""
+                                        </template>
+                                        <template #right-icon>
+                                            <van-checkbox :name="item" :ref="el => checkboxRefsClipBoard[idx] = el"
+                                                @click.stop />
+                                        </template>
+                                    </van-cell>
+                                </van-cell-group>
+                            </van-checkbox-group>
+                            <van-checkbox-group v-if="bottomShowList[1]" v-model="checkedAgent">
+                                <van-cell-group>
+                                    <van-cell v-for="(item, idx) in agentList" clickable :key="item" :title="`复选框 ${item}`"
+                                        @click="toggleAgent(idx)">
+                                        <template #right-icon>
+                                            <van-checkbox :name="item" :ref="el => checkboxRefsAgent[idx] = el"
+                                                @click.stop />
+                                        </template>
+                                    </van-cell>
+                                </van-cell-group>
+                            </van-checkbox-group>
+                        </template>
+                    </van-popup>
+
+                <div data-v-11b921ce="" class="interactions">
+                    <van-field style="background-color: rgba(0, 0, 0, 0.03); border-radius: 22px;" v-model="commentContent"
+                        :placeholder=commentContentPlaceHolder.content>
+                        <template #right-icon>
+                            <svg @click="clearReplyTo" class="reds-icon" width="24" height="24" style="margin-left: 8px;">
+                                <use  xlink:href="#chat"></use>
+                            </svg>
+                            <svg @click="submitComment()" class="reds-icon" width="24" height="24" style="margin-left: 8px;">
+                                <use  xlink:href="#chat"></use>
+                            </svg>
+                            <svg @click="fromButton=true ; bottomShow(1)" class="reds-icon" width="24" height="24">
+                                <use  xlink:href="#mention"></use>
+                            </svg>
+                            
+                        </template>
+                        
+                    </van-field>
+                    
+                    <!-- <div  data-v-e6930618="" data-v-e223d0aa="" data-v-11b921ce="" class="comment-wrapper comment-comp">
+
+                        <div  data-v-e6930618="" class="mention-select-container close"></div>
+                        <div   data-v-e6930618="" class="input-wrapper">
+                            <input  data-v-e6930618="" class="comment-input"
+                                type="text" placeholder="说点什么..." data-tribute="true" @click="showPopUp">
+                            <div data-v-e6930618="" class="input-buttons">
+                                <svg data-v-7c2d5134="" data-v-e6930618=""
                                     class="reds-icon" width="24" height="24" id="showMentionEl">
                                     <use data-v-7c2d5134="" xlink:href="#mention"></use>
-                                </svg><svg data-v-7c2d5134="" data-v-e6930618="" class="reds-icon" width="24" height="24"
-                                    id="showEmojiEl">
-                                    <use data-v-7c2d5134="" xlink:href="#emoji"></use>
-                                </svg></div>
+                                </svg>
+                            </div>
                         </div><button data-v-e6930618="" class="submit">发送</button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -281,66 +371,217 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, onBeforeUpdate } from 'vue'
 import { getRedBookCommentsList, getCommentsReplyList } from "@/api/index";
 
-const list = ref([]);
+// 标题和描述
+const title = ref('其实参加酒局多了，都差不多')
+const description = ref('没那么惊讶\n人生不就是一场行为艺术吗')
+
+
+// 处理评论区展示
+const commentsList = ref([]);
 const names = ref([]);
 const reply_ids = ref([]);
-onMounted(async () => {
+
+const getCommentsList = async () => {
     const { data } = await getRedBookCommentsList();
-    list.value = data.result.items;
+    let items = data.result.items
+    // 给一级评论的子评论添加 reply_to_floor、reply_to_username
     let comments_length = data.result.items.length;
-    for (let i=0; i<comments_length; i++){
+    for (let i = 0; i < comments_length; i++) {
         let replys_length = data.result.items[i].replys.length;
         let tmp_reply_ids = []
         let tmp_names = []
         let comment = data.result.items[i]
         tmp_reply_ids.push(comment.id)
         tmp_names.push(comment.username)
-        for (let j=0; j<replys_length; j++){
-            // console.log(tmp_reply_ids, comment[j].reply_to)
-            let reply_to_floor = tmp_reply_ids.indexOf(comment.replys[j].reply_to)+1
-            list.value[i].replys[j].reply_to_floor = reply_to_floor
-            list.value[i].replys[j].reply_to_username = tmp_names[reply_to_floor-1]
+        for (let j = 0; j < replys_length; j++) {
+            let reply_to_floor = tmp_reply_ids.indexOf(comment.replys[j].reply_to) + 1
+            items[i].replys[j].reply_to_floor = reply_to_floor
+            items[i].replys[j].reply_to_username = tmp_names[reply_to_floor - 1]
             tmp_reply_ids.push(comment.replys[j].id)
             tmp_names.push(comment.replys[j].username)
         }
-        // console.log(data.result.items[i])
         names.value.push(tmp_names)
         reply_ids.value.push(tmp_reply_ids)
     }
-    // console.log(names.value)
-    // console.log(reply_ids.value)
+    commentsList.value = commentsList.value.concat(items);
+}
+
+// onMounted(async () => {
+//     getCommentsList();
+// });
+
+onMounted( () => {
+    getCommentsList()
 });
 
-const title = ref('其实参加酒局多了，都差不多')
-const description = ref('没那么惊讶\n人生不就是一场行为艺术吗')
+// 下拉刷新commentList：pagenation
+// getCommentsList()
 
+// 点击 展开更多回复
 const text_expand = async (comment_index) => {
-    const { data } = await getCommentsReplyList(list.value[comment_index].id);
+    const { data } = await getCommentsReplyList(commentsList.value[comment_index].id);
     let replys_more = data.result.items
     let replys_length = replys_more.length
-    // list.value[comment_index].replys = list.value[comment_index].replys.concat(data.result.items);
     let tmp_reply_ids = reply_ids.value[comment_index]
     let tmp_names = names.value[comment_index]
-    for (let j=0; j<replys_length; j++){
-        let reply_to_floor = tmp_reply_ids.indexOf(replys_more[j].reply_to)+1
+    for (let j = 0; j < replys_length; j++) {
+        let reply_to_floor = tmp_reply_ids.indexOf(replys_more[j].reply_to) + 1
         replys_more[j].reply_to_floor = reply_to_floor
-        replys_more[j].reply_to_username = tmp_names[reply_to_floor-1]
+        replys_more[j].reply_to_username = tmp_names[reply_to_floor - 1]
         tmp_reply_ids.push(replys_more[j].id)
         tmp_names.push(replys_more[j].username)
     }
-    list.value[comment_index].replys = list.value[comment_index].replys.concat(replys_more)
-    console.log(list.value[comment_index])
-    // names.value.push(tmp_names)
-    // reply_ids.value.push(tmp_reply_ids)
+    commentsList.value[comment_index].replys = commentsList.value[comment_index].replys.concat(replys_more)
+    names.value[comment_index] = tmp_names
+    reply_ids.value[comment_index] = tmp_reply_ids
 }
 
+// 点击复制按钮
 const copy_comment = (content) => {
-    console.log(content)
+    console.log('content')
 }
 
+
+// 控制底部弹出框+剪贴板+agent
+const fromButton = ref(false)
+const preShowIndex = ref(-1)
+const bottomShowList = ref([false, false])
+
+const clipBoardList = ref(['1', '2', '34', '5', '6','7', '8'])
+const checkedClipBoard = ref([])
+const checkboxRefsClipBoard = ref([])
+const toggleClipBoard = (index) => {
+    checkboxRefsClipBoard.value[index].toggle()
+}
+const agentList = ref(['5', '6', '7', '8'])
+const checkedAgent = ref([])
+const checkboxRefsAgent = ref([])
+const toggleAgent = (index) => {
+    checkboxRefsAgent.value[index].toggle()
+}
+
+const bottomShow = (index) => {
+    if (preShowIndex.value == -1) {
+        bottomShowList.value[index] = true
+        preShowIndex.value = index
+    }
+    else if (preShowIndex.value == index) {
+        bottomShowList.value[index] = false
+        preShowIndex.value = -1
+    } else {
+        bottomShowList.value[preShowIndex.value] = false
+        bottomShowList.value[index] = true
+        preShowIndex.value = index
+    }    
+}
+
+onBeforeUpdate(() => {
+    checkboxRefsClipBoard.value = []
+    checkboxRefsAgent.value = []
+});
+
+
+// 获得最终comment内容
+const commentContent = ref('')
+const submitComment = () => {  // 发表评论
+    console.log(commentContent.value)
+    console.log(checkedClipBoard.value)
+    console.log(checkedAgent.value)
+
+    // 内容为空，点击无效
+    if (commentContent.value == ''){
+        return ''
+    }
+    
+    let agent_ = checkedAgent.value.join(',')
+    let clipboard_ = checkedClipBoard.value.join(',')
+    let commentContent_ = commentContent.value
+
+    let composedComment = agent_+'\n'+clipboard_+'\n'+commentContent_
+    
+    // 评论请求success，同时更新 names 和 reply_ids
+    if (commentContentPlaceHolder.value.index == -1) {  //一级评论
+        commentsList.value.push({
+            id: 'a4',
+            avatar: 'https://i2.hdslb.com/bfs/face/27ec942e8d4e6e024d3a9f11240d81a0aa90caca.jpg@60w_60h_1c.png',
+            username: '唐某人',
+            content: composedComment,
+            date: '08-05',
+            replys: [],
+        })
+        reply_ids.value.push([commentContentPlaceHolder.value.index + 'a4'])
+        names.value.push(['唐某人'])
+    }else{                                              // 评论的子评论
+        // let tmp_reply_ids = reply_ids.value[commentContentPlaceHolder.value.index]
+        // let tmp_names = names.value[commentContentPlaceHolder.value.index]
+        reply_ids.value[commentContentPlaceHolder.value.index].push(commentContentPlaceHolder.value.index + 'a4')
+        names.value[commentContentPlaceHolder.value.index].push('唐某人')
+        commentsList.value[commentContentPlaceHolder.value.index].replys.push({  
+            id: commentContentPlaceHolder.value.index + 'a4',
+            avatar: 'https://i2.hdslb.com/bfs/face/27ec942e8d4e6e024d3a9f11240d81a0aa90caca.jpg@60w_60h_1c.png',
+            username: '唐某人',
+            content: composedComment,
+            date: '08-05',
+            reply_to: commentContentPlaceHolder.value.comment.id,
+            reply_to_floor: commentContentPlaceHolder.value.level,
+            reply_to_username: commentContentPlaceHolder.value.comment.username
+        })
+    } 
+    // 回复成功，当前评论的一级评论的子评论数量+1
+    commentsList.value[commentContentPlaceHolder.value.index].reply_cnt += 1
+
+    // 清理 commentContentPlaceHolder，commentContent，
+    commentContentPlaceHolder.value = {
+        content: '说点什么...',
+        index: -1,
+        level: -1,
+        comment: {}
+    }
+    commentContent.value = ''
+    
+    // 重置 fromButton, preShowIndex, bottomShowList, checkedClipBoard, checkboxRefsClipBoard, checkedAgent, checkboxRefsAgent
+    fromButton.value = false
+    preShowIndex.value = -1
+    bottomShowList.value = [false, false]
+    checkedClipBoard.value = []
+    checkboxRefsClipBoard.value = []
+    checkedAgent.value = []
+    checkboxRefsAgent.value = []
+
+    
+}
+
+// 回复某个评论
+const commentContentPlaceHolder = ref({
+    content: '说点什么...',
+    index: -1,
+    level: -1,
+    comment: {}
+})
+
+const replyComment = (index, level, comment) => {
+    // level：第 level 楼
+    commentContentPlaceHolder.value = {
+        content: `回复 ${level}楼 ${comment.username}`,
+        level: level,
+        index: index,
+        comment: comment
+    }
+    console.log(commentContentPlaceHolder.value)
+}
+
+// 清除回复某个评论的 placeholder，直接成为一级评论
+const clearReplyTo = () => {
+    commentContentPlaceHolder.value = {
+        content: '说点什么...',
+        index: -1,
+        level: -1,
+        comment: {}
+    }
+}
 </script>
 
 
@@ -405,18 +646,18 @@ a {
     color: #333;
 }
 
-body,
-html {
-    font-size: 14px;
-    color: #333;
-    width: 100vw !important;
-    max-width: 100%;
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, Helvetica Neue, Arial, PingFang SC, PingFang TC, PingFang HK, Microsoft Yahei, Microsoft JhengHei;
-    margin: 0;
-    background-color: #fff;
-    -webkit-font-smoothing: antialiased;
-}
 
+// body,
+// html {
+//     font-size: 14px;
+//     color: #333;
+//     width: 100vw !important;
+//     max-width: 100%;
+//     font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, BlinkMacSystemFont, Helvetica Neue, Arial, PingFang SC, PingFang TC, PingFang HK, Microsoft Yahei, Microsoft JhengHei;
+//     margin: 0;
+//     background-color: #fff;
+//     -webkit-font-smoothing: antialiased;
+// }
 .author .follow[data-v-ebd8abd4] {
     display: flex;
     align-items: center;
@@ -464,7 +705,7 @@ html {
     font-size: 16px;
     line-height: 28px;
     color: #333;
-    white-space: pre-wrap;
+    // white-space: pre-wrap;
     overflow-wrap: break-word;
     // font-size: 13px;
     // line-height: 15px;
@@ -488,7 +729,8 @@ html {
 
 .comments-container[data-v-6b20f11f] {
     // padding: 20px 30px;
-    padding: 0px 30px;
+    // padding: 0px 20px;
+    padding: 0px 20px 50px 20px;
 }
 
 .total[data-v-6b20f11f] {
@@ -584,31 +826,34 @@ html {
     flex-grow: 1;
 }
 
-.interactions[data-v-11b921ce][data-v-d21d8bf9] {
-    flex-shrink: 0;
-    padding: 3vw 6vw 6vw;
-    height: 35.5vw;
-    border-top: 1px solid rgba(0, 0, 0, 0.08);
-    flex-basis: 32.5vw;
-    background-color: #fff;
-    z-index: 1;
-}
+// .interactions[data-v-11b921ce][data-v-d21d8bf9] {
+//     flex-shrink: 0;
+//     padding: 3vw 6vw 6vw;
+//     height: 35.5vw;
+//     border-top: 1px solid rgba(0, 0, 0, 0.08);
+//     flex-basis: 32.5vw;
+//     background-color: #fff;
+//     z-index: 1;
+// }
 
 
 .interactions[data-v-11b921ce] {
-    flex-shrink: 0;
-    padding: 12px 24px 24px;
-    height: 142px;
+    // flex-shrink: 0;
+    // padding: 12px 24px 24px;
+    // height: 142px;
     border-top: 1px solid rgba(0, 0, 0, 0.08);
     flex-basis: 130px;
     background-color: #fff;
     z-index: 1;
+    padding: 12px 12px 12px;
 }
 
 .interactions[data-v-11b921ce] {
-    position: -webkit-sticky;
-    position: sticky;
+    // position: -webkit-sticky;
+    // position: sticky;
     bottom: 0;
+    position: absolute;
+    width: 100%;
 }
 
 .buttons[data-v-36e1f3e7] {
@@ -666,11 +911,11 @@ html {
     font-size: 12px;
 }
 
-.reds-icon[data-v-7c2d5134] {
-    display: inline-block;
-    vertical-align: middle;
-    fill: currentColor;
-}
+// .reds-icon[data-v-7c2d5134] {
+//     display: inline-block;
+//     vertical-align: middle;
+//     fill: currentColor;
+// }
 
 .buttons[data-v-36e1f3e7] .count {
     margin-left: 6px;
@@ -688,15 +933,15 @@ html {
     color: #333;
 }
 
-.reds-icon[data-v-7c2d5134] {
+.reds-icon {
     display: inline-block;
     vertical-align: middle;
     fill: currentColor;
 }
 
-.comment-comp[data-v-e223d0aa] {
-    margin-top: 20px;
-}
+// .comment-comp[data-v-e223d0aa] {
+//     margin-top: 20px;
+// }
 
 .comment-wrapper[data-v-e6930618] {
     display: flex;
@@ -764,39 +1009,28 @@ html {
 }
 
 .input-buttons[data-v-e6930618] {
-    position: absolute;
+    // position: absolute;
     right: 0;
     top: 0;
     height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 92px;
+    // width: 92px;
     color: rgba(51, 51, 51, 0.3);
 }
 
-.input-buttons .reds-icon[data-v-e6930618] {
-    margin: 0 6px;
-    cursor: pointer;
-    transition: all .2s;
-}
 
-.reds-icon[data-v-7c2d5134] {
+.reds-icon {
     display: inline-block;
     vertical-align: middle;
     fill: currentColor;
 }
 
-.input-buttons .reds-icon[data-v-e6930618] {
+.input-buttons .reds-icon {
     margin: 0 6px;
     cursor: pointer;
     transition: all .2s;
-}
-
-.reds-icon[data-v-7c2d5134] {
-    display: inline-block;
-    vertical-align: middle;
-    fill: currentColor;
 }
 
 .submit[data-v-e6930618] {
@@ -839,12 +1073,6 @@ button {
     top: 0;
     margin: 12px;
     z-index: 5;
-}
-
-.reds-icon[data-v-7c2d5134] {
-    display: inline-block;
-    vertical-align: middle;
-    fill: currentColor;
 }
 
 .note-content-emoji {
@@ -1016,13 +1244,34 @@ img {
     transition: none;
 }
 
-.note-container[data-v-70c71a67] {
-    display: flex;
-    border: 1px solid var(--color-border);
-    box-shadow: var(--elevation-note-shadow);
-    border-radius: 20px;
-    background: var(--elevation-note-background);
-    transform-origin: left top;
+// .note-container[data-v-70c71a67] {
+//     display: flex;
+//     border: 1px solid var(--color-border);
+//     box-shadow: var(--elevation-note-shadow);
+//     border-radius: 20px;
+//     background: var(--elevation-note-background);
+//     transform-origin: left top;
+// }
+
+/* 添加这段样式后，Primary Button 会变成红色 */
+// :root:root {
+//     --van-popup-round-radius: 2px;
+// }
+
+.van-text-ellipsis /deep/ .van-text-ellipsis__action {
+    cursor: pointer;
+    color: rgb(19, 56, 108);
 }
+.van-cell:not(:last-child)::after {
+-webkit-transform: scaleY(1);
+transform: scaleY(1);
+top: 0;
+}
+
+// .van-text-ellipsis {
+//     line-height: var(--van-text-ellipsis-line-height);
+//     // white-space: pre-wrap;
+//     word-break: break-word;
+// }
 </style>
 

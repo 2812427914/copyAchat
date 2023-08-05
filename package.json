@@ -20,6 +20,8 @@
     "mockjs": "^1.1.0",
     "postcss-px-to-viewport": "^1.1.1",
     "vue": "^3.3.4",
+    "vue-ellipsis-3": "^0.0.6",
+    "vue-ellipsis-component": "^1.0.6",
     "vue-router": "^4.2.4",
     "vuex": "^4.1.0"
   },

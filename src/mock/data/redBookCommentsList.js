@@ -3,7 +3,7 @@ export default [
     id: '01',
     avatar: 'https://i1.hdslb.com/bfs/face/bb856d0bed8ef8abc0544fd5bd86da4cedf62a04.jpg@60w_60h_1c.png',
     username: '峰岛达裕',
-    content: '太强了吧，质量好高啊~',
+    content: '我刚进组第一次作报告，讲话习惯以“I think……”开头。结果没说两句就被打断，荷兰叔一副忍无可忍的样子。告诉我，你不需要“认为”，你只需要“定义”，“量化”，“推导”和“证明”。自此之后我便开始了长达半年的“逻辑炼狱”生活。开会随时会被底下人打断，他们总是那么自然而然地问出，诸如“how do you define”，或者“how do you prove”之类问题。',
     date: '12-15',
     comment_to: 1324,
     reply_cnt: 2,
@@ -12,7 +12,7 @@ export default [
         id: 'a1',
         avatar: 'https://i0.hdslb.com/bfs/face/7dad2615a4e8fef238d9b8000593a529fbcc0b90.jpg@60w_60h_1c.png',
         username: '黑狌白鸾',
-        content: '鲁迅说过，如果你有一个苹果，我有一个苹果，我们交换，一人还是一个苹果，如果你有一个网站，我有一个网站，我们交换那我们双方就有两个网站',
+        content: '20多年前，我硕士刚毕业，进了AMSL的算法组，在埃因霍温总部。组长是位荷兰大叔，他一周为ASML工作4天，剩下1天在自己的实验室做研究。此外大叔还是某权威期刊的主编，工作起来基本就是审论文的范。我刚进组第一次作报告，讲话习惯以“I think……”开头。结果没说两句就被打断，荷兰叔一副忍无可忍的样子。告诉我，你不需要“认为”，你只需要“定义”，“量化”，“推导”和“证明”。自此之后我便开始了长达半年的“逻辑炼狱”生活。开会随时会被底下人打断，他们总是那么自然而然地问出，诸如“how do you define”，或者“how do you prove”之类问题。',
         date: '12-15',
         reply_to: '01'
       }

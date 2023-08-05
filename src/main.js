@@ -13,13 +13,15 @@
 // createApp(App).mount('#app')
 
 import { createApp } from "vue";
-import { Tab, Tabs, Swipe, SwipeItem, Sticky, Field, CellGroup} from "vant";
+import { Col, Row, Toast, ConfigProvider,Checkbox, Button,  CheckboxGroup,Tab,List, Tabs, Swipe,TextEllipsis, SwipeItem, Sticky, Field, CellGroup,Cell, Popup} from "vant";
 import App from "./App.vue";
 import router from "./router";
 import 'vant/lib/index.css'
 import "@/assets/styles/base.less";
 import "@/assets/styles/iconfont.less";
 import "@/mock/index.js";
+import VueEllipsis3 from 'vue-ellipsis-3';
+
 // import TitleBar from '@/views/title-bar.vue'
 
 const app = createApp(App);
@@ -31,6 +33,18 @@ app.use(SwipeItem);
 app.use(Sticky);
 app.use(Field);
 app.use(CellGroup);
-
+app.use(Cell)
+app.use(Popup)
+app.use(TextEllipsis)
+app.use(VueEllipsis3)
 app.use(router);
+app.use(ConfigProvider);
+app.use(List);
+app.use(Checkbox);
+app.use(CheckboxGroup);
+app.use(Button);
+app.use(Col);
+app.use(Row);
+app.use(Toast);
+
 app.mount("#app");
