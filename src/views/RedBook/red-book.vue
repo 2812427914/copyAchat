@@ -80,7 +80,7 @@
                     </div>
                     <div data-v-6b20f11f="" data-v-11b921ce="" class="comments-el">
                         <div data-v-6b20f11f="" class="comments-container">
-                            <div data-v-6b20f11f="" class="total">共 {{ commentsList.length}} 条评论</div>
+                            <div data-v-6b20f11f="" class="total">共 {{ commentsList.length }} 条评论</div>
                             <div data-v-6b20f11f="" tag="div" name="list" class="list-container">
                                 <div data-v-67377e58="" data-v-6b20f11f="" class="comment-item"
                                     v-for="(item, index) in commentsList" :key="item.id">
@@ -104,19 +104,21 @@
                                                         <span data-v-67377e58="" style="margin-right: 4px;"
                                                             @click="copy_comment(index, item.content)">复制</span>
 
-                                                        <svg @click="replyComment(index, 1, item)" data-v-7c2d5134="" data-v-67377e58="" style = "margin-left: 8px"
+                                                        <svg @click="replyComment(index, 1, item)" data-v-7c2d5134=""
+                                                            data-v-67377e58="" style="margin-left: 8px"
                                                             class="reds-icon reply-icon" width="16" height="16">
                                                             <use data-v-7c2d5134="" xlink:href="#reply"></use>
                                                         </svg>
-                                                        <span data-v-67377e58="" class="count">{{ item.reply_cnt}}
+                                                        <span data-v-67377e58="" class="count">{{ item.reply_cnt }}
                                                         </span>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div data-v-67377e58="" class="content">
                                                 <!-- {{ item.content }} -->
-                                                <van-text-ellipsis style="white-space: normal;" rows="5" :content="item.content" expand-text="展开"
-                                                    collapse-text="收起" position="middle" />
+                                                <van-text-ellipsis style="white-space: normal;" rows="5"
+                                                    :content="item.content" expand-text="展开" collapse-text="收起"
+                                                    position="middle" />
                                                 <!-- <vue-ellipsis-3
                                                 :visible-line="1"
                                                 use-inner-html
@@ -192,9 +194,10 @@
                                                                                 style="margin-right: 4px;"
                                                                                 @click="copy_comment(comment_reply)">复制</span>
 
-                                                                            <svg @click="replyComment(index, idx+2, comment_reply)" data-v-7c2d5134="" data-v-67377e58=""
+                                                                            <svg @click="replyComment(index, idx + 2, comment_reply)"
+                                                                                data-v-7c2d5134="" data-v-67377e58=""
                                                                                 class="reds-icon reply-icon" width="16"
-                                                                                height="16"  style = "margin-left: 8px">
+                                                                                height="16" style="margin-left: 8px">
                                                                                 <use data-v-7c2d5134="" xlink:href="#reply">
                                                                                 </use>
                                                                             </svg>
@@ -209,8 +212,7 @@
                                                                    
                                                                 </div> -->
                                                                 <van-text-ellipsis data-v-67377e58="" class="content"
-                                                                    style="white-space: normal;"
-                                                                    rows="5"
+                                                                    style="white-space: normal;" rows="5"
                                                                     :content="'回复 ' + comment_reply.reply_to_floor + '楼 ' + comment_reply.reply_to_username + ': ' + comment_reply.content"
                                                                     expand-text="展开" collapse-text="收起" position="middle">
                                                                 </van-text-ellipsis>
@@ -266,26 +268,25 @@
                         </div>
                     </div>
                 </div>
-                    <van-popup v-model:show="fromButton" position="bottom" :style="{ height: preShowIndex!=-1 ? '50%' : ''  }">
+                <van-popup v-model:show="fromButton" position="bottom" :style="{ height: preShowIndex != -1 ? '50%' : '' }">
                     <!-- <van-popup v-model:show="fromButton" position="bottom"> -->
-                        <template #default>
-                            <!-- <van-cell-group> -->
-                                <van-field :border="false" v-model="commentContent" :placeholder=commentContentPlaceHolder.content type="textarea" rows="3"/>
-                                <van-row style="padding-bottom:12px;">
-                                <van-col span="12">
-                                    <svg @click="bottomShow(0)" class="reds-icon" width="24" height="24"
-                                        :style="{'margin-left': '12px', 'color': preShowIndex == 0 ? '#13386c' : '#969799'}">
-                                        <use data-v-7c2d5134="" xlink:href="#chat"></use>
-                                    </svg>
-                                    <svg @click="bottomShow(1)" class="reds-icon" width="24" height="24"
-                                    :style="{'margin-left': '12px', 'color': preShowIndex == 1 ? '#13386c' : '#969799'}">
-                                        <use data-v-7c2d5134="" xlink:href="#mention"></use>
-                                    </svg>
-                                </van-col>
-                                <van-col span="12">    
-                                    <div  
-                                    @click="submitComment"
-                                    style="
+                    <template #default>
+                        <!-- <van-cell-group> -->
+                        <van-field @keydown.native="Keydown" :border="false" v-model="commentContent" :placeholder=commentContentPlaceHolder.content
+                            type="textarea" rows="3" />
+                        <van-row style="padding-bottom:12px;">
+                            <van-col span="12">
+                                <svg @click="bottomShow(0)" class="reds-icon" width="24" height="24"
+                                    :style="{ 'margin-left': '12px', 'color': preShowIndex == 0 ? '#13386c' : '#969799' }">
+                                    <use data-v-7c2d5134="" xlink:href="#chat"></use>
+                                </svg>
+                                <svg @click="bottomShow(1)" class="reds-icon" width="24" height="24"
+                                    :style="{ 'margin-left': '12px', 'color': preShowIndex == 1 ? '#13386c' : '#969799' }">
+                                    <use data-v-7c2d5134="" xlink:href="#mention"></use>
+                                </svg>
+                            </van-col>
+                            <van-col span="12">
+                                <div @click="submitComment" style="
                                     background-color: #408af2;
                                     font-size: 14px;
                                     position: absolute;
@@ -296,60 +297,61 @@
                                     padding-bottom: 3px;
                                     padding-left: 18px;
                                     padding-right: 18px;">发送</div>
-                                </van-col>
-                            </van-row>
-                            <!-- </van-cell-group> -->
-                            <!-- <van-field v-model="commentContent" placeholder="说点什么..." type="textarea" rows="3" boder="{{ false }}"/> -->
-                            
-                            <van-checkbox-group v-if="bottomShowList[0]" v-model="checkedClipBoard" >
-                                <van-cell-group >
-                                    <van-cell v-for="(item, idx) in clipBoardList" clickable :key="item"
-                                        @click="toggleClipBoard(idx)" >
-                                        <template #title>
-                                            <div>
-                                                <van-text-ellipsis :content="item" />
-                                            </div>
+                            </van-col>
+                        </van-row>
+                        <!-- </van-cell-group> -->
+                        <!-- <van-field v-model="commentContent" placeholder="说点什么..." type="textarea" rows="3" boder="{{ false }}"/> -->
 
-                                        </template>
-                                        <template #right-icon>
-                                            <van-checkbox :name="item" :ref="el => checkboxRefsClipBoard[idx] = el"
-                                                @click.stop />
-                                        </template>
-                                    </van-cell>
-                                </van-cell-group>
-                            </van-checkbox-group>
-                            <van-checkbox-group v-if="bottomShowList[1]" v-model="checkedAgent">
-                                <van-cell-group>
-                                    <van-cell v-for="(item, idx) in agentList" clickable :key="item" :title="`复选框 ${item}`"
-                                        @click="toggleAgent(idx)">
-                                        <template #right-icon>
-                                            <van-checkbox :name="item" :ref="el => checkboxRefsAgent[idx] = el"
-                                                @click.stop />
-                                        </template>
-                                    </van-cell>
-                                </van-cell-group>
-                            </van-checkbox-group>
-                        </template>
-                    </van-popup>
+                        <van-checkbox-group v-if="bottomShowList[0]" v-model="checkedClipBoard">
+                            <van-cell-group>
+                                <van-cell v-for="(item, idx) in clipBoardList" clickable :key="item"
+                                    @click="toggleClipBoard(idx)">
+                                    <template #title>
+                                        <div>
+                                            <van-text-ellipsis :content="item" />
+                                        </div>
+
+                                    </template>
+                                    <template #right-icon>
+                                        <van-checkbox :name="item" :ref="el => checkboxRefsClipBoard[idx] = el"
+                                            @click.stop />
+                                    </template>
+                                </van-cell>
+                            </van-cell-group>
+                        </van-checkbox-group>
+                        <van-checkbox-group v-if="bottomShowList[1]" v-model="checkedAgent">
+                            <van-cell-group>
+                                <!-- <van-cell v-for="(item, idx) in agentList" clickable :key="item" :title="`复选框 ${item}`" -->
+                                    <van-cell v-for="(item, idx) in agentList" clickable :key="item" :title="item.role + ':' +item.content"
+                                    @click="toggleAgent(idx)">
+                                    <template #right-icon>
+                                        <van-checkbox :name="idx" :ref="el => checkboxRefsAgent[idx] = el" @click.stop />
+                                    </template>
+                                </van-cell>
+                            </van-cell-group>
+                        </van-checkbox-group>
+                    </template>
+                </van-popup>
 
                 <div data-v-11b921ce="" class="interactions">
-                    <van-field style="background-color: rgba(0, 0, 0, 0.03); border-radius: 22px;" v-model="commentContent"
+                    <van-field @keydown.native="Keydown" ref="commentField" style="background-color: rgba(0, 0, 0, 0.03); border-radius: 22px;" v-model="commentContent"
                         :placeholder=commentContentPlaceHolder.content>
                         <template #right-icon>
                             <svg @click="clearReplyTo" class="reds-icon" width="24" height="24" style="margin-left: 8px;">
-                                <use  xlink:href="#chat"></use>
+                                <use xlink:href="#chat"></use>
                             </svg>
-                            <svg @click="submitComment()" class="reds-icon" width="24" height="24" style="margin-left: 8px;">
-                                <use  xlink:href="#chat"></use>
+                            <svg @click="submitComment()" class="reds-icon" width="24" height="24"
+                                style="margin-left: 8px;">
+                                <use xlink:href="#chat"></use>
                             </svg>
-                            <svg @click="fromButton=true ; bottomShow(1)" class="reds-icon" width="24" height="24">
-                                <use  xlink:href="#mention"></use>
+                            <svg @click="fromButton = true; bottomShow(1)" class="reds-icon" width="24" height="24">
+                                <use xlink:href="#mention"></use>
                             </svg>
-                            
+
                         </template>
-                        
+
                     </van-field>
-                    
+
                     <!-- <div  data-v-e6930618="" data-v-e223d0aa="" data-v-11b921ce="" class="comment-wrapper comment-comp">
 
                         <div  data-v-e6930618="" class="mention-select-container close"></div>
@@ -373,6 +375,14 @@
 <script setup>
 import { ref, onMounted, onBeforeUpdate } from 'vue'
 import { getRedBookCommentsList, getCommentsReplyList } from "@/api/index";
+import {Configuration, OpenAIApi} from 'openai'
+
+const configuration = new Configuration({
+    apiKey: 'sk-8ElYpCJqbbfjvu83TsIpKeUIuqhcc9COSrJgD4rxpzM6dHe3',
+    basePath: 'https://api.chatanywhere.com.cn',
+})
+
+const openai = new OpenAIApi(configuration)
 
 // 标题和描述
 const title = ref('其实参加酒局多了，都差不多')
@@ -413,9 +423,20 @@ const getCommentsList = async () => {
 //     getCommentsList();
 // });
 
-onMounted( () => {
+
+// 声明一个 ref 来存放该元素的引用
+// 必须和模板里的 ref 同名
+const commentField = ref(null)
+onMounted(() => {
     getCommentsList()
+    commentField.value.focus()
 });
+// mounted (() => {
+//     this.$refs.commentField.focus()
+// })
+// mounted() {
+//     this.$refs.checkbox.toggle();
+//   }
 
 // 下拉刷新commentList：pagenation
 // getCommentsList()
@@ -450,13 +471,17 @@ const fromButton = ref(false)
 const preShowIndex = ref(-1)
 const bottomShowList = ref([false, false])
 
-const clipBoardList = ref(['1', '2', '34', '5', '6','7', '8'])
+const clipBoardList = ref(['1', '2', '34', '5', '6', '7', '8'])
 const checkedClipBoard = ref([])
 const checkboxRefsClipBoard = ref([])
 const toggleClipBoard = (index) => {
     checkboxRefsClipBoard.value[index].toggle()
 }
-const agentList = ref(['5', '6', '7', '8'])
+const agentList = ref([
+    {'role': '小明', 'content': '你叫小明，你是一个非常有帮助的助手'},
+    {'role': 'python专家', 'content': '你叫python专家，你是一个python编程专家'},
+])
+// const agentList = ref(['5', '6', '7', '8'])
 const checkedAgent = ref([])
 const checkboxRefsAgent = ref([])
 const toggleAgent = (index) => {
@@ -475,7 +500,7 @@ const bottomShow = (index) => {
         bottomShowList.value[preShowIndex.value] = false
         bottomShowList.value[index] = true
         preShowIndex.value = index
-    }    
+    }
 }
 
 onBeforeUpdate(() => {
@@ -483,102 +508,284 @@ onBeforeUpdate(() => {
     checkboxRefsAgent.value = []
 });
 
+// Enter 发送，shift-Enter 换行
+ const Keydown = (e) => {
+    if (!e.shiftKey && e.keyCode == 13) {
+        e.cancelBubble = true; //ie阻止冒泡行为
+    e.stopPropagation();//Firefox阻止冒泡行为
+    e.preventDefault(); //取消事件的默认动作*换行
+    //以下处理发送消息代码
+    // onSendMsg();
+    console.log('回车发送消息', this.textarea);
+    }
+}
 
 // 获得最终comment内容
 const commentContent = ref('')
 const submitComment = () => {  // 发表评论
-    console.log(commentContent.value)
-    console.log(checkedClipBoard.value)
+    // console.log(commentContent.value)
+    // console.log(checkedClipBoard.value)
     console.log(checkedAgent.value)
+    // return
 
     // 内容为空，点击无效
-    if (commentContent.value == ''){
+    if (commentContent.value == '') {
         return ''
     }
-    
-    let agent_ = checkedAgent.value.join(',')
+
+    let prefix = '@'
+    let agentRole = checkedAgent.value.map(item => prefix+agentList.value[item]['role'])
+    // console.log(agentRole)
+    agentRole = agentRole.join('->')
+    // console.log(agentRole)
+    // return 
     let clipboard_ = checkedClipBoard.value.join(',')
     let commentContent_ = commentContent.value
+    let composedComment =  agentRole + '\n' + clipboard_ + '\n' + commentContent_
 
-    let composedComment = agent_+'\n'+clipboard_+'\n'+commentContent_
-    
-    // 评论请求success，同时更新 names 和 reply_ids
+    // 评论上传数据库，请求success，同时更新 names 和 reply_ids
     if (commentContentPlaceHolder.value.index == -1) {  //一级评论
         commentsList.value.push({
             id: 'a4',
             avatar: 'https://i2.hdslb.com/bfs/face/27ec942e8d4e6e024d3a9f11240d81a0aa90caca.jpg@60w_60h_1c.png',
             username: '唐某人',
             content: composedComment,
-            date: '08-05',
+            date: '08-06',
+            reply_cnt: 0,
+            cue_who: checkedAgent.value.map(item => agentList.value[item]['role']),
+            replay_to_floor: -1,
+            reply_to_username: '-1',
             replys: [],
         })
         reply_ids.value.push([commentContentPlaceHolder.value.index + 'a4'])
         names.value.push(['唐某人'])
-    }else{                                              // 评论的子评论
+    } else {                                              // 评论的子评论
         // let tmp_reply_ids = reply_ids.value[commentContentPlaceHolder.value.index]
         // let tmp_names = names.value[commentContentPlaceHolder.value.index]
         reply_ids.value[commentContentPlaceHolder.value.index].push(commentContentPlaceHolder.value.index + 'a4')
         names.value[commentContentPlaceHolder.value.index].push('唐某人')
-        commentsList.value[commentContentPlaceHolder.value.index].replys.push({  
+        commentsList.value[commentContentPlaceHolder.value.index].replys.push({
             id: commentContentPlaceHolder.value.index + 'a4',
             avatar: 'https://i2.hdslb.com/bfs/face/27ec942e8d4e6e024d3a9f11240d81a0aa90caca.jpg@60w_60h_1c.png',
             username: '唐某人',
             content: composedComment,
-            date: '08-05',
+            date: '08-06',
             reply_to: commentContentPlaceHolder.value.comment.id,
-            reply_to_floor: commentContentPlaceHolder.value.level,
+            cue_who: checkedAgent.value.map(item => agentList.value[item]['role']),
+            reply_to_floor: commentContentPlaceHolder.value.floor,
             reply_to_username: commentContentPlaceHolder.value.comment.username
         })
-    } 
-    // 回复成功，当前评论的一级评论的子评论数量+1
-    commentsList.value[commentContentPlaceHolder.value.index].reply_cnt += 1
 
-    // 清理 commentContentPlaceHolder，commentContent，
-    commentContentPlaceHolder.value = {
-        content: '说点什么...',
-        index: -1,
-        level: -1,
-        comment: {}
+        // 回复成功，当前评论的一级评论的子评论数量+1
+        commentsList.value[commentContentPlaceHolder.value.index].reply_cnt += 1
+
     }
-    commentContent.value = ''
+
+    let agentContent = checkedAgent.value.map(item => agentList.value[item]['content']) 
+    if (checkedAgent.value.length == 0 && agentList.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)){
+        for (let i = 0; i<agentList.value.length; i++){
+            if (commentContentPlaceHolder.value.comment.username == agentList.value[i]['role']){
+                agentContent = [agentList.value[i]['content']]
+            }
+        }
+        
+    }
+    const messages = ref([
+            {"role": "system", "content": agentContent[0]+'\n'+description.value},
+            {"role": "user", "content": clipboard_ + '\n' + commentContent_},
+        ])
     
-    // 重置 fromButton, preShowIndex, bottomShowList, checkedClipBoard, checkboxRefsClipBoard, checkedAgent, checkboxRefsAgent
+    // 如果 @ 了agent，或者回复了agent的消息，需要agent做出回应
+    if (checkedAgent.value.length>=1 || agentList.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)){
+        llmResponse(messages)  
+    }else{
+        // 重置 commentContentPlaceHolder，checkedClipBoard, checkboxRefsClipBoard, checkedAgent, checkboxRefsAgent
+        checkedClipBoard.value = []
+        checkboxRefsClipBoard.value = []
+        checkedAgent.value = []
+        checkboxRefsAgent.value = []
+        commentContentPlaceHolder.value = {
+            content: '说点什么...',
+            index: -1,
+            floor: -1,
+            comment: {}
+        }
+    }
+    
+    // 清理 commentContent，
+    commentContent.value = ''
+
+    // 重置 fromButton, preShowIndex, bottomShowList
     fromButton.value = false
     preShowIndex.value = -1
     bottomShowList.value = [false, false]
-    checkedClipBoard.value = []
-    checkboxRefsClipBoard.value = []
-    checkedAgent.value = []
-    checkboxRefsAgent.value = []
-
-    
 }
 
-// 回复某个评论
+const decoder = new TextDecoder("utf-8");
+
+const readStream = async (
+  reader,
+  status
+) => {
+  let partialLine = "";
+
+  while (true) {
+    // eslint-disable-next-line no-await-in-loop
+    const { value, done } = await reader.read();
+    if (done) break;
+
+    const decodedText = decoder.decode(value, { stream: true });
+
+    if (status !== 200) {
+      const json = JSON.parse(decodedText); // start with "data: "
+      const content = json.error.message ?? decodedText;
+      appendLastMessageContent(content);
+      console.log(message.value)
+      return;
+    }
+
+    const chunk = partialLine + decodedText;
+    const newLines = chunk.split(/\r?\n/);
+
+    partialLine = newLines.pop() ?? "";
+
+    for (const line of newLines) {
+      if (line.length === 0) continue; // ignore empty message
+      if (line.startsWith(":")) continue; // ignore sse comment message
+      if (line === "data: [DONE]") return; //
+
+      const json = JSON.parse(line.substring(6)); // start with "data: "
+      const content =
+        status === 200
+          ? json.choices[0].delta.content ?? ""
+          : json.error.message;
+      appendLastMessageContent(content);
+      console.log(message.value)
+    }
+  }
+};
+
+const appendLastMessageContent = (content) =>
+  (message.value[message.value.length - 1].content += content);
+
+// agent 回复
+const llmResponse = async (messages) => {
+    if (checkedAgent.value.length>1){
+        // alert
+        console.log('目前仅支持同时@一个agent')
+        return 
+    }
+    // const apiKey = 'sk-8ElYpCJqbbfjvu83TsIpKeUIuqhcc9COSrJgD4rxpzM6dHe3'
+    // const result = await fetch("https://api.chatanywhere.com.cn/v1/chat/completions", {
+    //     method: "post",
+    //     // signal: AbortSignal.timeout(8000),
+    //     // 开启后到达设定时间会中断流式输出
+    //     headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Bearer ${apiKey}`,
+    //     },
+    //     body: JSON.stringify({
+    //     model: "gpt-3.5-turbo",
+    //     stream: true,
+    //     messages: messages,
+    //     }),
+    // });
+
+    // const { body, status } = result
+    // if (body) {
+    //   const reader = body.getReader();
+    //   await readStream(reader, status);
+    // }
+
+
+    const llmResponse_ = await openai.createChatCompletion({
+        model: 'gpt-3.5-turbo',
+        messages: messages,
+        stream: true   //流式响应
+    })
+
+    console.log(llmResponse_)
+
+
+    // // 如果是@agent回复新建的一级评论
+    // let index = commentsList.value.length-1
+    // let username = checkedAgent.value.length>=1 ? agentList.value[checkedAgent.value[0]]['role'] : commentContentPlaceHolder.value.comment.username
+    // let reply_id = 'a5'
+    // let reply_to = commentsList.value[index].id
+    // let reply_to_floor = 1
+    // let reply_to_username = commentsList.value[index].username
+
+    // if (commentContentPlaceHolder.value.index != -1){  // @agent 二级评论
+    //     index = commentContentPlaceHolder.value.index
+    //     reply_id = index+'a5'
+    //     let replys = commentsList.value[index].replys
+    //     reply_to = replys[replys.length-1].id,
+    //     reply_to_floor = replys.length+1
+    //     reply_to_username = replys[replys.length-1].username
+    // }
+
+    // reply_ids.value[index].push(reply_id)
+    // names.value[index].push(username)
+    // commentsList.value[index].replys.push({
+    //     id: reply_id,
+    //     avatar: 'https://i1.hdslb.com/bfs/face/7f3605a11f54e5ac1719e7877c641a19da137d32.jpg@60w_60h_1c.png',
+    //     username: username,
+    //     content: llmResponse_.data.choices[0].message.content,
+    //     date: '08-06',
+    //     reply_to: reply_to,
+    //     cue_who: [],
+    //     reply_to_floor: reply_to_floor,
+    //     reply_to_username: reply_to_username
+    // })
+
+    // // 回复成功，当前评论的一级评论的子评论数量+1
+    // commentsList.value[index].reply_cnt += 1
+
+    // // 重置 commentContentPlaceHolder，checkedClipBoard, checkboxRefsClipBoard, checkedAgent, checkboxRefsAgent
+    // checkedClipBoard.value = []
+    // checkboxRefsClipBoard.value = []
+    // checkedAgent.value = []
+    // checkboxRefsAgent.value = []
+    // commentContentPlaceHolder.value = {
+    //     content: '说点什么...',
+    //     index: -1,
+    //     floor: -1,
+    //     comment: {}
+    // }
+
+    // // 回复成功后默认继续回复agent的当前回复
+    // let agentFloor = reply_to_floor+1 // commentsList.value[index].replys.length+1
+    // console.log('default replyComment after agent reply to user', agentFloor, commentsList.value[index].replys[agentFloor-2])
+    // replyComment(index, agentFloor, commentsList.value[index].replys[agentFloor-2])
+}
+
+
+
+// 回复某个评论按钮
 const commentContentPlaceHolder = ref({
     content: '说点什么...',
     index: -1,
-    level: -1,
+    floor: -1,
     comment: {}
 })
-
-const replyComment = (index, level, comment) => {
-    // level：第 level 楼
+const replyComment = (index, floor, comment) => {
+    // floor：第 floor 楼
     commentContentPlaceHolder.value = {
-        content: `回复 ${level}楼 ${comment.username}`,
-        level: level,
+        content: `回复 ${floor}楼 ${comment.username}`,
+        floor: floor,
         index: index,
         comment: comment
     }
+    commentField.value.focus()  //聚焦到输入框
     console.log(commentContentPlaceHolder.value)
 }
 
-// 清除回复某个评论的 placeholder，直接成为一级评论
+// 清除commentContentPlaceHolder按钮， 清除回复某个评论的 placeholder，直接成为一级评论
 const clearReplyTo = () => {
     commentContentPlaceHolder.value = {
         content: '说点什么...',
         index: -1,
-        level: -1,
+        floor: -1,
         comment: {}
     }
 }
@@ -730,7 +937,7 @@ a {
 .comments-container[data-v-6b20f11f] {
     // padding: 20px 30px;
     // padding: 0px 20px;
-    padding: 0px 20px 50px 20px;
+    padding: 0px 20px 70px 20px;
 }
 
 .total[data-v-6b20f11f] {
@@ -1262,10 +1469,11 @@ img {
     cursor: pointer;
     color: rgb(19, 56, 108);
 }
+
 .van-cell:not(:last-child)::after {
--webkit-transform: scaleY(1);
-transform: scaleY(1);
-top: 0;
+    -webkit-transform: scaleY(1);
+    transform: scaleY(1);
+    top: 0;
 }
 
 // .van-text-ellipsis {
