@@ -268,11 +268,11 @@
                         </div>
                     </div>
                 </div>
-                <van-popup v-model:show="fromButton" position="bottom" :style="{ height: preShowIndex != -1 ? '50%' : '' }">
+                <van-popup @keydown.enter.native="submitComment" v-model:show="fromButton" position="bottom" :style="{ height: preShowIndex != -1 ? '50%' : '' }">
                     <!-- <van-popup v-model:show="fromButton" position="bottom"> -->
                     <template #default>
                         <!-- <van-cell-group> -->
-                        <van-field @keydown.native="Keydown" :border="false" v-model="commentContent" :placeholder=commentContentPlaceHolder.content
+                        <van-field :border="false" v-model="commentContent" :placeholder=commentContentPlaceHolder.content
                             type="textarea" rows="3" />
                         <van-row style="padding-bottom:12px;">
                             <van-col span="12">
@@ -334,7 +334,7 @@
                 </van-popup>
 
                 <div data-v-11b921ce="" class="interactions">
-                    <van-field @keydown.native="Keydown" ref="commentField" style="background-color: rgba(0, 0, 0, 0.03); border-radius: 22px;" v-model="commentContent"
+                    <van-field @keydown.enter.native="submitComment" ref="commentField" style="background-color: rgba(0, 0, 0, 0.03); border-radius: 22px;" v-model="commentContent"
                         :placeholder=commentContentPlaceHolder.content>
                         <template #right-icon>
                             <svg @click="clearReplyTo" class="reds-icon" width="24" height="24" style="margin-left: 8px;">
@@ -508,17 +508,18 @@ onBeforeUpdate(() => {
     checkboxRefsAgent.value = []
 });
 
-// Enter 发送，shift-Enter 换行
- const Keydown = (e) => {
-    if (!e.shiftKey && e.keyCode == 13) {
-        e.cancelBubble = true; //ie阻止冒泡行为
-    e.stopPropagation();//Firefox阻止冒泡行为
-    e.preventDefault(); //取消事件的默认动作*换行
-    //以下处理发送消息代码
-    // onSendMsg();
-    console.log('回车发送消息', this.textarea);
-    }
-}
+// // Enter 发送，shift-Enter 换行
+//  const Keydown = (e) => {
+//     console.log('keydown')
+//     if (!e.shiftKey && e.keyCode == 13) {
+//         e.cancelBubble = true; //ie阻止冒泡行为
+//     e.stopPropagation();//Firefox阻止冒泡行为
+//     e.preventDefault(); //取消事件的默认动作*换行
+//     //以下处理发送消息代码
+//     // onSendMsg();
+//     console.log('回车发送消息', this.textarea);
+//     }
+// }
 
 // 获得最终comment内容
 const commentContent = ref('')
@@ -621,52 +622,52 @@ const submitComment = () => {  // 发表评论
     bottomShowList.value = [false, false]
 }
 
-const decoder = new TextDecoder("utf-8");
+// const decoder = new TextDecoder("utf-8");
 
-const readStream = async (
-  reader,
-  status
-) => {
-  let partialLine = "";
+// const readStream = async (
+//   reader,
+//   status
+// ) => {
+//   let partialLine = "";
 
-  while (true) {
-    // eslint-disable-next-line no-await-in-loop
-    const { value, done } = await reader.read();
-    if (done) break;
+//   while (true) {
+//     // eslint-disable-next-line no-await-in-loop
+//     const { value, done } = await reader.read();
+//     if (done) break;
 
-    const decodedText = decoder.decode(value, { stream: true });
+//     const decodedText = decoder.decode(value, { stream: true });
 
-    if (status !== 200) {
-      const json = JSON.parse(decodedText); // start with "data: "
-      const content = json.error.message ?? decodedText;
-      appendLastMessageContent(content);
-      console.log(message.value)
-      return;
-    }
+//     if (status !== 200) {
+//       const json = JSON.parse(decodedText); // start with "data: "
+//       const content = json.error.message ?? decodedText;
+//       appendLastMessageContent(content);
+//       console.log(message.value)
+//       return;
+//     }
 
-    const chunk = partialLine + decodedText;
-    const newLines = chunk.split(/\r?\n/);
+//     const chunk = partialLine + decodedText;
+//     const newLines = chunk.split(/\r?\n/);
 
-    partialLine = newLines.pop() ?? "";
+//     partialLine = newLines.pop() ?? "";
 
-    for (const line of newLines) {
-      if (line.length === 0) continue; // ignore empty message
-      if (line.startsWith(":")) continue; // ignore sse comment message
-      if (line === "data: [DONE]") return; //
+//     for (const line of newLines) {
+//       if (line.length === 0) continue; // ignore empty message
+//       if (line.startsWith(":")) continue; // ignore sse comment message
+//       if (line === "data: [DONE]") return; //
 
-      const json = JSON.parse(line.substring(6)); // start with "data: "
-      const content =
-        status === 200
-          ? json.choices[0].delta.content ?? ""
-          : json.error.message;
-      appendLastMessageContent(content);
-      console.log(message.value)
-    }
-  }
-};
+//       const json = JSON.parse(line.substring(6)); // start with "data: "
+//       const content =
+//         status === 200
+//           ? json.choices[0].delta.content ?? ""
+//           : json.error.message;
+//       appendLastMessageContent(content);
+//       console.log(message.value)
+//     }
+//   }
+// };
 
-const appendLastMessageContent = (content) =>
-  (message.value[message.value.length - 1].content += content);
+// const appendLastMessageContent = (content) =>
+//   (message.value[message.value.length - 1].content += content);
 
 // agent 回复
 const llmResponse = async (messages) => {
@@ -701,7 +702,7 @@ const llmResponse = async (messages) => {
     const llmResponse_ = await openai.createChatCompletion({
         model: 'gpt-3.5-turbo',
         messages: messages,
-        stream: true   //流式响应
+        // stream: true   //流式响应
     })
 
     console.log(llmResponse_)
