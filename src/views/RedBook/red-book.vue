@@ -216,6 +216,8 @@
                                                                     :content="'回复 ' + comment_reply.reply_to_floor + '楼 ' + comment_reply.reply_to_username + ': ' + comment_reply.content"
                                                                     expand-text="展开" collapse-text="收起" position="middle">
                                                                 </van-text-ellipsis>
+                                                                <!-- <div  v-if="comment_reply.content" v-html="md.render(comment_reply.content)">
+                                                                </div> -->
                                                                 <div data-v-67377e58="" class="labels"></div>
                                                                 <!-- <div data-v-67377e58="" class="info">
                                                                     <div data-v-67377e58="">
@@ -268,7 +270,8 @@
                         </div>
                     </div>
                 </div>
-                <van-popup @keydown.enter.native="submitComment" v-model:show="fromButton" position="bottom" :style="{ height: preShowIndex != -1 ? '50%' : '' }">
+                <van-popup @keydown.enter.native="submitComment" v-model:show="fromButton" position="bottom"
+                    :style="{ height: preShowIndex != -1 ? '50%' : '' }">
                     <!-- <van-popup v-model:show="fromButton" position="bottom"> -->
                     <template #default>
                         <!-- <van-cell-group> -->
@@ -322,8 +325,8 @@
                         <van-checkbox-group v-if="bottomShowList[1]" v-model="checkedAgent">
                             <van-cell-group>
                                 <!-- <van-cell v-for="(item, idx) in agentList" clickable :key="item" :title="`复选框 ${item}`" -->
-                                    <van-cell v-for="(item, idx) in agentList" clickable :key="item" :title="item.role + ':' +item.content"
-                                    @click="toggleAgent(idx)">
+                                <van-cell v-for="(item, idx) in agentList" clickable :key="item"
+                                    :title="item.role + ':' + item.content" @click="toggleAgent(idx)">
                                     <template #right-icon>
                                         <van-checkbox :name="idx" :ref="el => checkboxRefsAgent[idx] = el" @click.stop />
                                     </template>
@@ -334,7 +337,8 @@
                 </van-popup>
 
                 <div data-v-11b921ce="" class="interactions">
-                    <van-field @keydown.enter.native="submitComment" ref="commentField" style="background-color: rgba(0, 0, 0, 0.03); border-radius: 22px;" v-model="commentContent"
+                    <van-field type="textarea" autosize rows="1" @keydown.enter.native="submitComment" ref="commentField"
+                        style="background-color: rgba(0, 0, 0, 0.03); border-radius: 22px;" v-model="commentContent"
                         :placeholder=commentContentPlaceHolder.content>
                         <template #right-icon>
                             <svg @click="clearReplyTo" class="reds-icon" width="24" height="24" style="margin-left: 8px;">
@@ -375,11 +379,28 @@
 <script setup>
 import { ref, onMounted, onBeforeUpdate } from 'vue'
 import { getRedBookCommentsList, getCommentsReplyList } from "@/api/index";
-import {Configuration, OpenAIApi} from 'openai'
+import { Configuration, OpenAIApi } from 'openai'
+import { HuggingFaceInference } from "langchain/llms/hf";
+import { Replicate } from "langchain/llms/replicate";
+// import { md } from "@/views/RedBook/markdown";
+
+const huggingFaceInference = new HuggingFaceInference({
+    model: "gpt2",
+    apiKey: "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", // In Node.js defaults to process.env.HUGGINGFACEHUB_API_KEY
+});
+// const res = await model.call("1 + 1 =");
+// console.log({ res });
+
+
+// const replicate = new Replicate({
+//   model:
+//     "a16z-infra/llama13b-v2-chat:df7690f1994d94e96ad9d568eac121aecf50684a0b0963b25a41cc40061269e5",
+// });
+
 
 const configuration = new Configuration({
     apiKey: 'sk-8ElYpCJqbbfjvu83TsIpKeUIuqhcc9COSrJgD4rxpzM6dHe3',
-    basePath: 'https://api.chatanywhere.com.cn',
+    basePath: 'https://api.chatanywhere.cn',
 })
 
 const openai = new OpenAIApi(configuration)
@@ -478,8 +499,9 @@ const toggleClipBoard = (index) => {
     checkboxRefsClipBoard.value[index].toggle()
 }
 const agentList = ref([
-    {'role': '小明', 'content': '你叫小明，你是一个非常有帮助的助手'},
-    {'role': 'python专家', 'content': '你叫python专家，你是一个python编程专家'},
+    { 'role': 'alex', 'content': 'you are alex, a excellent agent.' },
+    { 'role': '小明', 'content': '你叫小明，你是一个非常有帮助的助手' },
+    { 'role': 'python专家', 'content': '你叫python专家，你是一个python编程专家' },
 ])
 // const agentList = ref(['5', '6', '7', '8'])
 const checkedAgent = ref([])
@@ -508,25 +530,13 @@ onBeforeUpdate(() => {
     checkboxRefsAgent.value = []
 });
 
-// // Enter 发送，shift-Enter 换行
-//  const Keydown = (e) => {
-//     console.log('keydown')
-//     if (!e.shiftKey && e.keyCode == 13) {
-//         e.cancelBubble = true; //ie阻止冒泡行为
-//     e.stopPropagation();//Firefox阻止冒泡行为
-//     e.preventDefault(); //取消事件的默认动作*换行
-//     //以下处理发送消息代码
-//     // onSendMsg();
-//     console.log('回车发送消息', this.textarea);
-//     }
-// }
-
+// 输入框回车激活submitComment
 // 获得最终comment内容
 const commentContent = ref('')
 const submitComment = () => {  // 发表评论
     // console.log(commentContent.value)
     // console.log(checkedClipBoard.value)
-    console.log(checkedAgent.value)
+    // console.log(checkedAgent.value)
     // return
 
     // 内容为空，点击无效
@@ -535,14 +545,14 @@ const submitComment = () => {  // 发表评论
     }
 
     let prefix = '@'
-    let agentRole = checkedAgent.value.map(item => prefix+agentList.value[item]['role'])
+    let agentRole = checkedAgent.value.map(item => prefix + agentList.value[item]['role'])
     // console.log(agentRole)
     agentRole = agentRole.join('->')
     // console.log(agentRole)
     // return 
     let clipboard_ = checkedClipBoard.value.join(',')
     let commentContent_ = commentContent.value
-    let composedComment =  agentRole + '\n' + clipboard_ + '\n' + commentContent_
+    let composedComment = agentRole + '\n' + clipboard_ + '\n' + commentContent_
 
     // 评论上传数据库，请求success，同时更新 names 和 reply_ids
     if (commentContentPlaceHolder.value.index == -1) {  //一级评论
@@ -582,24 +592,24 @@ const submitComment = () => {  // 发表评论
 
     }
 
-    let agentContent = checkedAgent.value.map(item => agentList.value[item]['content']) 
-    if (checkedAgent.value.length == 0 && agentList.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)){
-        for (let i = 0; i<agentList.value.length; i++){
-            if (commentContentPlaceHolder.value.comment.username == agentList.value[i]['role']){
+    let agentContent = checkedAgent.value.map(item => agentList.value[item]['content'])
+    if (checkedAgent.value.length == 0 && agentList.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
+        for (let i = 0; i < agentList.value.length; i++) {
+            if (commentContentPlaceHolder.value.comment.username == agentList.value[i]['role']) {
                 agentContent = [agentList.value[i]['content']]
             }
         }
-        
+
     }
     const messages = ref([
-            {"role": "system", "content": agentContent[0]+'\n'+description.value},
-            {"role": "user", "content": clipboard_ + '\n' + commentContent_},
-        ])
-    
+        { "role": "system", "content": agentContent[0] + '\n' + description.value },
+        { "role": "user", "content": clipboard_ + '\n' + commentContent_ },
+    ])
+
     // 如果 @ 了agent，或者回复了agent的消息，需要agent做出回应
-    if (checkedAgent.value.length>=1 || agentList.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)){
-        llmResponse(messages)  
-    }else{
+    if (checkedAgent.value.length >= 1 || agentList.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
+        llmResponse(messages)
+    } else {
         // 重置 commentContentPlaceHolder，checkedClipBoard, checkboxRefsClipBoard, checkedAgent, checkboxRefsAgent
         checkedClipBoard.value = []
         checkboxRefsClipBoard.value = []
@@ -612,7 +622,7 @@ const submitComment = () => {  // 发表评论
             comment: {}
         }
     }
-    
+
     // 清理 commentContent，
     commentContent.value = ''
 
@@ -671,10 +681,10 @@ const submitComment = () => {  // 发表评论
 
 // agent 回复
 const llmResponse = async (messages) => {
-    if (checkedAgent.value.length>1){
+    if (checkedAgent.value.length > 1) {
         // alert
         console.log('目前仅支持同时@一个agent')
-        return 
+        return
     }
     // const apiKey = 'sk-8ElYpCJqbbfjvu83TsIpKeUIuqhcc9COSrJgD4rxpzM6dHe3'
     // const result = await fetch("https://api.chatanywhere.com.cn/v1/chat/completions", {
@@ -699,65 +709,71 @@ const llmResponse = async (messages) => {
     // }
 
 
-    const llmResponse_ = await openai.createChatCompletion({
-        model: 'gpt-3.5-turbo',
-        messages: messages,
-        // stream: true   //流式响应
+    // const llmResponse_ = await openai.createChatCompletion({
+    //     model: 'gpt-3.5-turbo',
+    //     messages: messages,
+    //     // stream: true   //流式响应
+    // })
+    // let agentComment = llmResponse_.data.choices[0].message.content
+
+    // console.log(llmResponse_)
+
+    const res = await huggingFaceInference.call(messages.value[0].content);
+    // const res = await replicate.call(messages.value[0].content)
+
+    let agentComment = res
+
+
+    // 如果是@agent回复新建的一级评论
+    let index = commentsList.value.length - 1
+    let username = checkedAgent.value.length >= 1 ? agentList.value[checkedAgent.value[0]]['role'] : commentContentPlaceHolder.value.comment.username
+    let reply_id = 'a5'
+    let reply_to = commentsList.value[index].id
+    let reply_to_floor = 1
+    let reply_to_username = commentsList.value[index].username
+
+    if (commentContentPlaceHolder.value.index != -1) {  // @agent 二级评论
+        index = commentContentPlaceHolder.value.index
+        reply_id = index + 'a5'
+        let replys = commentsList.value[index].replys
+        reply_to = replys[replys.length - 1].id,
+            reply_to_floor = replys.length + 1
+        reply_to_username = replys[replys.length - 1].username
+    }
+
+    reply_ids.value[index].push(reply_id)
+    names.value[index].push(username)
+    commentsList.value[index].replys.push({
+        id: reply_id,
+        avatar: 'https://i1.hdslb.com/bfs/face/7f3605a11f54e5ac1719e7877c641a19da137d32.jpg@60w_60h_1c.png',
+        username: username,
+        content: agentComment, //llmResponse_.data.choices[0].message.content,
+        date: '08-06',
+        reply_to: reply_to,
+        cue_who: [],
+        reply_to_floor: reply_to_floor,
+        reply_to_username: reply_to_username
     })
 
-    console.log(llmResponse_)
+    // 回复成功，当前评论的一级评论的子评论数量+1
+    commentsList.value[index].reply_cnt += 1
 
+    // 重置 commentContentPlaceHolder，checkedClipBoard, checkboxRefsClipBoard, checkedAgent, checkboxRefsAgent
+    checkedClipBoard.value = []
+    checkboxRefsClipBoard.value = []
+    checkedAgent.value = []
+    checkboxRefsAgent.value = []
+    commentContentPlaceHolder.value = {
+        content: '说点什么...',
+        index: -1,
+        floor: -1,
+        comment: {}
+    }
 
-    // // 如果是@agent回复新建的一级评论
-    // let index = commentsList.value.length-1
-    // let username = checkedAgent.value.length>=1 ? agentList.value[checkedAgent.value[0]]['role'] : commentContentPlaceHolder.value.comment.username
-    // let reply_id = 'a5'
-    // let reply_to = commentsList.value[index].id
-    // let reply_to_floor = 1
-    // let reply_to_username = commentsList.value[index].username
-
-    // if (commentContentPlaceHolder.value.index != -1){  // @agent 二级评论
-    //     index = commentContentPlaceHolder.value.index
-    //     reply_id = index+'a5'
-    //     let replys = commentsList.value[index].replys
-    //     reply_to = replys[replys.length-1].id,
-    //     reply_to_floor = replys.length+1
-    //     reply_to_username = replys[replys.length-1].username
-    // }
-
-    // reply_ids.value[index].push(reply_id)
-    // names.value[index].push(username)
-    // commentsList.value[index].replys.push({
-    //     id: reply_id,
-    //     avatar: 'https://i1.hdslb.com/bfs/face/7f3605a11f54e5ac1719e7877c641a19da137d32.jpg@60w_60h_1c.png',
-    //     username: username,
-    //     content: llmResponse_.data.choices[0].message.content,
-    //     date: '08-06',
-    //     reply_to: reply_to,
-    //     cue_who: [],
-    //     reply_to_floor: reply_to_floor,
-    //     reply_to_username: reply_to_username
-    // })
-
-    // // 回复成功，当前评论的一级评论的子评论数量+1
-    // commentsList.value[index].reply_cnt += 1
-
-    // // 重置 commentContentPlaceHolder，checkedClipBoard, checkboxRefsClipBoard, checkedAgent, checkboxRefsAgent
-    // checkedClipBoard.value = []
-    // checkboxRefsClipBoard.value = []
-    // checkedAgent.value = []
-    // checkboxRefsAgent.value = []
-    // commentContentPlaceHolder.value = {
-    //     content: '说点什么...',
-    //     index: -1,
-    //     floor: -1,
-    //     comment: {}
-    // }
-
-    // // 回复成功后默认继续回复agent的当前回复
-    // let agentFloor = reply_to_floor+1 // commentsList.value[index].replys.length+1
-    // console.log('default replyComment after agent reply to user', agentFloor, commentsList.value[index].replys[agentFloor-2])
-    // replyComment(index, agentFloor, commentsList.value[index].replys[agentFloor-2])
+    // 回复成功后默认继续回复agent的当前回复
+    let agentFloor = reply_to_floor + 1 // commentsList.value[index].replys.length+1
+    console.log('default replyComment after agent reply to user', agentFloor, commentsList.value[index].replys[agentFloor - 2])
+    replyComment(index, agentFloor, commentsList.value[index].replys[agentFloor - 2])
 }
 
 
