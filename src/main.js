@@ -21,10 +21,29 @@ import "@/assets/styles/base.less";
 import "@/assets/styles/iconfont.less";
 import "@/mock/index.js";
 import VueEllipsis3 from 'vue-ellipsis-3';
+// 打开 main.js
+import Bmob from "hydrogen-js-sdk";
 
+
+// 初始化 SDK版本 2.0.0 以下保留之前的初始化方法
+Bmob.initialize("5f599fe64a4e2b0c", "tangzihangtangzi");
+
+// 项目其他页面使用跟小程序一样使用Bmob对象即可，例如：
+Bmob.User.login('zihangt','12345678').then(res => {
+    console.log('main.js 成功登陆')
+  }).catch(err => {
+   console.log(err)
+ });
+
+// 挂载到全局使用
+// Vue.prototype.Bmob = Bmob
 // import TitleBar from '@/views/title-bar.vue'
 
 const app = createApp(App);
+// app.use(Bmob)
+app.config.globalProperties.$Bmob = Bmob
+
+
 // 注册Vant组件
 app.use(Tab);
 app.use(Tabs);

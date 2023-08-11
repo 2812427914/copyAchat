@@ -337,7 +337,7 @@
                 </van-popup>
 
                 <div data-v-11b921ce="" class="interactions">
-                    <van-field type="textarea" autosize rows="1" @keydown.enter.native="submitComment" ref="commentField"
+                    <van-field  @keydown.enter.native="submitComment" ref="commentField"
                         style="background-color: rgba(0, 0, 0, 0.03); border-radius: 22px;" v-model="commentContent"
                         :placeholder=commentContentPlaceHolder.content>
                         <template #right-icon>
@@ -378,10 +378,57 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUpdate } from 'vue'
-import { getRedBookCommentsList, getCommentsReplyList } from "@/api/index";
+import {getCommentsReplyList } from "@/api/index";
 import { Configuration, OpenAIApi } from 'openai'
 import { HuggingFaceInference } from "langchain/llms/hf";
 import { Replicate } from "langchain/llms/replicate";
+
+// 获取 article 数据
+const getArticle = async () => {
+    let query = Bmob.Query('article');
+    let res = await query.get('372d6eb71a')
+    console.log('get Article', res)
+    title.value = res.title
+    description.value = res.description
+    // query.get('372d6eb71a').then(res => {
+    //     // console.log('getArticle', res.title)
+    //     return {"title": res.title, "description": res.description}
+    // }).catch(err => {
+    //     console.log(err)
+    // })
+}
+
+// 获取 一级评论 数据
+const getRedBookCommentsList = async () => {
+    let query = Bmob.Query('sub_comment')
+    query.equalTo("commentTo", "==", '372d6eb71a')
+    let res = await query.find()
+    
+    // const res = await query.get('372d6eb71a')
+    console.log('get subcomment', res)
+    return res
+    // title.value = res.title
+    // description.value = res.description
+    // query.get('372d6eb71a').then(res => {
+    //     // console.log('getArticle', res.title)
+    //     return {"title": res.title, "description": res.description}
+    // }).catch(err => {
+    //     console.log(err)
+    // })
+}
+
+// 新增一条评论
+const newComment = async (comment) => {
+    const query = Bmob.Query('sub_comment');
+    query.set("username",comment.username)
+    query.set("content",comment.content)
+    query.set("commentTo",comment.commentTo)
+    // query.set("cueWho", comment.cue_who)
+    const res = await query.save()
+    console.log('newComment')
+}
+
+
 // import { md } from "@/views/RedBook/markdown";
 
 const huggingFaceInference = new HuggingFaceInference({
@@ -398,12 +445,12 @@ const huggingFaceInference = new HuggingFaceInference({
 // });
 
 
-const configuration = new Configuration({
-    apiKey: 'sk-8ElYpCJqbbfjvu83TsIpKeUIuqhcc9COSrJgD4rxpzM6dHe3',
-    basePath: 'https://api.chatanywhere.cn',
-})
+// const configuration = new Configuration({
+//     apiKey: 'sk-8ElYpCJqbbfjvu83TsIpKeUIuqhcc9COSrJgD4rxpzM6dHe3',
+//     basePath: 'https://api.chatanywhere.cn',
+// })
 
-const openai = new OpenAIApi(configuration)
+// const openai = new OpenAIApi(configuration)
 
 // 标题和描述
 const title = ref('其实参加酒局多了，都差不多')
@@ -416,12 +463,18 @@ const names = ref([]);
 const reply_ids = ref([]);
 
 const getCommentsList = async () => {
-    const { data } = await getRedBookCommentsList();
-    let items = data.result.items
+    const data  = await getRedBookCommentsList();
+    console.log(data.length)
+    let items = data//.result.items
     // 给一级评论的子评论添加 reply_to_floor、reply_to_username
-    let comments_length = data.result.items.length;
+    // let comments_length = data.result.items.length;
+    let comments_length = data.length;
     for (let i = 0; i < comments_length; i++) {
-        let replys_length = data.result.items[i].replys.length;
+        if ('replys' in data[i]){
+            continue
+        }
+        let replys_length = data[i].replys.length;
+        // let replys_length = data.result.items[i].replys.length;
         let tmp_reply_ids = []
         let tmp_names = []
         let comment = data.result.items[i]
@@ -450,8 +503,10 @@ const getCommentsList = async () => {
 const commentField = ref(null)
 onMounted(() => {
     getCommentsList()
+    getArticle()
     commentField.value.focus()
 });
+
 // mounted (() => {
 //     this.$refs.commentField.focus()
 // })
@@ -553,9 +608,16 @@ const submitComment = () => {  // 发表评论
     let clipboard_ = checkedClipBoard.value.join(',')
     let commentContent_ = commentContent.value
     let composedComment = agentRole + '\n' + clipboard_ + '\n' + commentContent_
-
+    
     // 评论上传数据库，请求success，同时更新 names 和 reply_ids
     if (commentContentPlaceHolder.value.index == -1) {  //一级评论
+        console.log(checkedAgent.value.map(item => agentList.value[item]['role']).join())
+        newComment({
+            'username': '唐某人',
+            'content': composedComment,
+            'commentTo': '372d6eb71a',
+            // 'cueWho': checkedAgent.value.map(item => agentList.value[item]['role']).join(),
+        })
         commentsList.value.push({
             id: 'a4',
             avatar: 'https://i2.hdslb.com/bfs/face/27ec942e8d4e6e024d3a9f11240d81a0aa90caca.jpg@60w_60h_1c.png',
