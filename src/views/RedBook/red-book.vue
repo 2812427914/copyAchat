@@ -911,7 +911,7 @@ const llmResponse = async (messages) => {
 
     commentsList.value[index].replys.push({
         // id: reply_id,
-        avatar: 'https://i1.hdslb.com/bfs/face/7f3605a11f54e5ac1719e7877c641a19da137d32.jpg@60w_60h_1c.png',
+        avatar: 'https://avatars.githubusercontent.com/u/14957082?s=200&v=4',
         username: username,
         content: '',//llmResponse_.data.choices[0].message.content,
         date: '08-06',
