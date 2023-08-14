@@ -91,7 +91,7 @@
                                                 href="/user/profile/6042256c000000000100152b" class="" target="_blank"><img
                                                     data-v-1d0a8701="" class="avatar" :src="item.avatar"
                                                     style="width: 32px; height: 32px;"></a></div>
-                                        <div data-v-67377e58="" style="width:70%; overflow:auto" class="right">
+                                        <div data-v-67377e58="" style="max-width:90%; overflow:auto" class="right">
                                             <div data-v-67377e58="" class="author-wrapper">
                                                 <div data-v-67377e58="" class="author">
                                                     <a data-v-67377e58="" href="/user/profile/6042256c000000000100152b"
@@ -227,7 +227,7 @@
                                                                 <!-- <v-md-preview-html :html="xss.process(VMdPreview.vMdParser.themeConfig.markdownParser.render(comment_reply.content))" preview-class="vuepress-markdown-body"></v-md-preview-html> -->
                                                                 <v-md-preview v-else
                                                                     @copy-code-success="handleCopyCodeSuccess"
-                                                                    :text="comment_reply.content"></v-md-preview>
+                                                                    :text="comment_reply.content" style="color: #333; padding: 0px" data-v-67377e58=""  class="content"></v-md-preview>
                                                                 <div data-v-67377e58="" class="labels"></div>
                                                                 <!-- <div data-v-67377e58="" class="info">
                                                                     <div data-v-67377e58="">
@@ -1697,6 +1697,15 @@ img {
     -webkit-transform: scaleY(1);
     transform: scaleY(1);
     top: 0;
+}
+
+.github-markdown-body {
+    // padding: 16px 32px 32px;
+    font-size: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji;
+    line-height: 1.5;
+    word-wrap: break-word;
+    padding: 0px;
 }
 
 // .van-text-ellipsis {
