@@ -119,9 +119,14 @@
                                             </div>
                                             <div data-v-67377e58="" class="content">
                                                 <!-- {{ item.content }} -->
-                                                <van-text-ellipsis style="white-space: normal;" rows="5"
+                                                <!-- <van-text-ellipsis style="white-space: normal;" rows="5"
                                                     :content="item.content" expand-text="展开" collapse-text="收起"
-                                                    position="middle" />
+                                                    position="middle" /> -->
+                                                <v-md-preview
+                                                style="max-height: 200px;"
+                                                @copy-code-success="handleCopyCodeSuccess"
+                                                :text="item.content" 
+                                                data-v-67377e58=""  class="content"></v-md-preview>
                                                 <!-- <vue-ellipsis-3
                                                 :visible-line="1"
                                                 use-inner-html
@@ -215,19 +220,21 @@
                                                                     {{ comment_reply.content }}
                                                                    
                                                                 </div> -->
-                                                                <van-text-ellipsis v-if="comment_reply.ellipsisShow"
+                                                                <!-- <van-text-ellipsis v-if="comment_reply.ellipsisShow"
                                                                     data-v-67377e58="" class="content"
                                                                     style="white-space: normal;" rows="5"
                                                                     :content="'回复 ' + comment_reply.reply_to_floor + '楼 ' + comment_reply.reply_to_username + ': ' + comment_reply.content"
                                                                     expand-text="展开" collapse-text="收起" position="middle"
                                                                     @click-action="comment_reply.ellipsisShow = false">
-                                                                </van-text-ellipsis>
+                                                                </van-text-ellipsis> -->
                                                                 <!-- <div  v-else v-html="md.render(comment_reply.content)">
                                                                 </div> -->
                                                                 <!-- <v-md-preview-html :html="xss.process(VMdPreview.vMdParser.themeConfig.markdownParser.render(comment_reply.content))" preview-class="vuepress-markdown-body"></v-md-preview-html> -->
-                                                                <v-md-preview v-else
+                                                                <v-md-preview
+                                                                    style="max-height: 200px;"
                                                                     @copy-code-success="handleCopyCodeSuccess"
-                                                                    :text="comment_reply.content" style="color: #333; padding: 0px" data-v-67377e58=""  class="content"></v-md-preview>
+                                                                    :text="`回复<span style='color:#13386C'> ${comment_reply.reply_to_floor}楼 ${comment_reply.reply_to_username}</span>: ${comment_reply.content}`"
+                                                                    data-v-67377e58=""  class="content"></v-md-preview>
                                                                 <div data-v-67377e58="" class="labels"></div>
                                                                 <!-- <div data-v-67377e58="" class="info">
                                                                     <div data-v-67377e58="">
@@ -351,7 +358,7 @@
                 </van-popup>
 
                 <div data-v-11b921ce="" class="interactions">
-                    <van-field @input="handleInput" @keydown.enter.native="handleKeyBoard" ref="commentField"
+                    <van-field @input="handleInput" @keydown.enter.native="handleKeyBoard" ref="commentField" type="textarea" autosize rows="1"
                         style="background-color: rgba(0, 0, 0, 0.03); border-radius: 22px;" v-model="commentContent"
                         :placeholder=commentContentPlaceHolder.content>
                         <template #right-icon>
@@ -696,8 +703,8 @@ const handleKeyBoard = (event)=>{
 // 输入框回车激活submitComment
 // 获得最终comment内容
 const commentContent = ref('')
-const submitComment = async (event) => {  // 发表评论
-
+const submitComment = async () => {  // 发表评论
+    console.log('submitComment', commentContent.value)
     // 检测是否有改动，有则提交修改
     submitArticle()
 
@@ -712,7 +719,7 @@ const submitComment = async (event) => {  // 发表评论
     // return 
     let clipboard_ = checkedClipBoard.value.join(',')
     let commentContent_ = commentContent.value
-    let composedComment = agentRole + '\n' + clipboard_ + '\n' + commentContent_
+    let composedComment = agentRole +' ' + clipboard_ + commentContent_
     let avatar = 'https://i2.hdslb.com/bfs/face/27ec942e8d4e6e024d3a9f11240d81a0aa90caca.jpg@60w_60h_1c.png'
     let username = '唐某人'
     let date = '08-11'
