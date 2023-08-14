@@ -1,7 +1,7 @@
 
 <template>
+    <!-- <keep-alive> -->
     <van-config-provider theme="">...</van-config-provider>
-
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
         style="position: absolute; width: 0; height: 0" aria-hidden="true" id="__SVG_SPRITE_NODE__">
         <symbol xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16" id="like">
@@ -68,11 +68,13 @@
         <div data-v-70c71a67="" data-v-024e536f="" id="" data-v-956360f6="" class="note-container" data-type="normal">
             <div data-v-11b921ce="" data-v-70c71a67="" class="">
                 <div data-v-d21d8bf9="" data-v-11b921ce="" class="note-scroller">
+                    <van-nav-bar title="" left-text="返回" right-text="添加助手" left-arrow @click-left="onClickLeft"
+                        @click-right="onClickRight" />
                     <div data-v-5245913a="" data-v-11b921ce="" class="note-content">
                         <!-- <van-cell-group> -->
-                        <van-field v-model="title" autosize rows="1" type="textarea" placeholder="请输入标题" data-v-5245913a=""
-                            id="detail-title" class="title" />
-                        <van-field v-model="description" autosize rows="1" type="textarea" placeholder="请输入描述"
+                        <van-field v-model="article.title" autosize rows="1" type="textarea" placeholder="请输入标题"
+                            data-v-5245913a="" id="detail-title" class="title" />
+                        <van-field v-model="article.description" autosize rows="1" type="textarea" placeholder="请输入描述"
                             data-v-5245913a="" class="desc" />
                         <!-- </van-cell-group> -->
                         <!-- <div data-v-5245913a="" id="detail-title" class="title">其实参加酒局多了，都差不多</div>
@@ -80,7 +82,7 @@
                     </div>
                     <div data-v-6b20f11f="" data-v-11b921ce="" class="comments-el">
                         <div data-v-6b20f11f="" class="comments-container">
-                            <div data-v-6b20f11f="" class="total">共 {{ commentsList.length }} 条评论</div>
+                            <div data-v-6b20f11f="" class="total">共 {{ articleCommentCnt }} 条评论</div>
                             <div data-v-6b20f11f="" tag="div" name="list" class="list-container">
                                 <div data-v-67377e58="" data-v-6b20f11f="" class="comment-item"
                                     v-for="(item, index) in commentsList" :key="item.id">
@@ -89,7 +91,7 @@
                                                 href="/user/profile/6042256c000000000100152b" class="" target="_blank"><img
                                                     data-v-1d0a8701="" class="avatar" :src="item.avatar"
                                                     style="width: 32px; height: 32px;"></a></div>
-                                        <div data-v-67377e58="" class="right">
+                                        <div data-v-67377e58="" style="width:70%; overflow:auto" class="right">
                                             <div data-v-67377e58="" class="author-wrapper">
                                                 <div data-v-67377e58="" class="author">
                                                     <a data-v-67377e58="" href="/user/profile/6042256c000000000100152b"
@@ -102,14 +104,15 @@
                                                 <div data-v-67377e58="" class="interactions" style="font-size: 12px">
                                                     <div data-v-67377e58="" class="reply icon-container">
                                                         <span data-v-67377e58="" style="margin-right: 4px;"
-                                                            @click="copy_comment(index, item.content)">复制</span>
+                                                            @click="copy_comment(item.content)">复制</span>
 
                                                         <svg @click="replyComment(index, 1, item)" data-v-7c2d5134=""
                                                             data-v-67377e58="" style="margin-left: 8px"
                                                             class="reds-icon reply-icon" width="16" height="16">
                                                             <use data-v-7c2d5134="" xlink:href="#reply"></use>
                                                         </svg>
-                                                        <span data-v-67377e58="" class="count">{{ item.reply_cnt }}
+                                                        <span v-if="item.reply_cnt != -1" data-v-67377e58=""
+                                                            class="count">{{ item.reply_cnt }}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -172,7 +175,8 @@
                                                                     target="_blank"><img data-v-1d0a8701="" class="avatar"
                                                                         :src="comment_reply.avatar"
                                                                         style="width: 24px; height: 24px;"></a></div>
-                                                            <div data-v-67377e58="" class="right">
+                                                            <div data-v-67377e58="" class="right"
+                                                                style="width:70%; overflow:auto">
                                                                 <div data-v-67377e58="" class="author-wrapper">
                                                                     <div data-v-67377e58="" class="author">
                                                                         <a data-v-67377e58=""
@@ -192,7 +196,7 @@
                                                                             class="reply icon-container">
                                                                             <span data-v-67377e58=""
                                                                                 style="margin-right: 4px;"
-                                                                                @click="copy_comment(comment_reply)">复制</span>
+                                                                                @click="copy_comment(comment_reply.content)">复制</span>
 
                                                                             <svg @click="replyComment(index, idx + 2, comment_reply)"
                                                                                 data-v-7c2d5134="" data-v-67377e58=""
@@ -211,13 +215,19 @@
                                                                     {{ comment_reply.content }}
                                                                    
                                                                 </div> -->
-                                                                <van-text-ellipsis data-v-67377e58="" class="content"
+                                                                <van-text-ellipsis v-if="comment_reply.ellipsisShow"
+                                                                    data-v-67377e58="" class="content"
                                                                     style="white-space: normal;" rows="5"
                                                                     :content="'回复 ' + comment_reply.reply_to_floor + '楼 ' + comment_reply.reply_to_username + ': ' + comment_reply.content"
-                                                                    expand-text="展开" collapse-text="收起" position="middle">
+                                                                    expand-text="展开" collapse-text="收起" position="middle"
+                                                                    @click-action="comment_reply.ellipsisShow = false">
                                                                 </van-text-ellipsis>
-                                                                <!-- <div  v-if="comment_reply.content" v-html="md.render(comment_reply.content)">
+                                                                <!-- <div  v-else v-html="md.render(comment_reply.content)">
                                                                 </div> -->
+                                                                <!-- <v-md-preview-html :html="xss.process(VMdPreview.vMdParser.themeConfig.markdownParser.render(comment_reply.content))" preview-class="vuepress-markdown-body"></v-md-preview-html> -->
+                                                                <v-md-preview v-else
+                                                                    @copy-code-success="handleCopyCodeSuccess"
+                                                                    :text="comment_reply.content"></v-md-preview>
                                                                 <div data-v-67377e58="" class="labels"></div>
                                                                 <!-- <div data-v-67377e58="" class="info">
                                                                     <div data-v-67377e58="">
@@ -262,6 +272,10 @@
                                                     data-v-67377e58-s="" class="show-more" @click="text_expand(index)">展开 {{
                                                         item.reply_cnt - item.replys.length }} 条回复
                                                 </div>
+                                                <div v-if="item.reply_cnt == -1" data-v-6b20f11f="" data-v-67377e58-s=""
+                                                    style="color: #13386c; cursor: pointer;" @click="text_expand(index)">
+                                                    展开回复
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -270,13 +284,13 @@
                         </div>
                     </div>
                 </div>
-                <van-popup @keydown.enter.native="submitComment" v-model:show="fromButton" position="bottom"
-                    :style="{ height: preShowIndex != -1 ? '50%' : '' }">
+                <van-popup v-model:show="fromButton" position="bottom" :style="{ height: preShowIndex != -1 ? '50%' : '' }">
                     <!-- <van-popup v-model:show="fromButton" position="bottom"> -->
                     <template #default>
                         <!-- <van-cell-group> -->
-                        <van-field :border="false" v-model="commentContent" :placeholder=commentContentPlaceHolder.content
-                            type="textarea" rows="3" />
+                        <van-field @keydown.enter.native="handleKeyBoard" :border="false" v-model="commentContent"
+                            :placeholder=commentContentPlaceHolder.content type="textarea" rows="3"
+                            ref="commentFieldPopup" />
                         <van-row style="padding-bottom:12px;">
                             <van-col span="12">
                                 <svg @click="bottomShow(0)" class="reds-icon" width="24" height="24"
@@ -337,7 +351,7 @@
                 </van-popup>
 
                 <div data-v-11b921ce="" class="interactions">
-                    <van-field  @keydown.enter.native="submitComment" ref="commentField"
+                    <van-field @input="handleInput" @keydown.enter.native="handleKeyBoard" ref="commentField"
                         style="background-color: rgba(0, 0, 0, 0.03); border-radius: 22px;" v-model="commentContent"
                         :placeholder=commentContentPlaceHolder.content>
                         <template #right-icon>
@@ -348,7 +362,7 @@
                                 style="margin-left: 8px;">
                                 <use xlink:href="#chat"></use>
                             </svg>
-                            <svg @click="fromButton = true; bottomShow(1)" class="reds-icon" width="24" height="24">
+                            <svg @click="bottomShow(1)" class="reds-icon" width="24" height="24">
                                 <use xlink:href="#mention"></use>
                             </svg>
 
@@ -374,173 +388,240 @@
             </div>
         </div>
     </div>
+<!-- </keep-alive> -->
 </template>
 
 <script setup>
 import { ref, onMounted, onBeforeUpdate } from 'vue'
-import {getCommentsReplyList } from "@/api/index";
-import { Configuration, OpenAIApi } from 'openai'
-import { HuggingFaceInference } from "langchain/llms/hf";
-import { Replicate } from "langchain/llms/replicate";
+import { getCommentsReplyList } from "@/api/index";
+import chat from "@/views/RedBook/data"
+import { useRoute, useRouter } from 'vue-router';
+import useClipboard from "vue-clipboard3";
+
+const { toClipboard } = useClipboard();
+// import { xss } from '@kangc/v-md-editor';
+// import VMdPreview, {xss} from '@kangc/v-md-editor/lib/preview';
+// import '@kangc/v-md-editor/lib/style/preview.css';
+
+// import { md } from "@/views/RedBook/markdown";
+// const html = xss.process(VMdPreview.vMdParser.themeConfig.markdownParser.render('### 标题'));
+// console.log(html)
+const handleCopyCodeSuccess = (code) => {
+    console.log(code);
+}
+
+// const html = ;
+const articleTableName = ref('article')
+const articleId = ref('')
+const route = useRoute()
+const router = useRouter()
+articleId.value = route.query.id
+console.log(route.query)
+// 标题和描述
+const article = ref({
+    'title': '',
+    'description': ''
+})
+const oldArticle = {
+    'title': '其实参加酒局多了，都差不多',
+    'description': '没那么惊讶\n人生不就是一场行为艺术吗'
+}
+// const title = ref('其实参加酒局多了，都差不多')
+// const description = ref('没那么惊讶\n人生不就是一场行为艺术吗')
+const decoder = new TextDecoder("utf-8");
+
+// const apiKey = "77cbaa81-dbcb-4800-9aee-98b8abb9a5b9"; //集团key
+const apiKey = "sk-0skLQXN5d0bBaQYQBFGTanCAgrzDgWXOCqc4b4yAiUaltX1d"
+const commentField = ref(null)
+const commentFieldPopup = ref(null)
+
+const onClickLeft = async () => {
+    await submitArticle()
+    router.go(-1)
+}
+
+const onClickRight = async () => {
+    await submitArticle()
+    router.push({
+        path: '/assistant'
+    })
+}
+
+const handleInput = (event) => {
+    const inputValue = event.target.value
+    // console.log('handleInput', inputValue)
+    // console.log(event.key)
+    if (inputValue.at(-1) =='@'){
+        fromButton.value = true
+        preShowIndex.value = 0
+        bottomShow(1)
+        // bottomShow.value[1] = true
+    }else if(inputValue.at(-1) == '/'){
+        fromButton.value = true 
+        preShowIndex.value = 1
+        bottomShow(0)
+    }
+    // if (input)
+}
 
 // 获取 article 数据
 const getArticle = async () => {
-    let query = Bmob.Query('article');
-    let res = await query.get('372d6eb71a')
-    console.log('get Article', res)
-    title.value = res.title
-    description.value = res.description
-    // query.get('372d6eb71a').then(res => {
-    //     // console.log('getArticle', res.title)
-    //     return {"title": res.title, "description": res.description}
-    // }).catch(err => {
-    //     console.log(err)
-    // })
+    let query = Bmob.Query(articleTableName.value)
+    let res = await query.get(articleId.value)
+    // console.log('get Article', res)
+    article.value.title = res.title
+    article.value.description = res.description
+    oldArticle.title = article.value.title
+    oldArticle.description = article.value.description
 }
 
 // 获取 一级评论 数据
+const articleCommentCnt = ref(0)
 const getRedBookCommentsList = async () => {
-    let query = Bmob.Query('sub_comment')
-    query.equalTo("commentTo", "==", '372d6eb71a')
-    let res = await query.find()
-    
-    // const res = await query.get('372d6eb71a')
-    console.log('get subcomment', res)
+    let query = Bmob.Query(articleTableName.value)
+    query.order("createdAt")
+    query.field('comments', articleId.value)
+    let res = await query.relation('sub_comment')
+    articleCommentCnt.value = res.count
     return res
-    // title.value = res.title
-    // description.value = res.description
-    // query.get('372d6eb71a').then(res => {
-    //     // console.log('getArticle', res.title)
-    //     return {"title": res.title, "description": res.description}
-    // }).catch(err => {
-    //     console.log(err)
-    // })
 }
 
 // 新增一条评论
 const newComment = async (comment) => {
-    const query = Bmob.Query('sub_comment');
-    query.set("username",comment.username)
-    query.set("content",comment.content)
-    query.set("commentTo",comment.commentTo)
+    let query = Bmob.Query('sub_comment')
+    query.set("username", comment.username)
+    query.set("content", comment.content)
+    query.set("replyTo", comment.replyTo)
+    query.set("isAgent", comment.isAgent)
+    query.set("replyCnt", 0)
     // query.set("cueWho", comment.cue_who)
     const res = await query.save()
-    console.log('newComment')
+    return res
+    // console.log('newComment')
 }
-
-
-// import { md } from "@/views/RedBook/markdown";
-
-const huggingFaceInference = new HuggingFaceInference({
-    model: "gpt2",
-    apiKey: "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", // In Node.js defaults to process.env.HUGGINGFACEHUB_API_KEY
-});
-// const res = await model.call("1 + 1 =");
-// console.log({ res });
-
-
-// const replicate = new Replicate({
-//   model:
-//     "a16z-infra/llama13b-v2-chat:df7690f1994d94e96ad9d568eac121aecf50684a0b0963b25a41cc40061269e5",
-// });
-
-
-// const configuration = new Configuration({
-//     apiKey: 'sk-8ElYpCJqbbfjvu83TsIpKeUIuqhcc9COSrJgD4rxpzM6dHe3',
-//     basePath: 'https://api.chatanywhere.cn',
-// })
-
-// const openai = new OpenAIApi(configuration)
-
-// 标题和描述
-const title = ref('其实参加酒局多了，都差不多')
-const description = ref('没那么惊讶\n人生不就是一场行为艺术吗')
 
 
 // 处理评论区展示
 const commentsList = ref([]);
 const names = ref([]);
 const reply_ids = ref([]);
-
 const getCommentsList = async () => {
-    const data  = await getRedBookCommentsList();
-    console.log(data.length)
-    let items = data//.result.items
-    // 给一级评论的子评论添加 reply_to_floor、reply_to_username
-    // let comments_length = data.result.items.length;
-    let comments_length = data.length;
-    for (let i = 0; i < comments_length; i++) {
-        if ('replys' in data[i]){
-            continue
-        }
-        let replys_length = data[i].replys.length;
-        // let replys_length = data.result.items[i].replys.length;
+    let data = await getRedBookCommentsList()
+    // console.log('commentlist', data)
+    for (let i = 0; i < data.count; i++) {
+        data.results[i].id = data.results[i].objectId
+        data.results[i].reply_cnt = -1//data.results[i].replyCnt
+        data.results[i].replys = []
+        data.results[i].ellipsisShow = true
+        let replys_length = data.results[i].replys.length;
         let tmp_reply_ids = []
         let tmp_names = []
-        let comment = data.result.items[i]
+        let comment = data.results[i]
         tmp_reply_ids.push(comment.id)
         tmp_names.push(comment.username)
         for (let j = 0; j < replys_length; j++) {
             let reply_to_floor = tmp_reply_ids.indexOf(comment.replys[j].reply_to) + 1
-            items[i].replys[j].reply_to_floor = reply_to_floor
-            items[i].replys[j].reply_to_username = tmp_names[reply_to_floor - 1]
+            data.results[i].replys[j].reply_to_floor = reply_to_floor
+            data.results[i].replys[j].reply_to_username = tmp_names[reply_to_floor - 1]
             tmp_reply_ids.push(comment.replys[j].id)
             tmp_names.push(comment.replys[j].username)
         }
         names.value.push(tmp_names)
         reply_ids.value.push(tmp_reply_ids)
     }
-    commentsList.value = commentsList.value.concat(items);
+
+    commentsList.value = commentsList.value.concat(data.results);
+    // console.log('getCommentList', commentsList.value)
+    // console.log('getCommentList names reply_ids', names, reply_ids)
 }
 
-// onMounted(async () => {
-//     getCommentsList();
-// });
+const readStream = async (
+    reader,
+    status
+) => {
+    let partialLine = "";
 
+    while (true) {
+        // eslint-disable-next-line no-await-in-loop
+        const { value, done } = await reader.read();
+        if (done) break;
 
-// 声明一个 ref 来存放该元素的引用
-// 必须和模板里的 ref 同名
-const commentField = ref(null)
-onMounted(() => {
-    getCommentsList()
-    getArticle()
-    commentField.value.focus()
-});
+        const decodedText = decoder.decode(value, { stream: true });
 
-// mounted (() => {
-//     this.$refs.commentField.focus()
-// })
-// mounted() {
-//     this.$refs.checkbox.toggle();
-//   }
+        if (status !== 200) {
+            const json = JSON.parse(decodedText); // start with "data: "
+            const content = json.error.message ?? decodedText;
+            appendLastMessageContent(content);
+            return;
+        }
+        const chunk = partialLine + decodedText;
+        const newLines = chunk.split(/\r?\n/);
+
+        partialLine = newLines.pop() ?? "";
+
+        for (const line of newLines) {
+            if (line.length === 0) continue; // ignore empty message
+            if (line.startsWith(":")) continue; // ignore sse comment message
+            if (line === "data: [DONE]") return; //
+
+            const json = JSON.parse(line.substring(6)); // start with "data: "
+            const content =
+                status === 200
+                    ? json.choices[0].delta.content ?? ""
+                    : json.error.message;
+            appendLastMessageContent(content);
+        }
+    }
+};
+
+const appendLastMessageContent = (content) =>
+    (commentsList.value.at(commentContentPlaceHolder.value.index).replys.at(-1).content += content)
 
 // 下拉刷新commentList：pagenation
 // getCommentsList()
 
 // 点击 展开更多回复
 const text_expand = async (comment_index) => {
-    const { data } = await getCommentsReplyList(commentsList.value[comment_index].id);
-    let replys_more = data.result.items
-    let replys_length = replys_more.length
+
+    let query = Bmob.Query('sub_comment')
+    query.order("createdAt")
+    query.field('replys', reply_ids.value[comment_index][0])
+    let data = await query.relation('sub_comment')
+    // console.log('sub_comment replys', data)
+
+    commentsList.value[comment_index].reply_cnt = data.count
+
     let tmp_reply_ids = reply_ids.value[comment_index]
+
     let tmp_names = names.value[comment_index]
-    for (let j = 0; j < replys_length; j++) {
-        let reply_to_floor = tmp_reply_ids.indexOf(replys_more[j].reply_to) + 1
-        replys_more[j].reply_to_floor = reply_to_floor
-        replys_more[j].reply_to_username = tmp_names[reply_to_floor - 1]
-        tmp_reply_ids.push(replys_more[j].id)
-        tmp_names.push(replys_more[j].username)
+    // console.log('reply_ids', tmp_reply_ids, tmp_names)
+    for (let j = 0; j < data.results.length; j++) {
+        data.results[j].reply_to = data.results[j].replyTo
+        data.results[j].id = data.results[j].objectId
+        data.results[j].ellipsisShow = true
+        let reply_to_floor = tmp_reply_ids.indexOf(data.results[j].reply_to) + 1
+        // console.log('reply_to_floor', data.results[j].reply_to, tmp_reply_ids)
+        data.results[j].reply_to_floor = reply_to_floor
+        data.results[j].reply_to_username = tmp_names[reply_to_floor - 1]
+        tmp_reply_ids.push(data.results[j].id)
+        tmp_names.push(data.results[j].username)
     }
-    commentsList.value[comment_index].replys = commentsList.value[comment_index].replys.concat(replys_more)
+    commentsList.value[comment_index].replys = commentsList.value[comment_index].replys.concat(data.results)
     names.value[comment_index] = tmp_names
     reply_ids.value[comment_index] = tmp_reply_ids
 }
 
 // 点击复制按钮
-const copy_comment = (content) => {
-    console.log('content')
+const copy_comment = async (content) => {
+    await toClipboard(content);
+    getClipBoard()
+    // console.log(content)
 }
 
+const getClipBoard = async () => {
+    let copyText = await navigator.clipboard.readText();
+    console.log('剪贴板内容', copyText)
+}
 
 // 控制底部弹出框+剪贴板+agent
 const fromButton = ref(false)
@@ -566,6 +647,7 @@ const toggleAgent = (index) => {
 }
 
 const bottomShow = (index) => {
+    fromButton.value = true
     if (preShowIndex.value == -1) {
         bottomShowList.value[index] = true
         preShowIndex.value = index
@@ -578,21 +660,46 @@ const bottomShow = (index) => {
         bottomShowList.value[index] = true
         preShowIndex.value = index
     }
+    setTimeout(function () {
+        commentFieldPopup.value.focus()
+    })
 }
 
-onBeforeUpdate(() => {
-    checkboxRefsClipBoard.value = []
-    checkboxRefsAgent.value = []
-});
 
+
+const submitArticle = async () => {
+    if (article.value.title == oldArticle.title && article.value.description == oldArticle.description) {
+        return
+    }
+    let query = Bmob.Query(articleTableName.value)
+    query.set("title", article.value.title)
+    query.set("description", article.value.description)
+    if (articleId.value != "") {
+        query.set('id', articleId.value) //需要修改的objectId
+    }
+    let res = await query.save()
+    oldArticle.title = article.value.title
+    oldArticle.description = article.value.description
+}
+
+// const handleEnter = (event) => {
+//     console.log('触发enter')
+// }
+
+const handleKeyBoard = (event)=>{
+    // shift+enter 发送，enter 换行
+    if (!event.shiftKey) {
+        return 
+    }
+    submitComment()
+}
 // 输入框回车激活submitComment
 // 获得最终comment内容
 const commentContent = ref('')
-const submitComment = () => {  // 发表评论
-    // console.log(commentContent.value)
-    // console.log(checkedClipBoard.value)
-    // console.log(checkedAgent.value)
-    // return
+const submitComment = async (event) => {  // 发表评论
+
+    // 检测是否有改动，有则提交修改
+    submitArticle()
 
     // 内容为空，点击无效
     if (commentContent.value == '') {
@@ -601,72 +708,145 @@ const submitComment = () => {  // 发表评论
 
     let prefix = '@'
     let agentRole = checkedAgent.value.map(item => prefix + agentList.value[item]['role'])
-    // console.log(agentRole)
     agentRole = agentRole.join('->')
-    // console.log(agentRole)
     // return 
     let clipboard_ = checkedClipBoard.value.join(',')
     let commentContent_ = commentContent.value
     let composedComment = agentRole + '\n' + clipboard_ + '\n' + commentContent_
-    
+    let avatar = 'https://i2.hdslb.com/bfs/face/27ec942e8d4e6e024d3a9f11240d81a0aa90caca.jpg@60w_60h_1c.png'
+    let username = '唐某人'
+    let date = '08-11'
+    let reply_cnt = 0
+    let cue_who = checkedAgent.value.map(item => agentList.value[item]['role'])
+    let reply_to = articleId.value
+    let reply_to_floor = -1
+    let reply_to_username = '-1'
+
+
     // 评论上传数据库，请求success，同时更新 names 和 reply_ids
-    if (commentContentPlaceHolder.value.index == -1) {  //一级评论
-        console.log(checkedAgent.value.map(item => agentList.value[item]['role']).join())
-        newComment({
+    if (commentContentPlaceHolder.value.index == -1) {  //一级评论    
+        let newCommentRes = await newComment({
             'username': '唐某人',
             'content': composedComment,
-            'commentTo': '372d6eb71a',
-            // 'cueWho': checkedAgent.value.map(item => agentList.value[item]['role']).join(),
-        })
-        commentsList.value.push({
-            id: 'a4',
-            avatar: 'https://i2.hdslb.com/bfs/face/27ec942e8d4e6e024d3a9f11240d81a0aa90caca.jpg@60w_60h_1c.png',
-            username: '唐某人',
-            content: composedComment,
-            date: '08-06',
-            reply_cnt: 0,
-            cue_who: checkedAgent.value.map(item => agentList.value[item]['role']),
-            replay_to_floor: -1,
-            reply_to_username: '-1',
-            replys: [],
-        })
-        reply_ids.value.push([commentContentPlaceHolder.value.index + 'a4'])
-        names.value.push(['唐某人'])
-    } else {                                              // 评论的子评论
-        // let tmp_reply_ids = reply_ids.value[commentContentPlaceHolder.value.index]
-        // let tmp_names = names.value[commentContentPlaceHolder.value.index]
-        reply_ids.value[commentContentPlaceHolder.value.index].push(commentContentPlaceHolder.value.index + 'a4')
-        names.value[commentContentPlaceHolder.value.index].push('唐某人')
-        commentsList.value[commentContentPlaceHolder.value.index].replys.push({
-            id: commentContentPlaceHolder.value.index + 'a4',
-            avatar: 'https://i2.hdslb.com/bfs/face/27ec942e8d4e6e024d3a9f11240d81a0aa90caca.jpg@60w_60h_1c.png',
-            username: '唐某人',
-            content: composedComment,
-            date: '08-06',
-            reply_to: commentContentPlaceHolder.value.comment.id,
-            cue_who: checkedAgent.value.map(item => agentList.value[item]['role']),
-            reply_to_floor: commentContentPlaceHolder.value.floor,
-            reply_to_username: commentContentPlaceHolder.value.comment.username
+            'replyTo': reply_to,
+            'isAgent': false
         })
 
+        let relation = Bmob.Relation('sub_comment') // 需要关联的表
+        let relID = relation.add(newCommentRes.objectId) //关联表中需要关联的objectId, 返回一个Relation对象, add方法接受string和array的类型参数
+        let query = Bmob.Query('article')
+        query.get(articleId.value).then(res => {
+            res.set('comments', relID); // 将Relation对象保存到two字段中，即实现了一对多的关联
+            res.save()
+        })
+
+        reply_ids.value.push([newCommentRes.objectId])
+        names.value.push([username])
+        commentsList.value.push({
+            id: newCommentRes.objectId,
+            avatar: avatar,
+            username: username,
+            content: composedComment,
+            date: date,
+            isAgent: false,
+            reply_cnt: reply_cnt,
+            reply_to: '-1',
+            cue_who: cue_who,
+            replay_to_floor: reply_to_floor,
+            reply_to_username: reply_to_username,
+            replys: [],
+            ellipsisShow: true
+        })
+        articleCommentCnt.value += 1
+    } else {                                              // 评论的子评论
+
+        reply_to_floor = commentContentPlaceHolder.value.floor
+        reply_to_username = commentContentPlaceHolder.value.comment.username
+        reply_to = commentContentPlaceHolder.value.comment.id
+        let newCommentRes = await newComment({
+            'username': '唐某人',
+            'content': composedComment,
+            'replyTo': reply_to,
+            'isAgent': false
+        })
+
+        let relation = Bmob.Relation('sub_comment') // 需要关联的表
+        let relID = relation.add(newCommentRes.objectId) //关联表中需要关联的objectId, 返回一个Relation对象, add方法接受string和array的类型参数
+        let query = Bmob.Query('sub_comment')
+        query.get(reply_ids.value[commentContentPlaceHolder.value.index][0]).then(res => {
+            res.set('replys', relID); // 将Relation对象保存到two字段中，即实现了一对多的关联
+            res.save()
+        })
+
+
+        reply_ids.value[commentContentPlaceHolder.value.index].push(newCommentRes.objectId)
+        names.value[commentContentPlaceHolder.value.index].push(username)
+        commentsList.value[commentContentPlaceHolder.value.index].replys.push({
+            id: newCommentRes.objectId,
+            avatar: avatar,
+            username: username,
+            content: composedComment,
+            reply_cnt: reply_cnt,
+            isAgent: false,
+            date: date,
+            reply_to: reply_to,
+            cue_who: cue_who,
+            reply_to_floor: reply_to_floor,
+            reply_to_username: reply_to_username,
+            ellipsisShow: true
+        })
         // 回复成功，当前评论的一级评论的子评论数量+1
         commentsList.value[commentContentPlaceHolder.value.index].reply_cnt += 1
-
     }
+    // console.log('回复成功', commentContentPlaceHolder.value.index, commentsList)
+
 
     let agentContent = checkedAgent.value.map(item => agentList.value[item]['content'])
     if (checkedAgent.value.length == 0 && agentList.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
         for (let i = 0; i < agentList.value.length; i++) {
             if (commentContentPlaceHolder.value.comment.username == agentList.value[i]['role']) {
                 agentContent = [agentList.value[i]['content']]
+                break
             }
         }
-
     }
-    const messages = ref([
-        { "role": "system", "content": agentContent[0] + '\n' + description.value },
-        { "role": "user", "content": clipboard_ + '\n' + commentContent_ },
-    ])
+    // let cnt = 0
+    let last_reply_floor = reply_to_floor
+    let messages = ref([])
+    if (commentContentPlaceHolder.value.index != -1) {
+        messages.value.push(
+            { "role": "user", "content": composedComment },
+        )
+    }
+    // let messages = ref([
+    //     { "role": "user", "content": composedComment },
+    // ])
+    let tmp_reply = undefined
+    while (last_reply_floor != 1 && last_reply_floor != -1) {
+        // cnt = cnt + 1
+        tmp_reply = commentsList.value[commentContentPlaceHolder.value.index].replys[last_reply_floor - 2]
+        messages.value.push({
+            "role": tmp_reply.isAgent ? "assistant" : "user", "content": tmp_reply.content
+        })
+        last_reply_floor = tmp_reply.reply_to_floor
+        // console.log('last_reply_floor',last_reply_floor)
+        // if (cnt > 10){
+        //     break
+        // }
+    }
+    console.log(commentContentPlaceHolder)
+    messages.value.push({
+        "role": "user", "content": commentsList.value.at([commentContentPlaceHolder.value.index]).content
+    },
+        {
+            "role": "system", "content": `${agentContent[0]}\n标题：${article.value.title}\n描述：${article.value.description} `
+        })
+    messages.value.reverse()
+    console.log(messages.value)
+    // const messages = ref([
+    //     { "role": "system", "content": `${agentContent[0]}\n标题：${article.value.title}\n描述：${article.value.description} ` },
+    //     { "role": "user", "content": clipboard_ + '\n' + commentContent_ },
+    // ])
 
     // 如果 @ 了agent，或者回复了agent的消息，需要agent做出回应
     if (checkedAgent.value.length >= 1 || agentList.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
@@ -694,133 +874,78 @@ const submitComment = () => {  // 发表评论
     bottomShowList.value = [false, false]
 }
 
-// const decoder = new TextDecoder("utf-8");
-
-// const readStream = async (
-//   reader,
-//   status
-// ) => {
-//   let partialLine = "";
-
-//   while (true) {
-//     // eslint-disable-next-line no-await-in-loop
-//     const { value, done } = await reader.read();
-//     if (done) break;
-
-//     const decodedText = decoder.decode(value, { stream: true });
-
-//     if (status !== 200) {
-//       const json = JSON.parse(decodedText); // start with "data: "
-//       const content = json.error.message ?? decodedText;
-//       appendLastMessageContent(content);
-//       console.log(message.value)
-//       return;
-//     }
-
-//     const chunk = partialLine + decodedText;
-//     const newLines = chunk.split(/\r?\n/);
-
-//     partialLine = newLines.pop() ?? "";
-
-//     for (const line of newLines) {
-//       if (line.length === 0) continue; // ignore empty message
-//       if (line.startsWith(":")) continue; // ignore sse comment message
-//       if (line === "data: [DONE]") return; //
-
-//       const json = JSON.parse(line.substring(6)); // start with "data: "
-//       const content =
-//         status === 200
-//           ? json.choices[0].delta.content ?? ""
-//           : json.error.message;
-//       appendLastMessageContent(content);
-//       console.log(message.value)
-//     }
-//   }
-// };
-
-// const appendLastMessageContent = (content) =>
-//   (message.value[message.value.length - 1].content += content);
-
+// const agentComment = ref('')
 // agent 回复
 const llmResponse = async (messages) => {
     if (checkedAgent.value.length > 1) {
         // alert
-        console.log('目前仅支持同时@一个agent')
+        // console.log('目前仅支持同时@一个agent')
         return
     }
-    // const apiKey = 'sk-8ElYpCJqbbfjvu83TsIpKeUIuqhcc9COSrJgD4rxpzM6dHe3'
-    // const result = await fetch("https://api.chatanywhere.com.cn/v1/chat/completions", {
-    //     method: "post",
-    //     // signal: AbortSignal.timeout(8000),
-    //     // 开启后到达设定时间会中断流式输出
-    //     headers: {
-    //     "Content-Type": "application/json",
-    //     Authorization: `Bearer ${apiKey}`,
-    //     },
-    //     body: JSON.stringify({
-    //     model: "gpt-3.5-turbo",
-    //     stream: true,
-    //     messages: messages,
-    //     }),
-    // });
-
-    // const { body, status } = result
-    // if (body) {
-    //   const reader = body.getReader();
-    //   await readStream(reader, status);
-    // }
-
-
-    // const llmResponse_ = await openai.createChatCompletion({
-    //     model: 'gpt-3.5-turbo',
-    //     messages: messages,
-    //     // stream: true   //流式响应
-    // })
-    // let agentComment = llmResponse_.data.choices[0].message.content
-
-    // console.log(llmResponse_)
-
-    const res = await huggingFaceInference.call(messages.value[0].content);
-    // const res = await replicate.call(messages.value[0].content)
-
-    let agentComment = res
-
 
     // 如果是@agent回复新建的一级评论
     let index = commentsList.value.length - 1
     let username = checkedAgent.value.length >= 1 ? agentList.value[checkedAgent.value[0]]['role'] : commentContentPlaceHolder.value.comment.username
-    let reply_id = 'a5'
+    // let reply_id = ''
     let reply_to = commentsList.value[index].id
     let reply_to_floor = 1
     let reply_to_username = commentsList.value[index].username
 
     if (commentContentPlaceHolder.value.index != -1) {  // @agent 二级评论
         index = commentContentPlaceHolder.value.index
-        reply_id = index + 'a5'
+        // reply_id = ''
         let replys = commentsList.value[index].replys
         reply_to = replys[replys.length - 1].id,
             reply_to_floor = replys.length + 1
         reply_to_username = replys[replys.length - 1].username
     }
 
-    reply_ids.value[index].push(reply_id)
-    names.value[index].push(username)
+    let { body, status } = await chat(messages.value, apiKey)
+
     commentsList.value[index].replys.push({
-        id: reply_id,
+        // id: reply_id,
         avatar: 'https://i1.hdslb.com/bfs/face/7f3605a11f54e5ac1719e7877c641a19da137d32.jpg@60w_60h_1c.png',
         username: username,
-        content: agentComment, //llmResponse_.data.choices[0].message.content,
+        content: '',//llmResponse_.data.choices[0].message.content,
         date: '08-06',
         reply_to: reply_to,
         cue_who: [],
         reply_to_floor: reply_to_floor,
-        reply_to_username: reply_to_username
+        reply_to_username: reply_to_username,
+        ellipsisShow: false
     })
-
+    // console.log('llm response')
     // 回复成功，当前评论的一级评论的子评论数量+1
     commentsList.value[index].reply_cnt += 1
 
-    // 重置 commentContentPlaceHolder，checkedClipBoard, checkboxRefsClipBoard, checkedAgent, checkboxRefsAgent
+    if (body) {
+        let reader = body.getReader();
+        await readStream(reader, status);
+    }
+
+    // newComment()
+
+    let newCommentRes = await newComment({
+        'username': username,
+        'content': commentsList.value[index].replys.at(-1).content,
+        'replyTo': reply_to,
+        'isAgent': true
+    })
+    commentsList.value[index].replys.at(-1).id = newCommentRes.objectId
+
+    reply_ids.value[index].push(newCommentRes.objectId)
+    names.value[index].push(username)
+
+    let relation = Bmob.Relation('sub_comment') // 需要关联的表
+    let relID = relation.add(newCommentRes.objectId) //关联表中需要关联的objectId, 返回一个Relation对象, add方法接受string和array的类型参数
+    let query = Bmob.Query('sub_comment')
+    // console.log(reply_ids.value, index)
+    query.get(reply_ids.value[index][0]).then(res => {
+        res.set('replys', relID); // 将Relation对象保存到two字段中，即实现了一对多的关联
+        res.save()
+    })
+
+    // 重置 commentContentPlaceHolder，checkedClipBoard, checkboxRefsClipBoard, checkedAgent, checkboxRefsAgent, agentComment
     checkedClipBoard.value = []
     checkboxRefsClipBoard.value = []
     checkedAgent.value = []
@@ -834,7 +959,7 @@ const llmResponse = async (messages) => {
 
     // 回复成功后默认继续回复agent的当前回复
     let agentFloor = reply_to_floor + 1 // commentsList.value[index].replys.length+1
-    console.log('default replyComment after agent reply to user', agentFloor, commentsList.value[index].replys[agentFloor - 2])
+    // console.log('default replyComment after agent reply to user', agentFloor, commentsList.value[index].replys[agentFloor - 2])
     replyComment(index, agentFloor, commentsList.value[index].replys[agentFloor - 2])
 }
 
@@ -856,7 +981,7 @@ const replyComment = (index, floor, comment) => {
         comment: comment
     }
     commentField.value.focus()  //聚焦到输入框
-    console.log(commentContentPlaceHolder.value)
+    // console.log(commentContentPlaceHolder.value)
 }
 
 // 清除commentContentPlaceHolder按钮， 清除回复某个评论的 placeholder，直接成为一级评论
@@ -868,6 +993,25 @@ const clearReplyTo = () => {
         comment: {}
     }
 }
+
+// 返回首页，
+// 检测 article 是否更新并提交
+// submitArticle()
+
+// 声明一个 ref 来存放该元素的引用
+// 必须和模板里的 ref 同名
+onMounted(() => {
+    getCommentsList()
+    getArticle()
+    commentField.value.focus()
+});
+
+onBeforeUpdate(() => {
+    checkboxRefsClipBoard.value = []
+    checkboxRefsAgent.value = []
+});
+
+
 </script>
 
 

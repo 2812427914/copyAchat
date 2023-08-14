@@ -1,33 +1,19 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
-// const path = require('path')
-
-// import 'postcss-px-to-viewport'
 import postcsspxtoviewport from 'postcss-px-to-viewport'
+import prismjs from 'vite-plugin-prismjs';
 
-// function resolve(dir) {
-//   return path.join(__dirname, dir)
-// }
-// const loder_pxtovw = pxtovw({
-// //这里是设计稿宽度 自己修改
-//   viewportWidth: 400,
-//   viewportUnit: 'vw'
-// })
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
-  // css: {
-  //   postcss: {
-  //     plugins: [loder_pxtovw]
-  //   }
-  // }
+  plugins: [vue(),prismjs({
+    languages: ['json'],
+  }),],
+  // optimizeDeps: {
+  //   include: ['@kangc/v-md-editor/lib/theme/vuepress.js'],
+  // },
   resolve: {
     // 配置别名
-    // alias: [
-    //   { find: '@', replacement: resolve(__dirname, './src') },
-    //   { find: 'views', replacement: resolve(__dirname, './src/views') },
-    // ],
     alias: {
       '@': path.resolve(__dirname, './src/')
     }
