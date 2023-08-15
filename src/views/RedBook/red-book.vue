@@ -1,7 +1,7 @@
 
 <template>
     <!-- <keep-alive> -->
-    <van-config-provider theme="">...</van-config-provider>
+    <!-- <van-config-provider theme=""></van-config-provider> -->
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
         style="position: absolute; width: 0; height: 0" aria-hidden="true" id="__SVG_SPRITE_NODE__">
         <symbol xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16" id="like">
@@ -69,7 +69,7 @@
             <div data-v-11b921ce="" data-v-70c71a67="" class="">
                 <div data-v-d21d8bf9="" data-v-11b921ce="" class="note-scroller">
                     <van-nav-bar title="" left-text="返回" right-text="添加助手" left-arrow @click-left="onClickLeft"
-                        @click-right="onClickRight" />
+                        @click-right="onClickRight"/>
                     <div data-v-5245913a="" data-v-11b921ce="" class="note-content">
                         <!-- <van-cell-group> -->
                         <van-field v-model="article.title" autosize rows="1" type="textarea" placeholder="请输入标题"
@@ -99,9 +99,10 @@
                                                     data-v-1d0a8701="" class="avatar" :src="item.avatar"
                                                     style="width: 20px; height: 20px;"></a></div> -->
                                                     <a data-v-67377e58="" href="/user/profile/6042256c000000000100152b"
-                                                        class="name" target="_blank" style="margin-left: 10px;">{{ item.username }}</a>
+                                                        class="name" target="_blank" style="margin-left: 10px;">{{
+                                                            item.username }}</a>
                                                     <span data-v-67377e58=""
-                                                        style="font-size: 12px; color:rgba(51, 51, 51, 0.6); margin-left: 4px;">
+                                                        style="color:rgba(51, 51, 51, 0.6); margin-left: 4px;">
                                                         1楼
                                                     </span>
                                                 </div>
@@ -126,11 +127,9 @@
                                                 <!-- <van-text-ellipsis style="white-space: normal;" rows="5"
                                                     :content="item.content" expand-text="展开" collapse-text="收起"
                                                     position="middle" /> -->
-                                                <v-md-preview
-                                                style="overflow:auto; max-height: 300px;"
-                                                @copy-code-success="handleCopyCodeSuccess"
-                                                :text="item.content" 
-                                                data-v-67377e58=""  class="content"></v-md-preview>
+                                                <v-md-preview style="overflow:auto; max-height: 300px;"
+                                                    @copy-code-success="handleCopyCodeSuccess" :text="item.content"
+                                                    data-v-67377e58="" class="content"></v-md-preview>
                                                 <!-- <vue-ellipsis-3
                                                 :visible-line="1"
                                                 use-inner-html
@@ -141,9 +140,9 @@
                                             <div data-v-67377e58="" class="labels"></div>
 
                                             <div v-if="item.reply_cnt == -1" data-v-6b20f11f="" data-v-67377e58-s=""
-                                                    style="color: #13386c; cursor: pointer;" @click="text_expand(index)">
-                                                    展开回复
-                                                </div>
+                                                style="color: #13386c; cursor: pointer;" @click="text_expand(index)">
+                                                展开回复
+                                            </div>
                                             <!-- <div data-v-67377e58="" class="info">
                                                 <div data-v-67377e58="">
                                                     <span data-v-67377e58="">
@@ -189,22 +188,22 @@
                                                                     target="_blank"><img data-v-1d0a8701="" class="avatar"
                                                                         :src="comment_reply.avatar"
                                                                         style="width: 24px; height: 24px;"></a></div> -->
-                                                            <div data-v-67377e58="" class="right"
-                                                                style="max-width:100%;">
+                                                            <div data-v-67377e58="" class="right" style="max-width:100%;">
                                                                 <div data-v-67377e58="" class="author-wrapper">
-                                                                    
+
                                                                     <div data-v-67377e58="" class="author">
                                                                         <div data-v-67377e58="" class="avatar">
-                                                                        <img data-v-1d0a8701="" class="avatar"
-                                                                        :src="comment_reply.avatar"
-                                                                        style="width: 20px; height: 20px;" /></div>
-                                                                        <div data-v-67377e58=""
-                                                                            class="name" style="margin-left: 12px;">{{
+                                                                            <img data-v-1d0a8701="" class="avatar"
+                                                                                :src="comment_reply.avatar"
+                                                                                style="width: 20px; height: 20px;" />
+                                                                        </div>
+                                                                        <div data-v-67377e58="" class="name"
+                                                                            style="margin-left: 12px;">{{
                                                                                 comment_reply.username }}
                                                                         </div>
 
                                                                         <span data-v-67377e58=""
-                                                                            style="font-size: 12px; color:rgba(51, 51, 51, 0.6); margin-left: 4px;">
+                                                                            style="color:rgba(51, 51, 51, 0.6); margin-left: 4px;">
                                                                             {{ idx + 2 }}楼
                                                                         </span>
                                                                     </div>
@@ -243,11 +242,10 @@
                                                                 <!-- <div  v-else v-html="md.render(comment_reply.content)">
                                                                 </div> -->
                                                                 <!-- <v-md-preview-html :html="xss.process(VMdPreview.vMdParser.themeConfig.markdownParser.render(comment_reply.content))" preview-class="vuepress-markdown-body"></v-md-preview-html> -->
-                                                                <v-md-preview
-                                                                    style="max-height: 300px;  overflow:auto"
+                                                                <v-md-preview style="max-height: 300px;  overflow:auto"
                                                                     @copy-code-success="handleCopyCodeSuccess"
                                                                     :text="`<span style='color: gray'>回复</span><span style='color:#13386C'> ${comment_reply.reply_to_floor}楼 ${comment_reply.reply_to_username}</span>: ${comment_reply.content}`"
-                                                                    data-v-67377e58=""  class="content"></v-md-preview>
+                                                                    data-v-67377e58="" class="content"></v-md-preview>
                                                                 <div data-v-67377e58="" class="labels"></div>
                                                                 <!-- <div data-v-67377e58="" class="info">
                                                                     <div data-v-67377e58="">
@@ -286,7 +284,7 @@
                                                                 </div> -->
                                                             </div>
                                                         </div>
-                                                        
+
                                                     </div>
                                                 </div>
                                                 <div v-if="item.reply_cnt - item.replys.length > 0" data-v-6b20f11f=""
@@ -307,10 +305,9 @@
                         </div>
                     </div>
                 </div>
-                <van-popup v-model:show="fromButton" position="bottom" :style="{ height: preShowIndex != -1 ? '50%' : '' }">
-                    <!-- <van-popup v-model:show="fromButton" position="bottom"> -->
+
+                <!-- <van-popup v-model:show="fromButton" position="bottom" :style="{ height: preShowIndex != -1 ? '50%' : '' }">
                     <template #default>
-                        <!-- <van-cell-group> -->
                         <van-field @keydown.enter.native="handleKeyBoard" :border="false" v-model="commentContent"
                             :placeholder=commentContentPlaceHolder.content type="textarea" rows="3"
                             ref="commentFieldPopup" />
@@ -339,9 +336,6 @@
                                     padding-right: 18px;">发送</div>
                             </van-col>
                         </van-row>
-                        <!-- </van-cell-group> -->
-                        <!-- <van-field v-model="commentContent" placeholder="说点什么..." type="textarea" rows="3" boder="{{ false }}"/> -->
-
                         <van-checkbox-group v-if="bottomShowList[0]" v-model="checkedClipBoard">
                             <van-cell-group>
                                 <van-cell v-for="(item, idx) in clipBoardList" clickable :key="item"
@@ -361,7 +355,6 @@
                         </van-checkbox-group>
                         <van-checkbox-group v-if="bottomShowList[1]" v-model="checkedAgent">
                             <van-cell-group>
-                                <!-- <van-cell v-for="(item, idx) in agentList" clickable :key="item" :title="`复选框 ${item}`" -->
                                 <van-cell v-for="(item, idx) in agentList" clickable :key="item"
                                     :title="item.role + ':' + item.content" @click="toggleAgent(idx)">
                                     <template #right-icon>
@@ -371,10 +364,11 @@
                             </van-cell-group>
                         </van-checkbox-group>
                     </template>
-                </van-popup>
+                </van-popup> -->
 
                 <div data-v-11b921ce="" class="interactions">
-                    <van-field @input="handleInput" @keydown.enter.native="handleKeyBoard" ref="commentField" type="textarea" autosize rows="1"
+                    <!-- <van-field @input="handleInput" @keydown.enter.native="handleKeyBoard" id="commentFieldFocus"
+                        ref="commentField" type="textarea" autosize rows="1"
                         style="background-color: rgba(0, 0, 0, 0.03); border-radius: 22px;" v-model="commentContent"
                         :placeholder=commentContentPlaceHolder.content>
                         <template #right-icon>
@@ -391,27 +385,92 @@
 
                         </template>
 
+                    </van-field> -->
+                    <van-checkbox-group v-if="bottomShowList[0]" v-model="checkedClipBoard" style="max-height: 100px; overflow: auto;">
+                        <van-cell-group>
+                            <van-cell v-for="(item, idx) in clipBoardList" clickable :key="item"
+                                @click="toggleClipBoard(idx)">
+                                <template #title>
+                                    <div>
+                                        <van-text-ellipsis :content="item" />
+                                    </div>
+
+                                </template>
+                                <template #right-icon>
+                                    <van-checkbox :name="item" :ref="el => checkboxRefsClipBoard[idx] = el" @click.stop />
+                                </template>
+                            </van-cell>
+                        </van-cell-group>
+                    </van-checkbox-group>
+                    <van-checkbox-group v-if="bottomShowList[1]" v-model="checkedAgent">
+                        <van-cell-group>
+                            <!-- <van-cell v-for="(item, idx) in agentList" clickable :key="item" :title="`复选框 ${item}`" -->
+                            <van-cell v-for="(item, idx) in agentList" clickable :key="item"
+                                :title="item.role + ':' + item.content" @click="toggleAgent(idx)">
+                                <template #right-icon>
+                                    <van-checkbox :name="idx" :ref="el => checkboxRefsAgent[idx] = el" @click.stop />
+                                </template>
+                            </van-cell>
+                        </van-cell-group>
+                    </van-checkbox-group>
+                    <van-row style="padding-bottom:12px;">
+                        <van-col span="16">
+                            
+                            <svg @click="bottomShow(0)" class="reds-icon" width="24" height="24"
+                                :style="{'color': preShowIndex == 0 ? '#13386c' : '#969799' }">
+                                <use data-v-7c2d5134="" xlink:href="#chat"></use>
+                            </svg>
+                            <svg @click="bottomShow(1)" class="reds-icon" width="24" height="24"
+                                :style="{ 'margin-left': '12px', 'color': preShowIndex == 1 ? '#13386c' : '#969799' }">
+                                <use data-v-7c2d5134="" xlink:href="#mention"></use>
+                            </svg>
+                            <svg @click="clearReplyTo" class="reds-icon" width="24" height="24" 
+                                :style="{'margin-left': '12px', 'color':'#969799'}">
+                                <use xlink:href="#chat"></use>
+                            </svg>
+                        </van-col>
+                        <van-col span="8">
+                            <div @click="submitComment" style="
+                                    background-color: #1989FA;
+                                    font-size: 14px;
+                                    position: absolute;
+                                    right: 24px;
+                                    color: white;
+                                    border-radius: 18px;
+                                    padding-top: 3px;
+                                    padding-bottom: 3px;
+                                    padding-left: 18px;
+                                    padding-right: 18px;">回复</div>
+                        </van-col>
+                    </van-row>
+                    <!-- <van-field @keydown.enter.native="handleKeyBoard" :border="false" v-model="commentContent"
+                        :placeholder=commentContentPlaceHolder.content type="textarea" rows="1" autosize ref="commentFieldPopup" /> -->
+                    <van-field @input="handleInput" @keydown.enter.native="handleKeyBoard" id="commentFieldFocus" 
+                        ref="commentField" type="textarea" :autosize="{maxHeight: 200}" rows="1"
+                        style="background-color: rgba(0, 0, 0, 0.03); border-radius: 12px;" v-model="commentContent"
+                        :placeholder=commentContentPlaceHolder.content>
+                        <template #right-icon>
+                            <!-- <svg @click="clearReplyTo" class="reds-icon" width="24" height="24" style="margin-left: 8px;">
+                                <use xlink:href="#chat"></use>
+                            </svg> -->
+                            <!-- <svg @click="submitComment()" class="reds-icon" width="24" height="24"
+                                style="margin-left: 8px;">
+                                <use xlink:href="#chat"></use>
+                            </svg>
+                            <svg @click="bottomShow(1)" class="reds-icon" width="24" height="24">
+                                <use xlink:href="#mention"></use>
+                            </svg> -->
+
+                        </template>
+
                     </van-field>
 
-                    <!-- <div  data-v-e6930618="" data-v-e223d0aa="" data-v-11b921ce="" class="comment-wrapper comment-comp">
-
-                        <div  data-v-e6930618="" class="mention-select-container close"></div>
-                        <div   data-v-e6930618="" class="input-wrapper">
-                            <input  data-v-e6930618="" class="comment-input"
-                                type="text" placeholder="说点什么..." data-tribute="true" @click="showPopUp">
-                            <div data-v-e6930618="" class="input-buttons">
-                                <svg data-v-7c2d5134="" data-v-e6930618=""
-                                    class="reds-icon" width="24" height="24" id="showMentionEl">
-                                    <use data-v-7c2d5134="" xlink:href="#mention"></use>
-                                </svg>
-                            </div>
-                        </div><button data-v-e6930618="" class="submit">发送</button>
-                    </div> -->
+                    
                 </div>
             </div>
         </div>
     </div>
-<!-- </keep-alive> -->
+    <!-- </keep-alive> -->
 </template>
 
 <script setup>
@@ -474,13 +533,13 @@ const handleInput = (event) => {
     const inputValue = event.target.value
     // console.log('handleInput', inputValue)
     // console.log(event.key)
-    if (inputValue.at(-1) =='@'){
+    if (inputValue.at(-1) == '@') {
         fromButton.value = true
         preShowIndex.value = 0
         bottomShow(1)
         // bottomShow.value[1] = true
-    }else if(inputValue.at(-1) == '/'){
-        fromButton.value = true 
+    } else if (inputValue.at(-1) == '/') {
+        fromButton.value = true
         preShowIndex.value = 1
         bottomShow(0)
     }
@@ -517,6 +576,7 @@ const newComment = async (comment) => {
     query.set("replyTo", comment.replyTo)
     query.set("isAgent", comment.isAgent)
     query.set("replyCnt", 0)
+    query.set("avatar", comment.avatar)
     // query.set("cueWho", comment.cue_who)
     const res = await query.save()
     return res
@@ -637,7 +697,7 @@ const text_expand = async (comment_index) => {
 // 点击复制按钮
 const copy_comment = async (content) => {
     await toClipboard(content);
-    getClipBoard()
+    // getClipBoard()
     // console.log(content)
 }
 
@@ -645,6 +705,7 @@ const getClipBoard = async () => {
     let copyText = await navigator.clipboard.readText();
     console.log('剪贴板内容', copyText)
 }
+// getClipBoard()
 
 // 控制底部弹出框+剪贴板+agent
 const fromButton = ref(false)
@@ -667,9 +728,11 @@ const checkedAgent = ref([])
 const checkboxRefsAgent = ref([])
 const toggleAgent = (index) => {
     checkboxRefsAgent.value[index].toggle()
+    
 }
 
 const bottomShow = (index) => {
+    // console.log(index, fromButton.value, preShowIndex.value, bottomShowList.value)
     fromButton.value = true
     if (preShowIndex.value == -1) {
         bottomShowList.value[index] = true
@@ -683,9 +746,10 @@ const bottomShow = (index) => {
         bottomShowList.value[index] = true
         preShowIndex.value = index
     }
-    setTimeout(function () {
-        commentFieldPopup.value.focus()
-    })
+    // setTimeout(function () {
+    //     commentFieldPopup.value.focus()
+    // })
+    // console.log(index, fromButton.value, preShowIndex.value, bottomShowList.value)
 }
 
 
@@ -709,10 +773,10 @@ const submitArticle = async () => {
 //     console.log('触发enter')
 // }
 
-const handleKeyBoard = (event)=>{
+const handleKeyBoard = (event) => {
     // shift+enter 发送，enter 换行
     if (!event.shiftKey) {
-        return 
+        return
     }
     submitComment()
 }
@@ -735,7 +799,7 @@ const submitComment = async () => {  // 发表评论
     // return 
     let clipboard_ = checkedClipBoard.value.join(',')
     let commentContent_ = commentContent.value
-    let composedComment = agentRole +' ' + clipboard_ + commentContent_
+    let composedComment = agentRole + ' ' + clipboard_ + commentContent_
     let avatar = 'https://i2.hdslb.com/bfs/face/27ec942e8d4e6e024d3a9f11240d81a0aa90caca.jpg@60w_60h_1c.png'
     let username = '唐某人'
     let date = '08-11'
@@ -752,7 +816,8 @@ const submitComment = async () => {  // 发表评论
             'username': '唐某人',
             'content': composedComment,
             'replyTo': reply_to,
-            'isAgent': false
+            'isAgent': false,
+            'avatar': avatar
         })
 
         let relation = Bmob.Relation('sub_comment') // 需要关联的表
@@ -790,7 +855,8 @@ const submitComment = async () => {  // 发表评论
             'username': '唐某人',
             'content': composedComment,
             'replyTo': reply_to,
-            'isAgent': false
+            'isAgent': false,
+            'avatar': avatar
         })
 
         let relation = Bmob.Relation('sub_comment') // 需要关联的表
@@ -952,7 +1018,8 @@ const llmResponse = async (messages) => {
         'username': username,
         'content': commentsList.value[index].replys.at(-1).content,
         'replyTo': reply_to,
-        'isAgent': true
+        'isAgent': true,
+        'avatar': 'https://avatars.githubusercontent.com/u/14957082?s=200&v=4'
     })
     commentsList.value[index].replys.at(-1).id = newCommentRes.objectId
 
@@ -1017,17 +1084,45 @@ const clearReplyTo = () => {
     }
 }
 
-// 返回首页，
-// 检测 article 是否更新并提交
-// submitArticle()
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+// if (isMobile) {
+//   const inputElement = document.getElementById('input'); // 假设输入框的id为input
+//   inputElement.addEventListener('focus', () => {
+//     // 修改页面样式，将页面上移
+//     document.body.style.transform = 'translateY(-200px)'; // 可根据实际情况调整上移的距离
+//   });
+
+//   inputElement.addEventListener('blur', () => {
+//     // 恢复页面样式，取消上移
+//     document.body.style.transform = 'translateY(0)';
+//   });
+// }
 
 // 声明一个 ref 来存放该元素的引用
 // 必须和模板里的 ref 同名
 onMounted(() => {
     getCommentsList()
     getArticle()
-    commentField.value.focus()
+    if (isMobile) {
+        const inputElement = document.getElementById('commentFieldFocus'); // 假设输入框的id为input
+        // 监听输入框的focus事件
+        inputElement.addEventListener('focus', () => {
+            // 修改页面样式，将页面上移
+            document.body.style.transform = 'translateY(-200px)'; // 可根据实际情况调整上移的距离
+        });
+
+        // 监听输入框的blur事件
+        inputElement.addEventListener('blur', () => {
+            // 恢复页面样式，取消上移
+            document.body.style.transform = 'translateY(0)';
+        });
+    }
+
+
+    // commentField.value.focus()
 });
+
 
 onBeforeUpdate(() => {
     checkboxRefsClipBoard.value = []
@@ -1118,7 +1213,7 @@ a {
     border-radius: 18px;
     width: 68px;
     height: 36px;
-    background: #ff2442;
+    // background: #ff2442;
     font-weight: 500;
     font-size: 14px;
     color: #fff;
@@ -1183,7 +1278,7 @@ a {
 .comments-container[data-v-6b20f11f] {
     // padding: 20px 30px;
     // padding: 0px 20px;
-    padding: 0px 20px 70px 20px;
+    padding: 0px 20px 150px 20px;
 }
 
 .total[data-v-6b20f11f] {
@@ -1406,7 +1501,7 @@ a {
     margin-left: 32px;
     margin-top: 16px;
     line-height: 18px;
-    color: #13386c;
+    color: #1989FA;
     cursor: pointer;
 }
 
@@ -1437,15 +1532,15 @@ a {
     transition: flex .3s;
 }
 
-.comment-input[data-v-e6930618]:placeholder-shown {
-    background-image: none;
-    padding: 12px 92px 12px 36px;
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAANlBMVEUAAAA0NDQyMjIzMzM2NjY2NjYyMjI0NDQ1NTU1NTUzMzM1NTU1NTUzMzM1NTUzMzM1NTU1NTVl84gVAAAAEnRSTlMAmUyGEzlgc2AmfRx9aToKQzCSoXt+AAAAhElEQVRIx+3Uuw6DMAyF4XOcBOdCafv+L9vQkQFyJBak/JOHT7K8GLM7epuHusRhHwP/mejJ77i32CpZh33aD+lDFDzgZFE8+tgUv5BB9NxEb9NPL3i46JvoUUhXPBKZFQ/rTPHI3ZXt8xr12KX055LoAVtXz9kKHprxNMMxXqRvmAn9ACQ7A/tTXYAxAAAAAElFTkSuQmCC);
-    background-repeat: no-repeat;
-    background-size: 16px 16px;
-    background-position: 16px 12px;
-    color: rgba(51, 51, 51, 0.3);
-}
+// .comment-input[data-v-e6930618]:placeholder-shown {
+//     background-image: none;
+//     padding: 12px 92px 12px 36px;
+//     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAMAAABg3Am1AAAANlBMVEUAAAA0NDQyMjIzMzM2NjY2NjYyMjI0NDQ1NTU1NTUzMzM1NTU1NTUzMzM1NTUzMzM1NTU1NTVl84gVAAAAEnRSTlMAmUyGEzlgc2AmfRx9aToKQzCSoXt+AAAAhElEQVRIx+3Uuw6DMAyF4XOcBOdCafv+L9vQkQFyJBak/JOHT7K8GLM7epuHusRhHwP/mejJ77i32CpZh33aD+lDFDzgZFE8+tgUv5BB9NxEb9NPL3i46JvoUUhXPBKZFQ/rTPHI3ZXt8xr12KX055LoAVtXz9kKHprxNMMxXqRvmAn9ACQ7A/tTXYAxAAAAAElFTkSuQmCC);
+//     background-repeat: no-repeat;
+//     background-size: 16px 16px;
+//     background-position: 16px 12px;
+//     color: rgba(51, 51, 51, 0.3);
+// }
 
 .comment-input[data-v-e6930618] {
     padding: 12px 92px 12px 16px;
@@ -1735,6 +1830,9 @@ img {
 //     line-height: var(--van-text-ellipsis-line-height);
 //     // white-space: pre-wrap;
 //     word-break: break-word;
+// }
+// :root {
+// --van-nav-bar-text-color: red;
 // }
 </style>
 
