@@ -91,7 +91,7 @@
                                                 href="/user/profile/6042256c000000000100152b" class="" target="_blank"><img
                                                     data-v-1d0a8701="" class="avatar" :src="item.avatar"
                                                     style="width: 32px; height: 32px;"></a></div>
-                                        <div data-v-67377e58="" style="max-width:90%; overflow:auto" class="right">
+                                        <div data-v-67377e58="" class="right" style="max-width:90%">
                                             <div data-v-67377e58="" class="author-wrapper">
                                                 <div data-v-67377e58="" class="author">
                                                     <a data-v-67377e58="" href="/user/profile/6042256c000000000100152b"
@@ -123,7 +123,7 @@
                                                     :content="item.content" expand-text="展开" collapse-text="收起"
                                                     position="middle" /> -->
                                                 <v-md-preview
-                                                style="max-height: 200px;"
+                                                style="overflow:auto; max-height: 300px;"
                                                 @copy-code-success="handleCopyCodeSuccess"
                                                 :text="item.content" 
                                                 data-v-67377e58=""  class="content"></v-md-preview>
@@ -135,6 +135,11 @@
                                             </div>
 
                                             <div data-v-67377e58="" class="labels"></div>
+
+                                            <div v-if="item.reply_cnt == -1" data-v-6b20f11f="" data-v-67377e58-s=""
+                                                    style="color: #13386c; cursor: pointer;" @click="text_expand(index)">
+                                                    展开回复
+                                                </div>
                                             <!-- <div data-v-67377e58="" class="info">
                                                 <div data-v-67377e58="">
                                                     <span data-v-67377e58="">
@@ -181,7 +186,7 @@
                                                                         :src="comment_reply.avatar"
                                                                         style="width: 24px; height: 24px;"></a></div>
                                                             <div data-v-67377e58="" class="right"
-                                                                style="width:70%; overflow:auto">
+                                                                style="max-width:90%;">
                                                                 <div data-v-67377e58="" class="author-wrapper">
                                                                     <div data-v-67377e58="" class="author">
                                                                         <a data-v-67377e58=""
@@ -231,7 +236,7 @@
                                                                 </div> -->
                                                                 <!-- <v-md-preview-html :html="xss.process(VMdPreview.vMdParser.themeConfig.markdownParser.render(comment_reply.content))" preview-class="vuepress-markdown-body"></v-md-preview-html> -->
                                                                 <v-md-preview
-                                                                    style="max-height: 200px;"
+                                                                    style="max-height: 300px;  overflow:auto"
                                                                     @copy-code-success="handleCopyCodeSuccess"
                                                                     :text="`回复<span style='color:#13386C'> ${comment_reply.reply_to_floor}楼 ${comment_reply.reply_to_username}</span>: ${comment_reply.content}`"
                                                                     data-v-67377e58=""  class="content"></v-md-preview>
@@ -279,10 +284,10 @@
                                                     data-v-67377e58-s="" class="show-more" @click="text_expand(index)">展开 {{
                                                         item.reply_cnt - item.replys.length }} 条回复
                                                 </div>
-                                                <div v-if="item.reply_cnt == -1" data-v-6b20f11f="" data-v-67377e58-s=""
+                                                <!-- <div v-if="item.reply_cnt == -1" data-v-6b20f11f="" data-v-67377e58-s=""
                                                     style="color: #13386c; cursor: pointer;" @click="text_expand(index)">
                                                     展开回复
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
                                     </div>
