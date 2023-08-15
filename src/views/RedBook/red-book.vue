@@ -93,9 +93,13 @@
                                                     style="width: 32px; height: 32px;"></a></div>
                                         <div data-v-67377e58="" class="right" style="max-width:90%">
                                             <div data-v-67377e58="" class="author-wrapper">
-                                                <div data-v-67377e58="" class="author">
+                                                <div data-v-67377e58="" class="author" style="margin-top: 4px;">
+                                                    <!-- <div data-v-67377e58="" class="avatar"><a data-v-1d0a8701="" data-v-67377e58=""
+                                                href="/user/profile/6042256c000000000100152b" class="" target="_blank"><img
+                                                    data-v-1d0a8701="" class="avatar" :src="item.avatar"
+                                                    style="width: 20px; height: 20px;"></a></div> -->
                                                     <a data-v-67377e58="" href="/user/profile/6042256c000000000100152b"
-                                                        class="name" target="_blank">{{ item.username }}</a>
+                                                        class="name" target="_blank" style="margin-left: 10px;">{{ item.username }}</a>
                                                     <span data-v-67377e58=""
                                                         style="font-size: 12px; color:rgba(51, 51, 51, 0.6); margin-left: 4px;">
                                                         1楼
@@ -179,21 +183,25 @@
                                                         class="comment-item" v-for="(comment_reply, idx) in item.replys"
                                                         :key="comment_reply.id">
                                                         <div data-v-67377e58="" class="comment-inner-container">
-                                                            <div data-v-67377e58="" class="avatar"><a data-v-1d0a8701=""
+                                                            <!-- <div data-v-67377e58="" class="avatar"><a data-v-1d0a8701=""
                                                                     data-v-67377e58=""
                                                                     href="/user/profile/559a20e467bc6501eaa4443f" class=""
                                                                     target="_blank"><img data-v-1d0a8701="" class="avatar"
                                                                         :src="comment_reply.avatar"
-                                                                        style="width: 24px; height: 24px;"></a></div>
+                                                                        style="width: 24px; height: 24px;"></a></div> -->
                                                             <div data-v-67377e58="" class="right"
-                                                                style="max-width:90%;">
+                                                                style="max-width:100%;">
                                                                 <div data-v-67377e58="" class="author-wrapper">
+                                                                    
                                                                     <div data-v-67377e58="" class="author">
-                                                                        <a data-v-67377e58=""
-                                                                            href="/user/profile/559a20e467bc6501eaa4443f"
-                                                                            class="name" target="_blank">{{
+                                                                        <div data-v-67377e58="" class="avatar">
+                                                                        <img data-v-1d0a8701="" class="avatar"
+                                                                        :src="comment_reply.avatar"
+                                                                        style="width: 20px; height: 20px;" /></div>
+                                                                        <div data-v-67377e58=""
+                                                                            class="name" style="margin-left: 12px;">{{
                                                                                 comment_reply.username }}
-                                                                        </a>
+                                                                        </div>
 
                                                                         <span data-v-67377e58=""
                                                                             style="font-size: 12px; color:rgba(51, 51, 51, 0.6); margin-left: 4px;">
@@ -238,7 +246,7 @@
                                                                 <v-md-preview
                                                                     style="max-height: 300px;  overflow:auto"
                                                                     @copy-code-success="handleCopyCodeSuccess"
-                                                                    :text="`回复<span style='color:#13386C'> ${comment_reply.reply_to_floor}楼 ${comment_reply.reply_to_username}</span>: ${comment_reply.content}`"
+                                                                    :text="`<span style='color: gray'>回复</span><span style='color:#13386C'> ${comment_reply.reply_to_floor}楼 ${comment_reply.reply_to_username}</span>: ${comment_reply.content}`"
                                                                     data-v-67377e58=""  class="content"></v-md-preview>
                                                                 <div data-v-67377e58="" class="labels"></div>
                                                                 <!-- <div data-v-67377e58="" class="info">
@@ -278,6 +286,7 @@
                                                                 </div> -->
                                                             </div>
                                                         </div>
+                                                        
                                                     </div>
                                                 </div>
                                                 <div v-if="item.reply_cnt - item.replys.length > 0" data-v-6b20f11f=""
@@ -288,6 +297,8 @@
                                                     style="color: #13386c; cursor: pointer;" @click="text_expand(index)">
                                                     展开回复
                                                 </div> -->
+                                                <!-- <div style="height: 1px; background: gray; position: re;"></div> -->
+
                                             </div>
                                         </div>
                                     </div>
@@ -1547,7 +1558,7 @@ img {
 }
 
 .right[data-v-67377e58] {
-    margin-left: 12px;
+    // margin-left: 12px;
     // padding-bottom: 16px;
     display: flex;
     flex-direction: column;
