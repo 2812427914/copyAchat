@@ -204,8 +204,10 @@
 
                                                                         <span data-v-67377e58=""
                                                                             style="color:rgba(51, 51, 51, 0.6); margin-left: 4px;">
-                                                                            {{ idx + 2 }}楼
+                                                                            {{ idx + 2 }}楼 -
                                                                         </span>
+                                                                        <span style='color:#13386C'> {{'  '+comment_reply.reply_to_username+' '+comment_reply.reply_to_floor}}楼 </span>
+                                                                        <!-- <span style='color:#13386C'> ${comment_reply.reply_to_floor}楼 ${comment_reply.reply_to_username}</span>: ${comment_reply.content}`" -->
                                                                     </div>
                                                                     <div data-v-67377e58="" class="interactions"
                                                                         style="font-size: 12px">
@@ -244,7 +246,7 @@
                                                                 <!-- <v-md-preview-html :html="xss.process(VMdPreview.vMdParser.themeConfig.markdownParser.render(comment_reply.content))" preview-class="vuepress-markdown-body"></v-md-preview-html> -->
                                                                 <v-md-preview style="max-height: 300px;  overflow:auto"
                                                                     @copy-code-success="handleCopyCodeSuccess"
-                                                                    :text="`<span style='color: gray'>回复</span><span style='color:#13386C'> ${comment_reply.reply_to_floor}楼 ${comment_reply.reply_to_username}</span>: ${comment_reply.content}`"
+                                                                    :text="comment_reply.content"
                                                                     data-v-67377e58="" class="content"></v-md-preview>
                                                                 <div data-v-67377e58="" class="labels"></div>
                                                                 <!-- <div data-v-67377e58="" class="info">
@@ -1104,20 +1106,20 @@ const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/
 onMounted(() => {
     getCommentsList()
     getArticle()
-    if (isMobile) {
-        const inputElement = document.getElementById('commentFieldFocus'); // 假设输入框的id为input
-        // 监听输入框的focus事件
-        inputElement.addEventListener('focus', () => {
-            // 修改页面样式，将页面上移
-            document.body.style.transform = 'translateY(-200px)'; // 可根据实际情况调整上移的距离
-        });
+    // if (isMobile) {
+    //     const inputElement = document.getElementById('commentFieldFocus'); // 假设输入框的id为input
+    //     // 监听输入框的focus事件
+    //     inputElement.addEventListener('focus', () => {
+    //         // 修改页面样式，将页面上移
+    //         document.body.style.transform = 'translateY(-200px)'; // 可根据实际情况调整上移的距离
+    //     });
 
-        // 监听输入框的blur事件
-        inputElement.addEventListener('blur', () => {
-            // 恢复页面样式，取消上移
-            document.body.style.transform = 'translateY(0)';
-        });
-    }
+    //     // 监听输入框的blur事件
+    //     inputElement.addEventListener('blur', () => {
+    //         // 恢复页面样式，取消上移
+    //         document.body.style.transform = 'translateY(0)';
+    //     });
+    // }
 
 
     // commentField.value.focus()
