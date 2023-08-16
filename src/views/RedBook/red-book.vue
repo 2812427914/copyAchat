@@ -730,7 +730,18 @@ const checkedAgent = ref([])
 const checkboxRefsAgent = ref([])
 const toggleAgent = (index) => {
     checkboxRefsAgent.value[index].toggle()
-    
+    console.log(checkboxRefsAgent.value[index].checked.value)
+
+    // add selected agent to commentContent
+    if (!checkboxRefsAgent.value[index].checked.value){
+        if (commentContent.value.at(-1) == '@'){
+            commentContent.value += agentList.value[index]['role'] + ' '
+        }else{
+            commentContent.value += '@'+agentList.value[index]['role'] + ' '
+        }
+    }else{
+        commentContent.value = commentContent.value.slice(0, -1*(agentList.value[index]['role'].length+2))
+    }
 }
 
 const bottomShow = (index) => {
