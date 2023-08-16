@@ -69,16 +69,13 @@
             <div data-v-11b921ce="" data-v-70c71a67="" class="">
                 <div data-v-d21d8bf9="" data-v-11b921ce="" class="note-scroller">
                     <van-nav-bar title="" left-text="返回" right-text="添加助手" left-arrow @click-left="onClickLeft"
-                        @click-right="onClickRight"/>
+                        @click-right="onClickRight" />
                     <div data-v-5245913a="" data-v-11b921ce="" class="note-content">
-                        <!-- <van-cell-group> -->
                         <van-field v-model="article.title" autosize rows="1" type="textarea" placeholder="请输入标题"
                             data-v-5245913a="" id="detail-title" class="title" />
                         <van-field v-model="article.description" autosize rows="1" type="textarea" placeholder="请输入描述"
                             data-v-5245913a="" class="desc" />
-                        <!-- </van-cell-group> -->
-                        <!-- <div data-v-5245913a="" id="detail-title" class="title">其实参加酒局多了，都差不多</div>
-                        <div data-v-5245913a="" class="desc">没那么惊讶<br>人生不就是一场行为艺术吗<br> </div> -->
+
                     </div>
                     <div data-v-6b20f11f="" data-v-11b921ce="" class="comments-el">
                         <div data-v-6b20f11f="" class="comments-container">
@@ -94,10 +91,6 @@
                                         <div data-v-67377e58="" class="right" style="max-width:90%">
                                             <div data-v-67377e58="" class="author-wrapper">
                                                 <div data-v-67377e58="" class="author" style="margin-top: 4px;">
-                                                    <!-- <div data-v-67377e58="" class="avatar"><a data-v-1d0a8701="" data-v-67377e58=""
-                                                href="/user/profile/6042256c000000000100152b" class="" target="_blank"><img
-                                                    data-v-1d0a8701="" class="avatar" :src="item.avatar"
-                                                    style="width: 20px; height: 20px;"></a></div> -->
                                                     <a data-v-67377e58="" href="/user/profile/6042256c000000000100152b"
                                                         class="name" target="_blank" style="margin-left: 10px;">{{
                                                             item.username }}</a>
@@ -123,183 +116,135 @@
                                                 </div>
                                             </div>
                                             <div data-v-67377e58="" class="content">
-                                                <!-- {{ item.content }} -->
-                                                <!-- <van-text-ellipsis style="white-space: normal;" rows="5"
-                                                    :content="item.content" expand-text="展开" collapse-text="收起"
-                                                    position="middle" /> -->
+
                                                 <v-md-preview style="overflow:auto; max-height: 300px;"
                                                     @copy-code-success="handleCopyCodeSuccess" :text="item.content"
                                                     data-v-67377e58="" class="content"></v-md-preview>
-                                                <!-- <vue-ellipsis-3
-                                                :visible-line="1"
-                                                use-inner-html
-                                                text="<b>这是一段</b><u>非常非常非常非常非常非常非常非常非常非常非常长</u>的话">
-                                                </vue-ellipsis-3> -->
+
                                             </div>
 
                                             <div data-v-67377e58="" class="labels"></div>
 
-                                            <div v-if="item.reply_cnt == -1" data-v-6b20f11f="" data-v-67377e58-s=""
+                                            <!-- <div v-if="item.reply_cnt == -1" data-v-6b20f11f="" data-v-67377e58-s=""
+                                                style="color: #13386c; cursor: pointer;" @click="text_expand(index)">
+                                                展开回复
+                                            </div> -->
+                                            <div v-if="fromButton==false" data-v-6b20f11f="" data-v-67377e58-s=""
                                                 style="color: #13386c; cursor: pointer;" @click="text_expand(index)">
                                                 展开回复
                                             </div>
-                                            <!-- <div data-v-67377e58="" class="info">
-                                                <div data-v-67377e58="">
-                                                    <span data-v-67377e58="">
-                                                        {{ item.date }}
-                                                        第1楼
+                                            
+
+                                            <van-popup v-model:show="fromButton" position="right" :style="{ height: '100%', width: '100%'}">
+                    <template #default>
+                        <div data-v-6b20f11f="" data-v-11b921ce="" class="comments-el">
+                        <div data-v-6b20f11f="" class="comments-container">
+                            <div data-v-6b20f11f="" tag="div" name="list" class="list-container">
+                                <div data-v-67377e58="" data-v-6b20f11f="" class="comment-item"
+                                    >
+                        <div data-v-67377e58="" class="comment-inner-container">
+                            
+                            <div data-v-67377e58="" class="right" style="max-width:100%">
+                                <div data-v-67377e58="" class="author-wrapper">
+                                                <div data-v-67377e58="" class="author" style="margin-top: 4px;">
+                                                    <div data-v-67377e58="" class="avatar"><a data-v-1d0a8701="" data-v-67377e58=""
+                                                href="/user/profile/6042256c000000000100152b" class="" target="_blank"><img
+                                                    data-v-1d0a8701="" class="avatar" :src="expand_comment.avatar"
+                                                    style="width: 20px; height: 20px;"></a></div>
+                                                    <a data-v-67377e58="" href="/user/profile/6042256c000000000100152b"
+                                                        class="name" target="_blank" style="margin-left: 10px;">{{
+                                                            expand_comment.username }}</a>
+                                                    <span data-v-67377e58=""
+                                                        style="color:rgba(51, 51, 51, 0.6); margin-left: 4px;">
+                                                        1楼
                                                     </span>
-                                                    <span data-v-67377e58="" class="location">上海</span>
                                                 </div>
-                                                <div data-v-67377e58="" class="interactions">
-                                                    <div data-v-67377e58="" class="like"><span data-v-809eb46a=""
-                                                            data-v-67377e58="" class="like-wrapper" points="[object Object]"
-                                                            track-data="[object Object]"><span data-v-809eb46a=""
-                                                                class="like-lottie"
-                                                                style="width: 16px; height: 16px;"></span><svg
-                                                                data-v-7c2d5134="" data-v-809eb46a=""
-                                                                class="reds-icon like-icon" width="16" height="16">
-                                                                <use data-v-7c2d5134="" xlink:href="#like"></use>
-                                                            </svg><span data-v-809eb46a="" class="count">1138</span></span>
-                                                    </div>
+                                                <div data-v-67377e58="" class="interactions" style="font-size: 12px">
                                                     <div data-v-67377e58="" class="reply icon-container">
                                                         <span data-v-67377e58="" style="margin-right: 4px;"
-                                                            @click="copy_comment(item.content)">复制</span>
-                                                        <svg data-v-7c2d5134="" data-v-67377e58=""
+                                                            @click="copy_comment(expand_comment.content)">复制</span>
+
+                                                        <svg @click="replyComment(index, 1, expand_comment)" data-v-7c2d5134=""
+                                                            data-v-67377e58="" style="margin-left: 8px"
                                                             class="reds-icon reply-icon" width="16" height="16">
                                                             <use data-v-7c2d5134="" xlink:href="#reply"></use>
                                                         </svg>
-                                                        <span data-v-67377e58="" class="count">{{ item.reply_cnt ?
-                                                            item.reply_cnt : 100 }}
+                                                        <span v-if="expand_comment.reply_cnt != -1" data-v-67377e58=""
+                                                            class="count">{{ expand_comment.reply_cnt }}
                                                         </span>
                                                     </div>
                                                 </div>
-                                            </div> -->
-                                            <div data-v-67377e58="" class="reply-container">
-                                                <div data-v-6b20f11f="" data-v-67377e58-s="" tag="div" name="list"
-                                                    class="list-container">
-                                                    <div data-v-67377e58="" data-v-6b20f11f="" data-v-67377e58-s=""
-                                                        class="comment-item" v-for="(comment_reply, idx) in item.replys"
-                                                        :key="comment_reply.id">
-                                                        <div data-v-67377e58="" class="comment-inner-container">
-                                                            <!-- <div data-v-67377e58="" class="avatar"><a data-v-1d0a8701=""
-                                                                    data-v-67377e58=""
-                                                                    href="/user/profile/559a20e467bc6501eaa4443f" class=""
-                                                                    target="_blank"><img data-v-1d0a8701="" class="avatar"
-                                                                        :src="comment_reply.avatar"
-                                                                        style="width: 24px; height: 24px;"></a></div> -->
-                                                            <div data-v-67377e58="" class="right" style="max-width:100%;">
-                                                                <div data-v-67377e58="" class="author-wrapper">
+                                            </div>
+                                            <div data-v-67377e58="" class="content">
 
-                                                                    <div data-v-67377e58="" class="author">
-                                                                        <div data-v-67377e58="" class="avatar">
-                                                                            <img data-v-1d0a8701="" class="avatar"
-                                                                                :src="comment_reply.avatar"
-                                                                                style="width: 20px; height: 20px;" />
-                                                                        </div>
-                                                                        <div data-v-67377e58="" class="name"
-                                                                            style="margin-left: 12px;">{{
-                                                                                comment_reply.username }}
-                                                                        </div>
-
-                                                                        <span data-v-67377e58=""
-                                                                            style="color:rgba(51, 51, 51, 0.6); margin-left: 4px;">
-                                                                            {{ idx + 2 }}楼 -
-                                                                        </span>
-                                                                        <span style='color:#13386C' @click="replyComment(index, comment_reply.reply_to_floor, comment_reply.reply_to_floor == 1 ? item : item.replys[comment_reply.reply_to_floor-2])"> {{'  '+comment_reply.reply_to_username+' '+comment_reply.reply_to_floor}}楼 </span>
-                                                                        <!-- <span style='color:#13386C'> ${comment_reply.reply_to_floor}楼 ${comment_reply.reply_to_username}</span>: ${comment_reply.content}`" -->
-                                                                    </div>
-                                                                    <div data-v-67377e58="" class="interactions"
-                                                                        style="font-size: 12px">
-                                                                        <div data-v-67377e58=""
-                                                                            class="reply icon-container">
-                                                                            <span data-v-67377e58=""
-                                                                                style="margin-right: 4px;"
-                                                                                @click="copy_comment(comment_reply.content)">复制</span>
-
-                                                                            <svg @click="replyComment(index, idx + 2, comment_reply)"
-                                                                                data-v-7c2d5134="" data-v-67377e58=""
-                                                                                class="reds-icon reply-icon" width="16"
-                                                                                height="16" style="margin-left: 8px">
-                                                                                <use data-v-7c2d5134="" xlink:href="#reply">
-                                                                                </use>
-                                                                            </svg>
-                                                                        </div>
-                                                                    </div>
-
-                                                                </div>
-                                                                <!-- <div data-v-67377e58="" class="content">
-                                                                    <span data-v-67377e58="">回复</span>
-                                                                    <span data-v-67377e58="" style="margin-left: 2px; color: #13386c">{{ comment_reply.reply_to_floor+"楼 "+comment_reply.reply_to_username }}</span>
-                                                                    {{ comment_reply.content }}
-                                                                   
-                                                                </div> -->
-                                                                <!-- <van-text-ellipsis v-if="comment_reply.ellipsisShow"
-                                                                    data-v-67377e58="" class="content"
-                                                                    style="white-space: normal;" rows="5"
-                                                                    :content="'回复 ' + comment_reply.reply_to_floor + '楼 ' + comment_reply.reply_to_username + ': ' + comment_reply.content"
-                                                                    expand-text="展开" collapse-text="收起" position="middle"
-                                                                    @click-action="comment_reply.ellipsisShow = false">
-                                                                </van-text-ellipsis> -->
-                                                                <!-- <div  v-else v-html="md.render(comment_reply.content)">
-                                                                </div> -->
-                                                                <!-- <v-md-preview-html :html="xss.process(VMdPreview.vMdParser.themeConfig.markdownParser.render(comment_reply.content))" preview-class="vuepress-markdown-body"></v-md-preview-html> -->
-                                                                <v-md-preview style="max-height: 300px;  overflow:auto"
-                                                                    @copy-code-success="handleCopyCodeSuccess"
-                                                                    :text="comment_reply.content"
-                                                                    data-v-67377e58="" class="content"></v-md-preview>
-                                                                <div data-v-67377e58="" class="labels"></div>
-                                                                <!-- <div data-v-67377e58="" class="info">
-                                                                    <div data-v-67377e58="">
-                                                                        <span data-v-67377e58="">{{ idx + 2 }}楼</span>
-                                                                        <span data-v-67377e58="">{{ comment_reply.date }}</span>
-                                                                        <span data-v-67377e58="" class="location">浙江</span>
-                                                                    </div>
-                                                                    <div data-v-67377e58="" class="interactions">
-                                                                        <div data-v-67377e58="" class="like"><span
-                                                                                data-v-809eb46a="" data-v-67377e58=""
-                                                                                class="like-wrapper"
-                                                                                points="[object Object]"
-                                                                                track-data="[object Object]"><span
-                                                                                    data-v-809eb46a="" class="like-lottie"
-                                                                                    style="width: 16px; height: 16px;"></span><svg
-                                                                                    data-v-7c2d5134="" data-v-809eb46a=""
-                                                                                    class="reds-icon like-icon" width="16"
-                                                                                    height="16">
-                                                                                    <use data-v-7c2d5134=""
-                                                                                        xlink:href="#like"></use>
-                                                                                </right-icon	svg><span data-v-809eb46a=""
-                                                                                    class="count">746</span></span></div>
-                                                                        <div data-v-67377e58=""
-                                                                            class="reply icon-container">
-                                                                            <span data-v-67377e58=""
-                                                                                style="margin-right: 4px;"
-                                                                                @click="copy_comment(comment_reply.content)">复制</span>
-                                                                            <svg data-v-7c2d5134="" data-v-67377e58=""
-                                                                                class="reds-icon reply-icon" width="16"
-                                                                                height="16">
-                                                                                <use data-v-7c2d5134="" xlink:href="#reply">
-                                                                                </use>
-                                                                            </svg>
-                                                                        </div>
-                                                                    </div>
-                                                                </div> -->
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-                                                <div v-if="item.reply_cnt - item.replys.length > 0" data-v-6b20f11f=""
-                                                    data-v-67377e58-s="" class="show-more" @click="text_expand(index)">展开 {{
-                                                        item.reply_cnt - item.replys.length }} 条回复
-                                                </div>
-                                                <!-- <div v-if="item.reply_cnt == -1" data-v-6b20f11f="" data-v-67377e58-s=""
-                                                    style="color: #13386c; cursor: pointer;" @click="text_expand(index)">
-                                                    展开回复
-                                                </div> -->
-                                                <!-- <div style="height: 1px; background: gray; position: re;"></div> -->
+                                                <v-md-preview style="overflow:auto; max-height: 200px; overflow:hidden"
+                                                    @copy-code-success="handleCopyCodeSuccess" :text="expand_comment.content"
+                                                    data-v-67377e58="" class="content"></v-md-preview>
 
                                             </div>
+
+                                            <div data-v-67377e58="" class="labels"></div>
+                        <div data-v-67377e58="" class="reply-container">
+                            <div data-v-6b20f11f="" data-v-67377e58-s="" tag="div" name="list" class="list-container">
+                                <div data-v-67377e58="" data-v-6b20f11f="" data-v-67377e58-s="" class="comment-item"
+                                    v-for="(comment_reply, idx) in expand_comment.replys" :key="comment_reply.id">
+                                    <div data-v-67377e58="" class="comment-inner-container">
+                                        <div data-v-67377e58="" class="right" style="max-width:100%;">
+                                            <div data-v-67377e58="" class="author-wrapper">
+
+                                                <div data-v-67377e58="" class="author">
+                                                    <div data-v-67377e58="" class="avatar">
+                                                        <img data-v-1d0a8701="" class="avatar" :src="comment_reply.avatar"
+                                                            style="width: 20px; height: 20px;" />
+                                                    </div>
+                                                    <div data-v-67377e58="" class="name" style="margin-left: 12px;">{{
+                                                        comment_reply.username }}
+                                                    </div>
+
+                                                    <span data-v-67377e58=""
+                                                        style="color:rgba(51, 51, 51, 0.6); margin-left: 4px;">
+                                                        {{ idx + 2 }}楼 -
+                                                    </span>
+                                                    <span style='color:#13386C'
+                                                        @click="replyComment(index, comment_reply.reply_to_floor, comment_reply.reply_to_floor == 1 ? item : item.replys[comment_reply.reply_to_floor - 2])">
+                                                        {{ ' ' + comment_reply.reply_to_username + ' '+comment_reply.reply_to_floor}}楼 </span>
+                                                </div>
+                                                <div data-v-67377e58="" class="interactions" style="font-size: 12px">
+                                                    <div data-v-67377e58="" class="reply icon-container">
+                                                        <span data-v-67377e58="" style="margin-right: 4px;"
+                                                            @click="copy_comment(comment_reply.content)">复制</span>
+
+                                                        <svg @click="replyComment(index, idx + 2, comment_reply)"
+                                                            data-v-7c2d5134="" data-v-67377e58=""
+                                                            class="reds-icon reply-icon" width="16" height="16"
+                                                            style="margin-left: 8px">
+                                                            <use data-v-7c2d5134="" xlink:href="#reply">
+                                                            </use>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <v-md-preview style="max-height: 200px;  overflow: hidden"
+                                                @copy-code-success="handleCopyCodeSuccess" :text="comment_reply.content"
+                                                data-v-67377e58="" class="content"></v-md-preview>
+                                            <div data-v-67377e58="" class="labels"></div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+
+                    </template>
+                </van-popup>
                                         </div>
                                     </div>
                                 </div>
@@ -308,87 +253,11 @@
                     </div>
                 </div>
 
-                <!-- <van-popup v-model:show="fromButton" position="bottom" :style="{ height: preShowIndex != -1 ? '50%' : '' }">
-                    <template #default>
-                        <van-field @keydown.enter.native="handleKeyBoard" :border="false" v-model="commentContent"
-                            :placeholder=commentContentPlaceHolder.content type="textarea" rows="3"
-                            ref="commentFieldPopup" />
-                        <van-row style="padding-bottom:12px;">
-                            <van-col span="12">
-                                <svg @click="bottomShow(0)" class="reds-icon" width="24" height="24"
-                                    :style="{ 'margin-left': '12px', 'color': preShowIndex == 0 ? '#13386c' : '#969799' }">
-                                    <use data-v-7c2d5134="" xlink:href="#chat"></use>
-                                </svg>
-                                <svg @click="bottomShow(1)" class="reds-icon" width="24" height="24"
-                                    :style="{ 'margin-left': '12px', 'color': preShowIndex == 1 ? '#13386c' : '#969799' }">
-                                    <use data-v-7c2d5134="" xlink:href="#mention"></use>
-                                </svg>
-                            </van-col>
-                            <van-col span="12">
-                                <div @click="submitComment" style="
-                                    background-color: #408af2;
-                                    font-size: 14px;
-                                    position: absolute;
-                                    right: 24px;
-                                    color: white;
-                                    border-radius: 18px;
-                                    padding-top: 3px;
-                                    padding-bottom: 3px;
-                                    padding-left: 18px;
-                                    padding-right: 18px;">发送</div>
-                            </van-col>
-                        </van-row>
-                        <van-checkbox-group v-if="bottomShowList[0]" v-model="checkedClipBoard">
-                            <van-cell-group>
-                                <van-cell v-for="(item, idx) in clipBoardList" clickable :key="item"
-                                    @click="toggleClipBoard(idx)">
-                                    <template #title>
-                                        <div>
-                                            <van-text-ellipsis :content="item" />
-                                        </div>
-
-                                    </template>
-                                    <template #right-icon>
-                                        <van-checkbox :name="item" :ref="el => checkboxRefsClipBoard[idx] = el"
-                                            @click.stop />
-                                    </template>
-                                </van-cell>
-                            </van-cell-group>
-                        </van-checkbox-group>
-                        <van-checkbox-group v-if="bottomShowList[1]" v-model="checkedAgent">
-                            <van-cell-group>
-                                <van-cell v-for="(item, idx) in agentList" clickable :key="item"
-                                    :title="item.role + ':' + item.content" @click="toggleAgent(idx)">
-                                    <template #right-icon>
-                                        <van-checkbox :name="idx" :ref="el => checkboxRefsAgent[idx] = el" @click.stop />
-                                    </template>
-                                </van-cell>
-                            </van-cell-group>
-                        </van-checkbox-group>
-                    </template>
-                </van-popup> -->
+                
 
                 <div data-v-11b921ce="" class="interactions">
-                    <!-- <van-field @input="handleInput" @keydown.enter.native="handleKeyBoard" id="commentFieldFocus"
-                        ref="commentField" type="textarea" autosize rows="1"
-                        style="background-color: rgba(0, 0, 0, 0.03); border-radius: 22px;" v-model="commentContent"
-                        :placeholder=commentContentPlaceHolder.content>
-                        <template #right-icon>
-                            <svg @click="clearReplyTo" class="reds-icon" width="24" height="24" style="margin-left: 8px;">
-                                <use xlink:href="#chat"></use>
-                            </svg>
-                            <svg @click="submitComment()" class="reds-icon" width="24" height="24"
-                                style="margin-left: 8px;">
-                                <use xlink:href="#chat"></use>
-                            </svg>
-                            <svg @click="bottomShow(1)" class="reds-icon" width="24" height="24">
-                                <use xlink:href="#mention"></use>
-                            </svg>
-
-                        </template>
-
-                    </van-field> -->
-                    <van-checkbox-group v-if="bottomShowList[0]" v-model="checkedClipBoard" style="max-height: 150px; overflow: auto;">
+                    <van-checkbox-group v-if="bottomShowList[0]" v-model="checkedClipBoard"
+                        style="max-height: 150px; overflow: auto;">
                         <van-cell-group>
                             <van-cell v-for="(item, idx) in clipBoardList" clickable :key="item"
                                 @click="toggleClipBoard(idx)">
@@ -404,9 +273,9 @@
                             </van-cell>
                         </van-cell-group>
                     </van-checkbox-group>
-                    <van-checkbox-group v-if="bottomShowList[1]" v-model="checkedAgent" style="max-height: 150px; overflow: auto;">
+                    <van-checkbox-group v-if="bottomShowList[1]" v-model="checkedAgent"
+                        style="max-height: 150px; overflow: auto;">
                         <van-cell-group>
-                            <!-- <van-cell v-for="(item, idx) in agentList" clickable :key="item" :title="`复选框 ${item}`" -->
                             <van-cell v-for="(item, idx) in agentList" clickable :key="item"
                                 :title="item.role + ':' + item.content" @click="toggleAgent(idx)">
                                 <template #right-icon>
@@ -415,19 +284,76 @@
                             </van-cell>
                         </van-cell-group>
                     </van-checkbox-group>
+                    <div v-if="bottomShowList[2] && commentContentPlaceHolder.floor!=-1" style="max-height: 100px; overflow:auto" data-v-6b20f11f="" data-v-11b921ce="" class="comments-el">
+                        <!-- <div data-v-6b20f11f="" class="comments-container"> -->
+                            <div data-v-6b20f11f="" tag="div" name="list" class="list-container">
+                                <div data-v-67377e58="" data-v-6b20f11f="" 
+                                    >
+                        <div data-v-67377e58="" class="comment-inner-container">
+                            
+                            <div data-v-67377e58="" class="right" style="max-width:100%">
+                                <div data-v-67377e58="" class="author-wrapper">
+                                                <div data-v-67377e58="" class="author" style="margin-top: 4px;">
+                                                    <!-- <div data-v-67377e58="" class="avatar"><a data-v-1d0a8701="" data-v-67377e58=""
+                                                href="/user/profile/6042256c000000000100152b" class="" target="_blank"><img
+                                                    data-v-1d0a8701="" class="avatar" :src="commentContentPlaceHolder.comment.avatar"
+                                                    style="width: 20px; height: 20px;"></a></div> -->
+                                                    <a data-v-67377e58="" href="/user/profile/6042256c000000000100152b"
+                                                        class="name" target="_blank" style="margin-left: 10px;">{{
+                                                            commentContentPlaceHolder.comment.username }}</a>
+                                                    <span data-v-67377e58=""
+                                                        style="color:rgba(51, 51, 51, 0.6); margin-left: 4px;">
+                                                        {{commentContentPlaceHolder.floor}}楼
+                                                    </span>
+                                                </div>
+                                                <div data-v-67377e58="" class="interactions" style="font-size: 12px">
+                                                    <div data-v-67377e58="" class="reply icon-container">
+                                                        <span data-v-67377e58="" style="margin-right: 4px;"
+                                                            @click="clearReplyTo">清除</span>
+
+                                                        <!-- <svg @click="replyComment(index, 1, commentContentPlaceHolder.comment)" data-v-7c2d5134=""
+                                                            data-v-67377e58="" style="margin-left: 8px"
+                                                            class="reds-icon reply-icon" width="16" height="16">
+                                                            <use data-v-7c2d5134="" xlink:href="#reply"></use>
+                                                        </svg> -->
+                                                        <!-- <span v-if="commentContentPlaceHolder.comment.reply_cnt != -1" data-v-67377e58=""
+                                                            class="count">{{ commentContentPlaceHolder.comment.reply_cnt }}
+                                                        </span> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                                <v-md-preview style="overflow:auto; max-height: 200px; overflow:hidden"
+                                                    @copy-code-success="handleCopyCodeSuccess" :text="commentContentPlaceHolder.comment.content"
+                                                    data-v-67377e58="" class="content"></v-md-preview>
+
+                                        </div>
+                                            </div>
+                                            </div>
+                                            </div>
+                                            </div>
+                                            <!-- </div> -->
+                    <!-- <v-md-preview v-if="bottomShowList[2]" style="max-height: 150px; overflow:hidden"
+                                                    @copy-code-success="handleCopyCodeSuccess" :text="commentContentPlaceHolder.comment.content"
+                                                    data-v-67377e58="" class="content"></v-md-preview> -->
                     <van-row style="padding-bottom:12px;">
                         <van-col span="16">
-                            
+
                             <svg @click="bottomShow(0)" class="reds-icon" width="24" height="24"
-                                :style="{'color': preShowIndex == 0 ? '#13386c' : '#969799' }">
+                                :style="{ 'color': preShowIndex == 0 ? '#13386c' : '#969799' }">
                                 <use data-v-7c2d5134="" xlink:href="#chat"></use>
                             </svg>
                             <svg @click="bottomShow(1)" class="reds-icon" width="24" height="24"
                                 :style="{ 'margin-left': '12px', 'color': preShowIndex == 1 ? '#13386c' : '#969799' }">
                                 <use data-v-7c2d5134="" xlink:href="#mention"></use>
                             </svg>
-                            <svg @click="clearReplyTo" class="reds-icon" width="24" height="24" 
-                                :style="{'margin-left': '12px', 'color':'#969799'}">
+                            <!-- <svg @click="clearReplyTo" class="reds-icon" width="24" height="24" -->
+                            <svg @click="bottomShow(2)" class="reds-icon" width="24" height="24"
+                                :style="{ 'margin-left': '12px', 'color': '#969799' }">
+                                <use xlink:href="#chat"></use>
+                            </svg>
+                            <svg @click="fromButton=false" class="reds-icon" width="24" height="24"
+                                :style="{ 'margin-left': '12px', 'color': '#969799' }">
                                 <use xlink:href="#chat"></use>
                             </svg>
                         </van-col>
@@ -447,8 +373,8 @@
                     </van-row>
                     <!-- <van-field @keydown.enter.native="handleKeyBoard" :border="false" v-model="commentContent"
                         :placeholder=commentContentPlaceHolder.content type="textarea" rows="1" autosize ref="commentFieldPopup" /> -->
-                    <van-field @input="handleInput" @keydown.enter.native="handleKeyBoard" id="commentFieldFocus" 
-                        ref="commentField" type="textarea" :autosize="{maxHeight: 200}" rows="1"
+                    <van-field @input="handleInput" @keydown.enter.native="handleKeyBoard" id="commentFieldFocus"
+                        ref="commentField" type="textarea" :autosize="{ maxHeight: 200 }" rows="1"
                         style="background-color: rgba(0, 0, 0, 0.03); border-radius: 12px;" v-model="commentContent"
                         :placeholder=commentContentPlaceHolder.content>
                         <template #right-icon>
@@ -467,7 +393,7 @@
 
                     </van-field>
 
-                    
+
                 </div>
             </div>
         </div>
@@ -536,13 +462,16 @@ const handleInput = (event) => {
     // console.log('handleInput', inputValue)
     // console.log(event.key)
     if (inputValue.at(-1) == '@') {
-        fromButton.value = true
-        preShowIndex.value = 0
+        // fromButton.value = true
+        // bottomShowList.value[preShowIndex] = false
+        // bottomShowList.value[preShowIndex.value] = false 
+        // preShowIndex.value = -1
         bottomShow(1)
         // bottomShow.value[1] = true
     } else if (inputValue.at(-1) == '/') {
-        fromButton.value = true
-        preShowIndex.value = 1
+        // fromButton.value = true
+        // bottomShowList.value[preShowIndex.value] = false 
+        // preShowIndex.value = -1
         bottomShow(0)
     }
     // if (input)
@@ -664,10 +593,11 @@ const appendLastMessageContent = (content) =>
 
 // 下拉刷新commentList：pagenation
 // getCommentsList()
-
+const expand_comment = ref()
 // 点击 展开更多回复
 const text_expand = async (comment_index) => {
-
+    
+    
     let query = Bmob.Query('sub_comment')
     query.order("createdAt")
     query.field('replys', reply_ids.value[comment_index][0])
@@ -694,6 +624,8 @@ const text_expand = async (comment_index) => {
     commentsList.value[comment_index].replys = commentsList.value[comment_index].replys.concat(data.results)
     names.value[comment_index] = tmp_names
     reply_ids.value[comment_index] = tmp_reply_ids
+    fromButton.value = true
+    expand_comment.value = commentsList.value[comment_index]
 }
 
 // 点击复制按钮
@@ -712,7 +644,7 @@ const getClipBoard = async () => {
 // 控制底部弹出框+剪贴板+agent
 const fromButton = ref(false)
 const preShowIndex = ref(-1)
-const bottomShowList = ref([false, false])
+const bottomShowList = ref([false, false, false])
 
 const clipBoardList = ref(['1', '2', '34', '5', '6', '7', '8'])
 const checkedClipBoard = ref([])
@@ -733,20 +665,22 @@ const toggleAgent = (index) => {
     console.log(checkboxRefsAgent.value[index].checked.value)
 
     // add selected agent to commentContent
-    if (!checkboxRefsAgent.value[index].checked.value){
-        if (commentContent.value.at(-1) == '@'){
+    if (!checkboxRefsAgent.value[index].checked.value) {
+        if (commentContent.value.at(-1) == '@') {
             commentContent.value += agentList.value[index]['role'] + ' '
-        }else{
-            commentContent.value += '@'+agentList.value[index]['role'] + ' '
+        } else {
+            commentContent.value += '@' + agentList.value[index]['role'] + ' '
         }
-    }else{
-        commentContent.value = commentContent.value.slice(0, -1*(agentList.value[index]['role'].length+2))
+    } else {
+        commentContent.value = commentContent.value.slice(0, -1 * (agentList.value[index]['role'].length + 2))
     }
 }
 
 const bottomShow = (index) => {
     // console.log(index, fromButton.value, preShowIndex.value, bottomShowList.value)
-    fromButton.value = true
+    // fromButton.value = true
+    bottomShowList.value[preShowIndex.value] = false 
+    preShowIndex.value = -1
     if (preShowIndex.value == -1) {
         bottomShowList.value[index] = true
         preShowIndex.value = index
@@ -971,7 +905,7 @@ const submitComment = async () => {  // 发表评论
     commentContent.value = ''
 
     // 重置 fromButton, preShowIndex, bottomShowList
-    fromButton.value = false
+    // fromButton.value = false
     preShowIndex.value = -1
     bottomShowList.value = [false, false]
 }
@@ -1083,12 +1017,18 @@ const replyComment = (index, floor, comment) => {
         index: index,
         comment: comment
     }
+    // bottomShowList.value[preShowIndex.value] = false 
+    // preShowIndex.value = -1
+    bottomShow(2)
+    // bottomShowList.value[2] = true
+    // preShowIndex.value = 2
     commentField.value.focus()  //聚焦到输入框
     // console.log(commentContentPlaceHolder.value)
 }
 
 // 清除commentContentPlaceHolder按钮， 清除回复某个评论的 placeholder，直接成为一级评论
 const clearReplyTo = () => {
+    bottomShowList.value[2] = false
     commentContentPlaceHolder.value = {
         content: '说点什么...',
         index: -1,
