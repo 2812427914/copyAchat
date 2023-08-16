@@ -206,7 +206,7 @@
                                                                             style="color:rgba(51, 51, 51, 0.6); margin-left: 4px;">
                                                                             {{ idx + 2 }}楼 -
                                                                         </span>
-                                                                        <span style='color:#13386C'> {{'  '+comment_reply.reply_to_username+' '+comment_reply.reply_to_floor}}楼 </span>
+                                                                        <span style='color:#13386C' @click="replyComment(index, comment_reply.reply_to_floor, comment_reply.reply_to_floor == 1 ? item : item.replys[comment_reply.reply_to_floor-2])"> {{'  '+comment_reply.reply_to_username+' '+comment_reply.reply_to_floor}}楼 </span>
                                                                         <!-- <span style='color:#13386C'> ${comment_reply.reply_to_floor}楼 ${comment_reply.reply_to_username}</span>: ${comment_reply.content}`" -->
                                                                     </div>
                                                                     <div data-v-67377e58="" class="interactions"
@@ -388,7 +388,7 @@
                         </template>
 
                     </van-field> -->
-                    <van-checkbox-group v-if="bottomShowList[0]" v-model="checkedClipBoard" style="max-height: 100px; overflow: auto;">
+                    <van-checkbox-group v-if="bottomShowList[0]" v-model="checkedClipBoard" style="max-height: 150px; overflow: auto;">
                         <van-cell-group>
                             <van-cell v-for="(item, idx) in clipBoardList" clickable :key="item"
                                 @click="toggleClipBoard(idx)">
@@ -404,7 +404,7 @@
                             </van-cell>
                         </van-cell-group>
                     </van-checkbox-group>
-                    <van-checkbox-group v-if="bottomShowList[1]" v-model="checkedAgent">
+                    <van-checkbox-group v-if="bottomShowList[1]" v-model="checkedAgent" style="max-height: 150px; overflow: auto;">
                         <van-cell-group>
                             <!-- <van-cell v-for="(item, idx) in agentList" clickable :key="item" :title="`复选框 ${item}`" -->
                             <van-cell v-for="(item, idx) in agentList" clickable :key="item"
