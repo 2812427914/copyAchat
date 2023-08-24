@@ -1096,7 +1096,7 @@ const submitComment = async () => {  // 发表评论
 
     // 如果 @ 了agent，或者回复了agent的消息，需要agent做出回应
     // if (checkedAgent.value.length >= 1 || agentList.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
-    if (checkedAgent.value != 1 || agentListOri.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
+    if (checkedAgent.value != -1 || agentListOri.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
         llmResponse(messages)
     } else {
         // 重置 commentContentPlaceHolder，checkedClipBoard, checkboxRefsClipBoard, checkedAgent, checkboxRefsAgent
