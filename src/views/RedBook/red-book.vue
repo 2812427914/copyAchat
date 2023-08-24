@@ -959,7 +959,7 @@ const submitComment = async () => {  // 发表评论
     let date = '08-11'
     let reply_cnt = 0
     // let cue_who = checkedAgent.value.map(item => agentList.value[item]['role'])
-    let cue_who = agentList.value[checkedAgent.value]['role']
+    let cue_who =  checkedAgent.value == -1 ? '' : agentList.value[checkedAgent.value]['role']
     let reply_to = articleId.value
     let reply_to_floor = -1
     let reply_to_username = '-1'
@@ -1046,15 +1046,16 @@ const submitComment = async () => {  // 发表评论
 
 
     // let agentContent = checkedAgent.value.map(item => agentList.value[item]['content'])
-    // if (checkedAgent.value.length == 0 && agentList.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
-    //     for (let i = 0; i < agentList.value.length; i++) {
-    //         if (commentContentPlaceHolder.value.comment.username == agentList.value[i]['role']) {
-    //             agentContent = [agentList.value[i]['content']]
-    //             break
-    //         }
-    //     }
-    // }
-    let agentContent = agentList.value[checkedAgent.value]['content']
+    let agentContent = checkedAgent.value == -1 ? '' : agentList.value[checkedAgent.value]['content']
+    if (checkedAgent.value.length == 0 && agentListOri.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
+        for (let i = 0; i < agentListOri.length; i++) {
+            if (commentContentPlaceHolder.value.comment.username == agentListOri[i]['role']) {
+                agentContent = [agentListOri[i]['content']]
+                break
+            }
+        }
+    }
+    
     // let cnt = 0
     let last_reply_floor = reply_to_floor
     let messages = ref([])
