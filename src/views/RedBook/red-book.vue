@@ -69,7 +69,7 @@
             <div data-v-11b921ce="" data-v-70c71a67="" class="">
                 <div data-v-d21d8bf9="" data-v-11b921ce="" class="note-scroller">
                     <van-nav-bar title="" left-text="返回" right-text="添加助手" left-arrow @click-left="onClickLeft"
-                        @click-right="onClickRight"/>
+                        @click-right="onClickRight" />
                     <div data-v-5245913a="" data-v-11b921ce="" class="note-content">
                         <!-- <van-cell-group> -->
                         <van-field v-model="article.title" autosize rows="1" type="textarea" placeholder="请输入标题"
@@ -206,7 +206,9 @@
                                                                             style="color:rgba(51, 51, 51, 0.6); margin-left: 4px;">
                                                                             {{ idx + 2 }}楼 -
                                                                         </span>
-                                                                        <span style='color:#13386C' @click="replyComment(index, comment_reply.reply_to_floor, comment_reply.reply_to_floor == 1 ? item : item.replys[comment_reply.reply_to_floor-2])"> {{'  '+comment_reply.reply_to_username+' '+comment_reply.reply_to_floor}}楼 </span>
+                                                                        <span style='color:#13386C'
+                                                                            @click="replyComment(index, comment_reply.reply_to_floor, comment_reply.reply_to_floor == 1 ? item : item.replys[comment_reply.reply_to_floor - 2])">
+                                                                            {{ ' ' + comment_reply.reply_to_username + ' '+comment_reply.reply_to_floor}}楼 </span>
                                                                         <!-- <span style='color:#13386C'> ${comment_reply.reply_to_floor}楼 ${comment_reply.reply_to_username}</span>: ${comment_reply.content}`" -->
                                                                     </div>
                                                                     <div data-v-67377e58="" class="interactions"
@@ -246,8 +248,8 @@
                                                                 <!-- <v-md-preview-html :html="xss.process(VMdPreview.vMdParser.themeConfig.markdownParser.render(comment_reply.content))" preview-class="vuepress-markdown-body"></v-md-preview-html> -->
                                                                 <v-md-preview style="max-height: 300px;  overflow:auto"
                                                                     @copy-code-success="handleCopyCodeSuccess"
-                                                                    :text="comment_reply.content"
-                                                                    data-v-67377e58="" class="content"></v-md-preview>
+                                                                    :text="comment_reply.content" data-v-67377e58=""
+                                                                    class="content"></v-md-preview>
                                                                 <div data-v-67377e58="" class="labels"></div>
                                                                 <!-- <div data-v-67377e58="" class="info">
                                                                     <div data-v-67377e58="">
@@ -388,7 +390,15 @@
                         </template>
 
                     </van-field> -->
-                    <van-checkbox-group v-if="bottomShowList[0]" v-model="checkedClipBoard" style="max-height: 150px; overflow: auto;">
+                    <!-- <Mentionable
+                        :keys="['@']"
+                        :items="items"
+                        offset="6"
+                    >
+                        <textarea v-model="text"> </textarea>
+                    </Mentionable> -->
+                    <van-checkbox-group v-if="bottomShowList[0]" v-model="checkedClipBoard"
+                        style="max-height: 150px; overflow: auto;">
                         <van-cell-group>
                             <van-cell v-for="(item, idx) in clipBoardList" clickable :key="item"
                                 @click="toggleClipBoard(idx)">
@@ -404,9 +414,9 @@
                             </van-cell>
                         </van-cell-group>
                     </van-checkbox-group>
-                    <van-checkbox-group v-if="bottomShowList[1]" v-model="checkedAgent" style="max-height: 150px; overflow: auto;">
+                    <!-- <van-checkbox-group v-if="bottomShowList[1]" v-model="checkedAgent"
+                        style="max-height: 150px; overflow: auto;">
                         <van-cell-group>
-                            <!-- <van-cell v-for="(item, idx) in agentList" clickable :key="item" :title="`复选框 ${item}`" -->
                             <van-cell v-for="(item, idx) in agentList" clickable :key="item"
                                 :title="item.role + ':' + item.content" @click="toggleAgent(idx)">
                                 <template #right-icon>
@@ -414,20 +424,42 @@
                                 </template>
                             </van-cell>
                         </van-cell-group>
-                    </van-checkbox-group>
+                    </van-checkbox-group> -->
+
+                    <van-radio-group v-if="bottomShowList[1]" v-model="checkedAgent" style="max-height: 150px; overflow: auto;">
+                        <van-cell-group>
+                            <van-cell v-for="(item, idx) in agentList" clickable :key="item"
+                                :title="item.role + ':' + item.content" @click="checkedAgent = checkedAgent == idx ? -1 : idx">
+                                <template #right-icon>
+                                    <van-radio :name="idx"></van-radio>
+                                    <!-- <van-checkbox :name="idx" :ref="el => checkboxRefsAgent[idx] = el" @click.stop /> -->
+                                </template>
+                            </van-cell>
+                            <!-- <van-cell title="单选框 1" clickable @click="checked = '1'">
+                                <template #right-icon>
+                                    <van-radio name="1" />
+                                </template>
+                            </van-cell>
+                            <van-cell title="单选框 2" clickable @click="checked = '2'">
+                                <template #right-icon>
+                                    <van-radio name="2" />
+                                </template>
+                            </van-cell> -->
+                        </van-cell-group>
+                    </van-radio-group>
                     <van-row style="padding-bottom:12px;">
                         <van-col span="16">
-                            
+
                             <svg @click="bottomShow(0)" class="reds-icon" width="24" height="24"
-                                :style="{'color': preShowIndex == 0 ? '#13386c' : '#969799' }">
+                                :style="{ 'color': preShowIndex == 0 ? '#13386c' : '#969799' }">
                                 <use data-v-7c2d5134="" xlink:href="#chat"></use>
                             </svg>
                             <svg @click="bottomShow(1)" class="reds-icon" width="24" height="24"
                                 :style="{ 'margin-left': '12px', 'color': preShowIndex == 1 ? '#13386c' : '#969799' }">
                                 <use data-v-7c2d5134="" xlink:href="#mention"></use>
                             </svg>
-                            <svg @click="clearReplyTo" class="reds-icon" width="24" height="24" 
-                                :style="{'margin-left': '12px', 'color':'#969799'}">
+                            <svg @click="clearReplyTo" class="reds-icon" width="24" height="24"
+                                :style="{ 'margin-left': '12px', 'color': '#969799' }">
                                 <use xlink:href="#chat"></use>
                             </svg>
                         </van-col>
@@ -447,8 +479,8 @@
                     </van-row>
                     <!-- <van-field @keydown.enter.native="handleKeyBoard" :border="false" v-model="commentContent"
                         :placeholder=commentContentPlaceHolder.content type="textarea" rows="1" autosize ref="commentFieldPopup" /> -->
-                    <van-field @input="handleInput" @keydown.enter.native="handleKeyBoard" id="commentFieldFocus" 
-                        ref="commentField" type="textarea" :autosize="{maxHeight: 200}" rows="1"
+                    <van-field @keydown="handleKeyDown" @input="handleInput" @keydown.enter.native="handleKeyBoard"
+                        id="commentFieldFocus" ref="commentField" type="textarea" :autosize="{ maxHeight: 200 }" rows="1"
                         style="background-color: rgba(0, 0, 0, 0.03); border-radius: 12px;" v-model="commentContent"
                         :placeholder=commentContentPlaceHolder.content>
                         <template #right-icon>
@@ -467,7 +499,7 @@
 
                     </van-field>
 
-                    
+
                 </div>
             </div>
         </div>
@@ -476,11 +508,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUpdate } from 'vue'
+import { ref, onMounted, onBeforeUpdate, watch, watchEffect } from 'vue'
 import { getCommentsReplyList } from "@/api/index";
 import chat from "@/views/RedBook/data"
 import { useRoute, useRouter } from 'vue-router';
 import useClipboard from "vue-clipboard3";
+import { nextTick } from 'vue';
+// import { Mentionable } from 'vue-mention'
+// import 'floating-vue/dist/style.css'
 
 const { toClipboard } = useClipboard();
 // import { xss } from '@kangc/v-md-editor';
@@ -493,7 +528,7 @@ const { toClipboard } = useClipboard();
 const handleCopyCodeSuccess = (code) => {
     console.log(code);
 }
-
+const items = ref([])
 // const html = ;
 const articleTableName = ref('article')
 const articleId = ref('')
@@ -530,22 +565,44 @@ const onClickRight = async () => {
         path: '/assistant'
     })
 }
+const commentContent = ref('')
+// watch(commentContent,(newValue, oldValue) => {
+//     if (newValue.length>oldValue){ //新增字符
+//         let newChar = newValue.slice(-1) // 获取最新输入的字符
+//     }else if (newValue.length < oldValue) //删除字符
+//         let oldChar = oldValue.slice(-1)
+//     }
+//         let newChar = newValue.slice(-1) // 获取最新输入的字符
+//         // console.log(newChar)
+//         let newChar1 = oldValue.slice(-1)
+//         // console.log(newChar1)
+//         console.log(newValue, newChar)
+//         console.log(oldValue, newChar1)
+//     }
+// )
 
 const handleInput = (event) => {
-    const inputValue = event.target.value
-    // console.log('handleInput', inputValue)
-    // console.log(event.key)
-    if (inputValue.at(-1) == '@') {
-        fromButton.value = true
-        preShowIndex.value = 0
-        bottomShow(1)
-        // bottomShow.value[1] = true
-    } else if (inputValue.at(-1) == '/') {
-        fromButton.value = true
-        preShowIndex.value = 1
-        bottomShow(0)
+    // commentContent.value = event.target.value
+    // console.log(commentContent.value)
+    // console.log(pos_alta.value, event.target.selectionStart)
+    if (searchAgent.value) {
+        searchText.value = ''
+        if (event.target.selectionStart - pos_alta.value > 0) {
+            // console.log(event.target.value)
+            searchText.value += event.target.value.slice(pos_alta.value + 1, event.target.selectionStart + 1)
+            agentList.value = agentListOri.filter((item) =>
+                (item.role+' ').includes(searchText.value)
+            )
+            if (agentList.value.length == 1 && agentList.value[0]['role']+' ' == searchText.value) {
+                // console.log(checkboxRefsAgent.value)
+                // checkboxRefsAgent.value[0].toggle()
+                // toggleAgent(0)
+                checkedAgent.value = 0
+                searchAgent.value = false
+            }
+            // console.log(searchText.value, agentList.value)
+        }
     }
-    // if (input)
 }
 
 // 获取 article 数据
@@ -720,34 +777,42 @@ const checkboxRefsClipBoard = ref([])
 const toggleClipBoard = (index) => {
     checkboxRefsClipBoard.value[index].toggle()
 }
-const agentList = ref([
+
+const agentListOri = [
     { 'role': 'alex', 'content': 'you are alex, a excellent agent.' },
     { 'role': '小明', 'content': '你叫小明，你是一个非常有帮助的助手' },
     { 'role': 'python专家', 'content': '你叫python专家，你是一个python编程专家' },
-])
-// const agentList = ref(['5', '6', '7', '8'])
-const checkedAgent = ref([])
-const checkboxRefsAgent = ref([])
-const toggleAgent = (index) => {
-    checkboxRefsAgent.value[index].toggle()
-    console.log(checkboxRefsAgent.value[index].checked.value)
+]
 
+const agentList = ref(agentListOri)
+const searchText = ref('')
+// const agentList = ref(['5', '6', '7', '8'])
+const checkedAgent = ref(-1)
+const checkboxRefsAgent = ref([])
+// const toggleAgent = (index) => {
+//     console.log(index, checkboxRefsAgent.value)
+//     checkboxRefsAgent.value[index].toggle()
+//     console.log(checkboxRefsAgent.value[index].checked.value)
+// 
     // add selected agent to commentContent
-    if (!checkboxRefsAgent.value[index].checked.value){
-        if (commentContent.value.at(-1) == '@'){
-            commentContent.value += agentList.value[index]['role'] + ' '
-        }else{
-            commentContent.value += '@'+agentList.value[index]['role'] + ' '
-        }
-    }else{
-        commentContent.value = commentContent.value.slice(0, -1*(agentList.value[index]['role'].length+2))
-    }
-}
+    // if (!checkboxRefsAgent.value[index].checked.value) {
+    //     if (commentContent.value.at(-1) == '@') {
+    //         commentContent.value += agentList.value[index]['role'] + ' '
+    //     } else {
+    //         commentContent.value += '@' + agentList.value[index]['role'] + ' '
+    //     }
+    // } else {
+    //     commentContent.value = commentContent.value.slice(0, -1 * (agentList.value[index]['role'].length + 2))
+    // }
+// }
 
 const bottomShow = (index) => {
     // console.log(index, fromButton.value, preShowIndex.value, bottomShowList.value)
-    fromButton.value = true
+    // fromButton.value = true
+
     if (preShowIndex.value == -1) {
+        bottomShowList.value[preShowIndex.value] = false
+        preShowIndex.value = -1
         bottomShowList.value[index] = true
         preShowIndex.value = index
     }
@@ -755,6 +820,7 @@ const bottomShow = (index) => {
         bottomShowList.value[index] = false
         preShowIndex.value = -1
     } else {
+        bottomShowList.value[preShowIndex.value] = false
         bottomShowList.value[preShowIndex.value] = false
         bottomShowList.value[index] = true
         preShowIndex.value = index
@@ -786,18 +852,89 @@ const submitArticle = async () => {
 //     console.log('触发enter')
 // }
 
+
+// shift+enter 发送，enter 换行
 const handleKeyBoard = (event) => {
-    // shift+enter 发送，enter 换行
+    // console.log(searchAgent.value, agentList.value.length)
+    if (searchAgent.value == true && agentList.value.length == 1){
+        
+        checkedAgent.value = 0
+        let curpos = event.target.selectionStart
+        commentContent.value = commentContent.value.substring(0, pos_alta) + '@'+agentList.value[checkedAgent.value]['role']+' ' + commentContent.value.substring(curpos+1) 
+        commentContent.value = commentContent.value
+        searchAgent.value = false
+        // event.target.selectionStart = (commentContent.value.substring(0, pos_alta) + '@'+agentList.value[checkedAgent.value]['role']+' ').length-1
+        event.target.focus();
+        nextTick (() => {
+            event.target.selectionStart = (commentContent.value.substring(0, pos_alta) + '@'+agentList.value[checkedAgent.value]['role']+' ').length
+        })
+        event.preventDefault()
+        return 
+    }
     if (!event.shiftKey) {
         return
     }
+    
     submitComment()
 }
+
+const searchAgent = ref(false)
+const pos_alta = ref('-1')
+const handleKeyDown = (event) => {
+    // if (event.keyCode == 13){
+    //     return 
+    // }
+
+    // console.log(event)
+
+    // 输入 @ 或者 /
+    if (event.key == '@') {
+        checkedAgent.value = -1
+        searchText.value = ''
+        bottomShowList.value[preShowIndex.value] = false
+        preShowIndex.value = -1
+        bottomShow(1)
+        searchAgent.value = true
+        pos_alta.value = event.target.selectionStart
+    } else if (event.key == '/') {
+        bottomShowList.value[preShowIndex.value] = false
+        preShowIndex.value = -1
+        bottomShow(0)
+    }
+
+    // 点击删除键
+    var deletedChar = ''
+    if (event.keyCode == 8) { // for backspace key
+        deletedChar = event.target.value[event.target.selectionStart - 1]
+    } else if (event.keyCode == 46) { // for delete key
+        deletedChar = event.target.value[event.target.selectionStart]
+    }
+
+    if (deletedChar == '@' && preShowIndex.value == 1) {
+        // checkedAgent.value = -1
+        // agentList.value = agentListOri
+        bottomShow(1)
+    } else if (deletedChar == '/' && preShowIndex.value == 0) {
+        bottomShow(0)
+    } else if (deletedChar == ' ' && checkedAgent.value != -1){
+        let agentLen = 1 + agentList.value[checkedAgent.value].length
+        let selectionStart = event.target.selectionStart + 1
+        let rangeStr = event.target.value.slice(selectionStart-agentLen, selectionStart)
+        // console.log(agentList.value[checkedAgent.value]['role'])
+        // console.log(rangeStr.length, ('@'+agentList.value[checkedAgent.value]['role']+' ').length)
+        // console.log(rangeStr, ('@'+agentList.value[checkedAgent.value]))
+        if (rangeStr == '@'+agentList.value[checkedAgent.value]['role']+' '){
+            searchAgent.value = true
+            checkedAgent.value = -1
+        }
+    }
+}
+
 // 输入框回车激活submitComment
 // 获得最终comment内容
-const commentContent = ref('')
+
 const submitComment = async () => {  // 发表评论
-    console.log('submitComment', commentContent.value)
+    // console.log('submitComment', commentContent.value)
     // 检测是否有改动，有则提交修改
     submitArticle()
 
@@ -805,19 +942,22 @@ const submitComment = async () => {  // 发表评论
     if (commentContent.value == '') {
         return ''
     }
-
+    // console.log(checkedAgent.value)
     let prefix = '@'
-    let agentRole = checkedAgent.value.map(item => prefix + agentList.value[item]['role'])
-    agentRole = agentRole.join('->')
+    // let agentRole = checkedAgent.value.map(item => prefix + agentList.value[item]['role'])
+    // agentRole = agentRole.join('->')
+    // let agentRole = agentList.value[checkedAgent.value]['role']
     // return 
     let clipboard_ = checkedClipBoard.value.join(',')
     let commentContent_ = commentContent.value
-    let composedComment = agentRole + ' ' + clipboard_ + commentContent_
+    // let composedComment = agentRole + ' ' + clipboard_ + commentContent_
+    let composedComment = clipboard_ + commentContent_
     let avatar = 'https://i2.hdslb.com/bfs/face/27ec942e8d4e6e024d3a9f11240d81a0aa90caca.jpg@60w_60h_1c.png'
     let username = '唐某人'
     let date = '08-11'
     let reply_cnt = 0
-    let cue_who = checkedAgent.value.map(item => agentList.value[item]['role'])
+    // let cue_who = checkedAgent.value.map(item => agentList.value[item]['role'])
+    let cue_who = agentList.value[checkedAgent.value]['role']
     let reply_to = articleId.value
     let reply_to_floor = -1
     let reply_to_username = '-1'
@@ -903,15 +1043,16 @@ const submitComment = async () => {  // 发表评论
     // console.log('回复成功', commentContentPlaceHolder.value.index, commentsList)
 
 
-    let agentContent = checkedAgent.value.map(item => agentList.value[item]['content'])
-    if (checkedAgent.value.length == 0 && agentList.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
-        for (let i = 0; i < agentList.value.length; i++) {
-            if (commentContentPlaceHolder.value.comment.username == agentList.value[i]['role']) {
-                agentContent = [agentList.value[i]['content']]
-                break
-            }
-        }
-    }
+    // let agentContent = checkedAgent.value.map(item => agentList.value[item]['content'])
+    // if (checkedAgent.value.length == 0 && agentList.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
+    //     for (let i = 0; i < agentList.value.length; i++) {
+    //         if (commentContentPlaceHolder.value.comment.username == agentList.value[i]['role']) {
+    //             agentContent = [agentList.value[i]['content']]
+    //             break
+    //         }
+    //     }
+    // }
+    let agentContent = agentList.value[checkedAgent.value]['content']
     // let cnt = 0
     let last_reply_floor = reply_to_floor
     let messages = ref([])
@@ -936,12 +1077,12 @@ const submitComment = async () => {  // 发表评论
         //     break
         // }
     }
-    console.log(commentContentPlaceHolder)
+    // console.log(commentContentPlaceHolder)
     messages.value.push({
         "role": "user", "content": commentsList.value.at([commentContentPlaceHolder.value.index]).content
     },
         {
-            "role": "system", "content": `${agentContent[0]}\n标题：${article.value.title}\n描述：${article.value.description} `
+            "role": "system", "content": `${agentContent}\n标题：${article.value.title}\n描述：${article.value.description} `
         })
     messages.value.reverse()
     console.log(messages.value)
@@ -951,13 +1092,17 @@ const submitComment = async () => {  // 发表评论
     // ])
 
     // 如果 @ 了agent，或者回复了agent的消息，需要agent做出回应
-    if (checkedAgent.value.length >= 1 || agentList.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
+    // if (checkedAgent.value.length >= 1 || agentList.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
+    if (checkedAgent.value != 1 || agentListOri.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
         llmResponse(messages)
     } else {
         // 重置 commentContentPlaceHolder，checkedClipBoard, checkboxRefsClipBoard, checkedAgent, checkboxRefsAgent
         checkedClipBoard.value = []
         checkboxRefsClipBoard.value = []
-        checkedAgent.value = []
+        // checkedAgent.value = []
+        checkedAgent.value = -1
+        searchAgent.value = false
+        agentList.value = agentListOri
         checkboxRefsAgent.value = []
         commentContentPlaceHolder.value = {
             content: '说点什么...',
@@ -979,15 +1124,15 @@ const submitComment = async () => {  // 发表评论
 // const agentComment = ref('')
 // agent 回复
 const llmResponse = async (messages) => {
-    if (checkedAgent.value.length > 1) {
-        // alert
-        // console.log('目前仅支持同时@一个agent')
-        return
-    }
+    // if (checkedAgent.value.length > 1) {
+    //     // alert
+    //     // console.log('目前仅支持同时@一个agent')
+    //     return
+    // }
 
     // 如果是@agent回复新建的一级评论
     let index = commentsList.value.length - 1
-    let username = checkedAgent.value.length >= 1 ? agentList.value[checkedAgent.value[0]]['role'] : commentContentPlaceHolder.value.comment.username
+    let username = checkedAgent.value != -1 ? agentList.value[checkedAgent.value]['role'] : commentContentPlaceHolder.value.comment.username
     // let reply_id = ''
     let reply_to = commentsList.value[index].id
     let reply_to_floor = 1
@@ -1001,7 +1146,7 @@ const llmResponse = async (messages) => {
             reply_to_floor = replys.length + 1
         reply_to_username = replys[replys.length - 1].username
     }
-
+    // console.log('asdf')
     let { body, status } = await chat(messages.value, apiKey)
 
     commentsList.value[index].replys.push({
@@ -1051,7 +1196,10 @@ const llmResponse = async (messages) => {
     // 重置 commentContentPlaceHolder，checkedClipBoard, checkboxRefsClipBoard, checkedAgent, checkboxRefsAgent, agentComment
     checkedClipBoard.value = []
     checkboxRefsClipBoard.value = []
-    checkedAgent.value = []
+    // checkedAgent.value = []
+    checkedAgent.value = -1
+    searchAgent.value = false
+    agentList.value = agentListOri
     checkboxRefsAgent.value = []
     commentContentPlaceHolder.value = {
         content: '说点什么...',
@@ -1846,6 +1994,5 @@ img {
 // }
 // :root {
 // --van-nav-bar-text-color: red;
-// }
-</style>
+// }</style>
 
