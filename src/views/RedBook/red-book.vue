@@ -589,7 +589,8 @@ const handleInput = (event) => {
         searchText.value = ''
         if (event.target.selectionStart - pos_alta.value > 0) {
             // console.log(event.target.value)
-            searchText.value += event.target.value.slice(pos_alta.value + 1, event.target.selectionStart + 1)
+            searchText.value += event.target.value.slice(pos_alta.value + 1, event.target.selectionStart)
+            // console.log('searchText',searchText.value)
             agentList.value = agentListOri.filter((item) =>
                 (item.role+' ').includes(searchText.value)
             )
@@ -860,13 +861,14 @@ const handleKeyBoard = (event) => {
         
         checkedAgent.value = 0
         let curpos = event.target.selectionStart
-        commentContent.value = commentContent.value.substring(0, pos_alta) + '@'+agentList.value[checkedAgent.value]['role']+' ' + commentContent.value.substring(curpos+1) 
-        commentContent.value = commentContent.value
+        console.log(commentContent.value, pos_alta.value)
+        console.log(commentContent.value.substring(0, pos_alta.value), commentContent.value.substring(curpos))
+        commentContent.value = commentContent.value.substring(0, pos_alta.value) + '@'+agentList.value[checkedAgent.value]['role']+' ' + commentContent.value.substring(curpos) 
         searchAgent.value = false
-        // event.target.selectionStart = (commentContent.value.substring(0, pos_alta) + '@'+agentList.value[checkedAgent.value]['role']+' ').length-1
+        // event.target.selectionStart = (commentContent.value.substring(0, pos_alta.value) + '@'+agentList.value[checkedAgent.value]['role']+' ').length-1
         event.target.focus();
         nextTick (() => {
-            event.target.selectionStart = (commentContent.value.substring(0, pos_alta) + '@'+agentList.value[checkedAgent.value]['role']+' ').length
+            event.target.selectionStart = (commentContent.value.substring(0, pos_alta.value) + '@'+agentList.value[checkedAgent.value]['role']+' ').length
         })
         event.preventDefault()
         return 
