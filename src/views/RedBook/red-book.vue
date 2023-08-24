@@ -1554,7 +1554,7 @@ a {
     flex-basis: 130px;
     background-color: #fff;
     z-index: 1;
-    padding: 12px 12px 12px;
+    padding: 12px 12px 30px;
 }
 
 .interactions[data-v-11b921ce] {
