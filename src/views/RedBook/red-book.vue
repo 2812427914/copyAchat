@@ -68,8 +68,8 @@
         <div data-v-70c71a67="" data-v-024e536f="" id="" data-v-956360f6="" class="note-container" data-type="normal">
             <div data-v-11b921ce="" data-v-70c71a67="" class="">
                 <div data-v-d21d8bf9="" data-v-11b921ce="" class="note-scroller">
-                    <van-nav-bar title="" left-text="返回" right-text="添加助手" left-arrow @click-left="onClickLeft"
-                        @click-right="onClickRight" />
+                    <van-nav-bar fixed :border="false" safe-area-inset-top title="" left-text="返回" left-arrow @click-left="onClickLeft"
+                        />
                     <div data-v-5245913a="" data-v-11b921ce="" class="note-content">
                         <!-- <van-cell-group> -->
                         <van-field v-model="article.title" autosize rows="1" type="textarea" placeholder="请输入标题"
@@ -428,23 +428,35 @@
 
                     <van-radio-group v-if="bottomShowList[1]" v-model="checkedAgent" style="max-height: 150px; overflow: auto;">
                         <van-cell-group>
-                            <van-cell v-for="(item, idx) in agentList" clickable :key="item"
+                            <!-- <van-cell v-for="(item, idx) in agentList" clickable :key="item"
                                 :title="item.role + ':' + item.content" @click="checkedAgent = checkedAgent == idx ? -1 : idx">
                                 <template #right-icon>
                                     <van-radio :name="idx"></van-radio>
-                                    <!-- <van-checkbox :name="idx" :ref="el => checkboxRefsAgent[idx] = el" @click.stop /> -->
-                                </template>
-                            </van-cell>
-                            <!-- <van-cell title="单选框 1" clickable @click="checked = '1'">
-                                <template #right-icon>
-                                    <van-radio name="1" />
-                                </template>
-                            </van-cell>
-                            <van-cell title="单选框 2" clickable @click="checked = '2'">
-                                <template #right-icon>
-                                    <van-radio name="2" />
                                 </template>
                             </van-cell> -->
+                            <div v-for="(item, idx) in agentList" :key="item" style="display: flex; flex-direction: row;" >
+                                <van-field :border="false" v-model="item.role" :readonly="item.readonly" style="width: 30%; overflow: auto">
+                                    <template #left-icon>
+                                        <van-icon v-if="item.readonly" name="edit" @click="agentList[idx].readonly = false"/>
+                                        <van-icon v-else name="passed" @click="submitAgent(idx)"/>
+                                    </template>
+                                </van-field>
+                                <van-field :border="false" v-model="item.content" :readonly="item.readonly" style="overflow: auto;" :clickable="item.readonly" @click="checkedAgent = checkedAgent == idx ? -1 : idx">
+                                    <template #right-icon>
+                                        <van-radio :name="idx" v-if="item.readonly" :disabled="!item.readonly"></van-radio>
+                                        <van-icon name="minus" v-else @click="deleteAgent(idx)"/>
+                                    </template>
+                                </van-field>
+                            </div>
+                            <van-row justify="center" style="margin-top: 10px;">
+                                <van-col span="1"><van-icon name="add-o" @click="addAgent()"/></van-col>
+                            </van-row>
+                            <!-- <van-field v-for="(item, idx) in agentList" clickable :key="item"
+                                v-model="item.role" @click="checkedAgent = checkedAgent == idx ? -1 : idx">
+                                <template #right-icon>
+                                    <van-radio :name="idx"></van-radio>
+                                </template>
+                            </van-field> -->
                         </van-cell-group>
                     </van-radio-group>
                     <van-row style="padding-bottom:12px;">
@@ -531,6 +543,7 @@ const handleCopyCodeSuccess = (code) => {
 const items = ref([])
 // const html = ;
 const articleTableName = ref('article')
+const assistantTableName = ref('assistant')
 const articleId = ref('')
 const route = useRoute()
 const router = useRouter()
@@ -591,7 +604,7 @@ const handleInput = (event) => {
             // console.log(event.target.value)
             searchText.value += event.target.value.slice(pos_alta.value + 1, event.target.selectionStart)
             // console.log('searchText',searchText.value)
-            agentList.value = agentListOri.filter((item) =>
+            agentList.value = agentListOri.value.filter((item) =>
                 (item.role+' ').includes(searchText.value)
             )
             if (agentList.value.length == 1 && agentList.value[0]['role']+' ' == searchText.value) {
@@ -779,13 +792,13 @@ const toggleClipBoard = (index) => {
     checkboxRefsClipBoard.value[index].toggle()
 }
 
-const agentListOri = [
-    { 'role': 'alex', 'content': 'you are alex, a excellent agent.' },
-    { 'role': '小明', 'content': '你叫小明，你是一个非常有帮助的助手' },
-    { 'role': 'python专家', 'content': '你叫python专家，你是一个python编程专家' },
-]
+const agentListOri = ref([
+    { 'role': 'alex', 'content': 'you are alex, a excellent agent.', 'readonly': true },
+    { 'role': '小明', 'content': '你叫小明，你是一个非常有帮助的助手','readonly': true  },
+    { 'role': 'python专家', 'content': '你叫python专家，你是一个python编程专家','readonly': true  },
+])
 
-const agentList = ref(agentListOri)
+const agentList = ref(agentListOri.value)
 const searchText = ref('')
 // const agentList = ref(['5', '6', '7', '8'])
 const checkedAgent = ref(-1)
@@ -832,19 +845,83 @@ const bottomShow = (index) => {
     // console.log(index, fromButton.value, preShowIndex.value, bottomShowList.value)
 }
 
+const getAgent = async () => {
+    let query = Bmob.Query(assistantTableName.value)
+    query.order("createdAt")
+    let res = await query.find()
+    agentListOri.value = res
+    agentListOri.value.forEach(item => {
+        item['readonly'] = true
+        item['role'] = item['name']
+    })
+    console.log(agentListOri.value)
+    agentList.value = agentListOri.value
+}
+
+const addAgent = async () => {
+    agentList.value.push({
+        'objectId': '',
+        'role': '待编辑',
+        'content': '待编辑',
+        'readonly': false
+    })
+    // agentList.value = agentListOri.value
+}
+
+const deleteAgent = async (index) => {
+    if (agentList.value[index].role == '待编辑'){
+        agentList.value.pop()
+        return 
+    }
+    const query = Bmob.Query(assistantTableName.value);
+    let res = await query.destroy(agentList.value[index].objectId)
+    agentList.value.splice(index,index)
+    agentListOri.value.splice(index,index)
+    console.log('删除agent成功')
+}
+
+const submitAgent = async (index) => {
+    if (agentList.value[index].role == '待编辑'){
+        console.log('请修改agent名称')
+        return 
+    }
+    let query = Bmob.Query(assistantTableName.value)
+    query.set("name", agentList.value[index].role)
+    query.set("content", agentList.value[index].content)
+    if (agentList.value[index].objectId != ''){
+        query.set('id', agentList.value[index].objectId) //需要修改的objectId
+    }
+    let res = await query.save()
+    if (agentList.value[index].objectId == ''){
+        agentList.value[index].objectId = res.objectId
+    }
+    console.log('保存成功')
+    agentList.value[index].readonly = true
+    agentListOri.value[index].role = agentList.value[index].role
+    agentListOri.value[index].content = agentList.value[index].content
+}
 
 
 const submitArticle = async () => {
     if (article.value.title == oldArticle.title && article.value.description == oldArticle.description) {
         return
     }
+    console.log(article.value)
     let query = Bmob.Query(articleTableName.value)
-    query.set("title", article.value.title)
-    query.set("description", article.value.description)
+    if (article.value.title != oldArticle.title){
+        query.set("title", article.value.title)
+    }
+    if (article.value.description != oldArticle.description){
+        query.set("description", article.value.description)
+    }
     if (articleId.value != "") {
         query.set('id', articleId.value) //需要修改的objectId
     }
+    console.log(article.value)
     let res = await query.save()
+    if (articleId.value == ""){
+        articleId.value = res.objectId
+    }
     oldArticle.title = article.value.title
     oldArticle.description = article.value.description
 }
@@ -1047,10 +1124,10 @@ const submitComment = async () => {  // 发表评论
 
     // let agentContent = checkedAgent.value.map(item => agentList.value[item]['content'])
     let agentContent = checkedAgent.value == -1 ? '' : agentList.value[checkedAgent.value]['content']
-    if (checkedAgent.value.length == 0 && agentListOri.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
-        for (let i = 0; i < agentListOri.length; i++) {
-            if (commentContentPlaceHolder.value.comment.username == agentListOri[i]['role']) {
-                agentContent = [agentListOri[i]['content']]
+    if (checkedAgent.value.length == 0 && agentListOri.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
+        for (let i = 0; i < agentListOri.value.length; i++) {
+            if (commentContentPlaceHolder.value.comment.username == agentListOri.value[i]['role']) {
+                agentContent = [agentListOri.value[i]['content']]
                 break
             }
         }
@@ -1096,7 +1173,7 @@ const submitComment = async () => {  // 发表评论
 
     // 如果 @ 了agent，或者回复了agent的消息，需要agent做出回应
     // if (checkedAgent.value.length >= 1 || agentList.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
-    if (checkedAgent.value != -1 || agentListOri.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
+    if (checkedAgent.value != -1 || agentListOri.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
         llmResponse(messages)
     } else {
         // 重置 commentContentPlaceHolder，checkedClipBoard, checkboxRefsClipBoard, checkedAgent, checkboxRefsAgent
@@ -1105,7 +1182,7 @@ const submitComment = async () => {  // 发表评论
         // checkedAgent.value = []
         checkedAgent.value = -1
         searchAgent.value = false
-        agentList.value = agentListOri
+        agentList.value = agentListOri.value
         checkboxRefsAgent.value = []
         commentContentPlaceHolder.value = {
             content: '说点什么...',
@@ -1202,7 +1279,7 @@ const llmResponse = async (messages) => {
     // checkedAgent.value = []
     checkedAgent.value = -1
     searchAgent.value = false
-    agentList.value = agentListOri
+    agentList.value = agentListOri.value
     checkboxRefsAgent.value = []
     commentContentPlaceHolder.value = {
         content: '说点什么...',
@@ -1268,6 +1345,7 @@ const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/
 onMounted(() => {
     getCommentsList()
     getArticle()
+    getAgent()
     // if (isMobile) {
     //     const inputElement = document.getElementById('commentFieldFocus'); // 假设输入框的id为input
     //     // 监听输入框的focus事件
@@ -1404,6 +1482,7 @@ a {
 
 .title[data-v-5245913a] {
     // margin-bottom: 20px;
+    margin-top: 30px;
     font-weight: 600;
     font-size: 20px;
     line-height: 32px;
