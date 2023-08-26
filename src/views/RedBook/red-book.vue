@@ -68,7 +68,7 @@
         <div data-v-70c71a67="" data-v-024e536f="" id="" data-v-956360f6="" class="note-container" data-type="normal">
             <div data-v-11b921ce="" data-v-70c71a67="" class="">
                 <div data-v-d21d8bf9="" data-v-11b921ce="" class="note-scroller">
-                    <van-nav-bar fixed :border="false" safe-area-inset-top title="" left-text="返回" left-arrow @click-left="onClickLeft"
+                    <van-nav-bar fixed :border="false" title="" left-text="返回" left-arrow :z-index='30' @click-left="onClickLeft"
                         />
                     <div data-v-5245913a="" data-v-11b921ce="" class="note-content">
                         <!-- <van-cell-group> -->
@@ -88,7 +88,7 @@
                                     v-for="(item, index) in commentsList" :key="item.id">
                                     <div data-v-67377e58="" class="comment-inner-container">
                                         <div data-v-67377e58="" class="avatar"><a data-v-1d0a8701="" data-v-67377e58=""
-                                                href="/user/profile/6042256c000000000100152b" class="" target="_blank"><img
+                                                 class="" target="_blank"><img
                                                     data-v-1d0a8701="" class="avatar" :src="item.avatar"
                                                     style="width: 32px; height: 32px;"></a></div>
                                         <div data-v-67377e58="" class="right" style="max-width:90%">
@@ -98,7 +98,7 @@
                                                 href="/user/profile/6042256c000000000100152b" class="" target="_blank"><img
                                                     data-v-1d0a8701="" class="avatar" :src="item.avatar"
                                                     style="width: 20px; height: 20px;"></a></div> -->
-                                                    <a data-v-67377e58="" href="/user/profile/6042256c000000000100152b"
+                                                    <a data-v-67377e58=""
                                                         class="name" target="_blank" style="margin-left: 10px;">{{
                                                             item.username }}</a>
                                                     <span data-v-67377e58=""
