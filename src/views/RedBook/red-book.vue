@@ -526,6 +526,8 @@ import chat from "@/views/RedBook/data"
 import { useRoute, useRouter } from 'vue-router';
 import useClipboard from "vue-clipboard3";
 import { nextTick } from 'vue';
+import pinyin from 'pinyin';
+
 // import { Mentionable } from 'vue-mention'
 // import 'floating-vue/dist/style.css'
 
@@ -595,9 +597,6 @@ const commentContent = ref('')
 // )
 
 const handleInput = (event) => {
-    // commentContent.value = event.target.value
-    // console.log(commentContent.value)
-    // console.log(pos_alta.value, event.target.selectionStart)
     if (searchAgent.value) {
         searchText.value = ''
         if (event.target.selectionStart - pos_alta.value > 0) {
@@ -605,7 +604,7 @@ const handleInput = (event) => {
             searchText.value += event.target.value.slice(pos_alta.value + 1, event.target.selectionStart)
             // console.log('searchText',searchText.value)
             agentList.value = agentListOri.value.filter((item) =>
-                (item.role+' ').includes(searchText.value)
+                (item.role+' ').includes(searchText.value) || (item.pinyin+' ').includes(searchText.value)
             )
             if (agentList.value.length == 1 && agentList.value[0]['role']+' ' == searchText.value) {
                 // console.log(checkboxRefsAgent.value)
@@ -853,6 +852,9 @@ const getAgent = async () => {
     agentListOri.value.forEach(item => {
         item['readonly'] = true
         item['role'] = item['name']
+        item['pinyin'] = pinyin(item['role'], {
+            style: pinyin.STYLE_NORMAL
+        }).join('')
     })
     console.log(agentListOri.value)
     agentList.value = agentListOri.value

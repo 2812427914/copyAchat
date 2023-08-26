@@ -27,6 +27,7 @@
     "minapp-sdk": "^3.23.2",
     "mockjs": "^1.1.0",
     "openai": "^3.3.0",
+    "pinyin": "^3.0.0-alpha.5",
     "postcss-px-to-viewport": "^1.1.1",
     "replicate": "^0.16.0",
     "v-tooltip": "^2.1.3",
