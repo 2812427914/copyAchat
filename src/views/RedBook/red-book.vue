@@ -462,10 +462,11 @@
                     <van-row style="padding-bottom:12px;">
                         <van-col span="16">
 
-                            <svg @click="bottomShow(0)" class="reds-icon" width="24" height="24"
+                            <!-- <svg @click="bottomShow(0)" class="reds-icon" width="24" height="24"
                                 :style="{ 'color': preShowIndex == 0 ? '#13386c' : '#969799' }">
                                 <use data-v-7c2d5134="" xlink:href="#chat"></use>
-                            </svg>
+                            </svg> -->
+                            <van-icon @click="bottomShow(0)" class="reds-icon" size="24" name="notes-o" :style="{ 'color': preShowIndex == 0 ? '#13386c' : '#969799' }"/>
                             <svg @click="bottomShow(1)" class="reds-icon" width="24" height="24"
                                 :style="{ 'margin-left': '12px', 'color': preShowIndex == 1 ? '#13386c' : '#969799' }">
                                 <use data-v-7c2d5134="" xlink:href="#mention"></use>
@@ -527,6 +528,19 @@ import { useRoute, useRouter } from 'vue-router';
 import useClipboard from "vue-clipboard3";
 import { nextTick } from 'vue';
 import pinyin from 'pinyin';
+
+
+// const clipboardItems = ref([])
+
+// onMounted(() => {
+//   if ('ClipboardItem' in window) {
+//     navigator.clipboard.read().then((items) => {
+//       items.forEach((item) => {
+//         clipboardItems.value.push(item)
+//       })
+//     })
+//   }
+// })
 
 // import { Mentionable } from 'vue-mention'
 // import 'floating-vue/dist/style.css'
@@ -773,9 +787,19 @@ const copy_comment = async (content) => {
     // console.log(content)
 }
 
+const clipboardItems = ref([])
 const getClipBoard = async () => {
     let copyText = await navigator.clipboard.readText();
     console.log('剪贴板内容', copyText)
+
+//     if ('ClipboardItem' in window) {
+//     navigator.clipboard.read().then((items) => {
+//       items.forEach((item) => {
+//         clipboardItems.value.push(item)
+//       })
+//     })
+//   }
+//   console.log('剪贴板历史', clipboardItems.value)
 }
 // getClipBoard()
 
@@ -856,7 +880,7 @@ const getAgent = async () => {
             style: pinyin.STYLE_NORMAL
         }).join('')
     })
-    console.log(agentListOri.value)
+    // console.log(agentListOri.value)
     agentList.value = agentListOri.value
 }
 
@@ -1313,7 +1337,7 @@ const replyComment = (index, floor, comment) => {
         index: index,
         comment: comment
     }
-    commentField.value.focus()  //聚焦到输入框
+    // commentField.value.focus()  //聚焦到输入框
     // console.log(commentContentPlaceHolder.value)
 }
 
@@ -1348,29 +1372,21 @@ onMounted(() => {
     getCommentsList()
     getArticle()
     getAgent()
-    // if (isMobile) {
-    //     const inputElement = document.getElementById('commentFieldFocus'); // 假设输入框的id为input
-    //     // 监听输入框的focus事件
-    //     inputElement.addEventListener('focus', () => {
-    //         // 修改页面样式，将页面上移
-    //         document.body.style.transform = 'translateY(-200px)'; // 可根据实际情况调整上移的距离
-    //     });
 
-    //     // 监听输入框的blur事件
-    //     inputElement.addEventListener('blur', () => {
-    //         // 恢复页面样式，取消上移
-    //         document.body.style.transform = 'translateY(0)';
-    //     });
+    // if ('ClipboardItem' in window) {
+    //     navigator.clipboard.read().then((items) => {
+    //     items.forEach((item) => {
+    //         clipboardItems.value.push(item)
+    //     })
+    //     })
     // }
-
-
-    // commentField.value.focus()
+    // console.log('剪贴板历史', clipboardItems.value)
 });
 
 
 onBeforeUpdate(() => {
     checkboxRefsClipBoard.value = []
-    checkboxRefsAgent.value = []
+    // checkboxRefsAgent.value = []
 });
 
 
