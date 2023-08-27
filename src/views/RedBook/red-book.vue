@@ -85,7 +85,7 @@
                             <div data-v-6b20f11f="" class="total">共 {{ articleCommentCnt }} 条评论</div>
                             <div data-v-6b20f11f="" tag="div" name="list" class="list-container">
                                 <div data-v-67377e58="" data-v-6b20f11f="" class="comment-item"
-                                    v-for="(item, index) in commentsList" :key="item.id">
+                                    v-for="(item, index) in commentsList" :key="item.id" :ref="setCommentListRef">
                                     <div data-v-67377e58="" class="comment-inner-container">
                                         <div data-v-67377e58="" class="avatar"><a data-v-1d0a8701="" data-v-67377e58=""
                                                  class="" target="_blank"><img
@@ -529,6 +529,7 @@ import useClipboard from "vue-clipboard3";
 import { nextTick } from 'vue';
 import pinyin from 'pinyin';
 
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 // const clipboardItems = ref([])
 
@@ -709,7 +710,7 @@ const readStream = async (
     status
 ) => {
     let partialLine = "";
-
+    commentsList.value.at(commentContentPlaceHolder.value.index).replys.at(-1).content = ''
     while (true) {
         // eslint-disable-next-line no-await-in-loop
         const { value, done } = await reader.read();
@@ -1040,9 +1041,10 @@ const handleKeyDown = (event) => {
 
 const submitComment = async () => {  // 发表评论
     // console.log('submitComment', commentContent.value)
+
+
     // 检测是否有改动，有则提交修改
     submitArticle()
-
     // 内容为空，点击无效
     if (commentContent.value == '') {
         return ''
@@ -1067,6 +1069,22 @@ const submitComment = async () => {  // 发表评论
     let reply_to_floor = -1
     let reply_to_username = '-1'
 
+    let index_ = commentContentPlaceHolder.value.index
+    if (commentListRef.value.length>0){
+        setTimeout(() => {
+            // console.log(index_,  commentListRef.value.length)
+            if (index_==-1){
+                commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
+            }
+            else if (index_+1 < commentListRef.value.length){
+                commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
+            }else{
+                commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
+            }
+        }, 200)
+    }
+
+    
 
     // 评论上传数据库，请求success，同时更新 names 和 reply_ids
     if (commentContentPlaceHolder.value.index == -1) {  //一级评论    
@@ -1105,7 +1123,6 @@ const submitComment = async () => {  // 发表评论
         })
         articleCommentCnt.value += 1
     } else {                                              // 评论的子评论
-
         reply_to_floor = commentContentPlaceHolder.value.floor
         reply_to_username = commentContentPlaceHolder.value.comment.username
         reply_to = commentContentPlaceHolder.value.comment.id
@@ -1144,6 +1161,18 @@ const submitComment = async () => {  // 发表评论
         })
         // 回复成功，当前评论的一级评论的子评论数量+1
         commentsList.value[commentContentPlaceHolder.value.index].reply_cnt += 1
+
+        // setTimeout(() => {
+        //     nextTick(() => {
+        //         console.log(commentContentPlaceHolder.value.index,  commentListRef.value.length)
+        //         if (commentContentPlaceHolder.value.index+1 < commentListRef.value.length){
+        //             commentListRef.value.at(commentContentPlaceHolder.value.index+1).scrollIntoView({behavior: 'smooth', block:'center'})
+        //         }else{
+        //             commentListRef.value.at(commentContentPlaceHolder.value.index).scrollIntoView({behavior: 'smooth', block:'center'})
+        //         }
+                
+        //     })
+        // })
     }
     // console.log('回复成功', commentContentPlaceHolder.value.index, commentsList)
 
@@ -1197,11 +1226,14 @@ const submitComment = async () => {  // 发表评论
     //     { "role": "user", "content": clipboard_ + '\n' + commentContent_ },
     // ])
 
+
     // 如果 @ 了agent，或者回复了agent的消息，需要agent做出回应
     // if (checkedAgent.value.length >= 1 || agentList.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
     if (checkedAgent.value != -1 || agentListOri.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
+        
         llmResponse(messages)
     } else {
+        
         // 重置 commentContentPlaceHolder，checkedClipBoard, checkboxRefsClipBoard, checkedAgent, checkboxRefsAgent
         checkedClipBoard.value = []
         checkboxRefsClipBoard.value = []
@@ -1210,12 +1242,20 @@ const submitComment = async () => {  // 发表评论
         searchAgent.value = false
         agentList.value = agentListOri.value
         checkboxRefsAgent.value = []
-        commentContentPlaceHolder.value = {
-            content: '说点什么...',
-            index: -1,
-            floor: -1,
-            comment: {}
+        // commentContentPlaceHolder.value = {
+        //     content: '说点什么...',
+        //     index: -1,
+        //     floor: -1,
+        //     comment: {}
+        // }
+        // 回复成功后默认继续回复agent的当前回复
+        if (commentContentPlaceHolder.value.index == -1){
+            replyComment(commentsList.value.length-1, 1, commentsList.value.at(-1))    
+        }else{
+            replyComment(commentContentPlaceHolder.value.index, commentsList.value[commentContentPlaceHolder.value.index].replys.length+1, commentsList.value[commentContentPlaceHolder.value.index].replys.at(-1))
         }
+        // let agentFloor = reply_to_floor + 1 // commentsList.value[index].replys.length+1
+        // replyComment(index, agentFloor, commentsList.value[index].replys[agentFloor - 2])
     }
 
     // 清理 commentContent，
@@ -1259,7 +1299,7 @@ const llmResponse = async (messages) => {
         // id: reply_id,
         avatar: 'https://avatars.githubusercontent.com/u/14957082?s=200&v=4',
         username: username,
-        content: '',//llmResponse_.data.choices[0].message.content,
+        content: '思考中...',//llmResponse_.data.choices[0].message.content,
         date: '08-06',
         reply_to: reply_to,
         cue_who: [],
@@ -1320,6 +1360,14 @@ const llmResponse = async (messages) => {
     replyComment(index, agentFloor, commentsList.value[index].replys[agentFloor - 2])
 }
 
+const commentListRef = ref([])
+
+const setCommentListRef = (el) => {
+    // console.log(el)
+    commentListRef.value.push(el)
+    // console.log(commentListRef)
+}
+
 
 
 // 回复某个评论按钮
@@ -1330,6 +1378,10 @@ const commentContentPlaceHolder = ref({
     comment: {}
 })
 const replyComment = (index, floor, comment) => {
+    // console.log(commentsList.value[0])
+    // const commentRef_ = ref(commentsList.value[0].id)
+    // commentRef_.value.$el.scrollIntoView({behavior: 'smooth'})
+    // commentsList.value[0].id.scrollIntoView({behavior:'smooth'})
     // floor：第 floor 楼
     commentContentPlaceHolder.value = {
         content: `回复 ${floor}楼 ${comment.username}`,
@@ -1337,7 +1389,9 @@ const replyComment = (index, floor, comment) => {
         index: index,
         comment: comment
     }
-    // commentField.value.focus()  //聚焦到输入框
+    if (!isMobile){
+        commentField.value.focus()  //聚焦到输入框
+    }
     // console.log(commentContentPlaceHolder.value)
 }
 
@@ -1351,7 +1405,6 @@ const clearReplyTo = () => {
     }
 }
 
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
 // if (isMobile) {
 //   const inputElement = document.getElementById('input'); // 假设输入框的id为input
@@ -1386,6 +1439,7 @@ onMounted(() => {
 
 onBeforeUpdate(() => {
     checkboxRefsClipBoard.value = []
+    commentListRef.value = []
     // checkboxRefsAgent.value = []
 });
 
