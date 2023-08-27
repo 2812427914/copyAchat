@@ -70,12 +70,17 @@
                 <div data-v-d21d8bf9="" data-v-11b921ce="" class="note-scroller">
                     <van-nav-bar fixed :border="false" title="" left-text="返回" left-arrow :z-index='30' @click-left="onClickLeft"
                         />
-                    <div data-v-5245913a="" data-v-11b921ce="" class="note-content">
+                    <div data-v-5245913a="" class="note-content">
                         <!-- <van-cell-group> -->
-                        <van-field v-model="article.title" autosize rows="1" type="textarea" placeholder="请输入标题"
+                        <van-field style="padding: 0;" :border="false" v-model="article.title" autosize rows="1" type="textarea" placeholder="请输入标题"
                             data-v-5245913a="" id="detail-title" class="title" />
-                        <van-field v-model="article.description" autosize rows="1" type="textarea" placeholder="请输入描述"
-                            data-v-5245913a="" class="desc" />
+                        <van-icon :style="{ 'color': articleDescriptionPreview ? '#13386c' : '#969799' }"  name="eye-o" @click="articleDescriptionPreview = !articleDescriptionPreview"/>
+                        <!-- <van-field v-if="!articleDescriptionPreview" v-model="article.description" autosize rows="1" type="textarea" placeholder="请输入描述"
+                            data-v-5245913a="" class="desc" :border="false"/> -->
+                        <v-md-editor v-if="!articleDescriptionPreview" mode="edit" left-toolbar="" right-toolbar="" v-model="article.description" />
+                        <v-md-preview v-if="articleDescriptionPreview" @copy-code-success="handleCopyCodeSuccess" :text="article.description"
+                        data-v-5245913a="" class="desc"></v-md-preview>
+                        <!-- <v-md-editor mode="edit" left-toolbar="" right-toolbar="preview sync-scroll" placeholder="请输入描述" v-model="article.description" height="400px"></v-md-editor> -->
                         <!-- </van-cell-group> -->
                         <!-- <div data-v-5245913a="" id="detail-title" class="title">其实参加酒局多了，都差不多</div>
                         <div data-v-5245913a="" class="desc">没那么惊讶<br>人生不就是一场行为艺术吗<br> </div> -->
@@ -496,22 +501,15 @@
                         id="commentFieldFocus" ref="commentField" type="textarea" :autosize="{ maxHeight: 200 }" rows="1"
                         style="background-color: rgba(0, 0, 0, 0.03); border-radius: 12px;" v-model="commentContent"
                         :placeholder=commentContentPlaceHolder.content>
-                        <template #right-icon>
-                            <!-- <svg @click="clearReplyTo" class="reds-icon" width="24" height="24" style="margin-left: 8px;">
-                                <use xlink:href="#chat"></use>
-                            </svg> -->
-                            <!-- <svg @click="submitComment()" class="reds-icon" width="24" height="24"
-                                style="margin-left: 8px;">
-                                <use xlink:href="#chat"></use>
-                            </svg>
-                            <svg @click="bottomShow(1)" class="reds-icon" width="24" height="24">
-                                <use xlink:href="#mention"></use>
-                            </svg> -->
-
-                        </template>
-
                     </van-field>
-
+                    <!-- <v-md-editor :placeholder="commentContentPlaceHolder.content" id="commentFieldFocus" 
+                        ref="commentField" @keydown="handleKeyDown" @input="handleInput" 
+                        @keydown.enter.native="handleKeyBoard"
+                        mode="edit"  
+                        left-toolbar=""
+                        right-toolbar=""
+                        @change="handleInput"
+                        v-model="commentContent" /> -->
 
                 </div>
             </div>
@@ -530,7 +528,7 @@ import { nextTick } from 'vue';
 import pinyin from 'pinyin';
 
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
+const articleDescriptionPreview = ref(true)
 // const clipboardItems = ref([])
 
 // onMounted(() => {
@@ -612,6 +610,7 @@ const commentContent = ref('')
 // )
 
 const handleInput = (event) => {
+    console.log('handleInput')
     if (searchAgent.value) {
         searchText.value = ''
         if (event.target.selectionStart - pos_alta.value > 0) {
@@ -957,9 +956,15 @@ const submitArticle = async () => {
 //     console.log('触发enter')
 // }
 
+// const testChange = (text, html) => {
+//     console.log('testchange')
+//     console.log(text, html)
+// }
+
 
 // shift+enter 发送，enter 换行
 const handleKeyBoard = (event) => {
+    console.log(handleKeyBoard)
     // console.log(searchAgent.value, agentList.value.length)
     if (searchAgent.value == true && agentList.value.length == 1){
         
@@ -992,7 +997,7 @@ const handleKeyDown = (event) => {
     // }
 
     // console.log(event)
-
+    console.log('handleKeyDown')
     // 输入 @ 或者 /
     if (event.key == '@') {
         checkedAgent.value = -1
@@ -1545,7 +1550,7 @@ a {
 }
 
 .note-content[data-v-5245913a] {
-    padding: 10px 0 20px;
+    padding: 10px 14px 20px;
     margin: 0 5px;
     color: #333;
     // border-bottom: 1px solid rgba(0, 0, 0, 0.08);

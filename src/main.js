@@ -26,12 +26,21 @@ import Bmob from "hydrogen-js-sdk";
 import VMdPreview from '@kangc/v-md-editor/lib/preview';
 import '@kangc/v-md-editor/lib/style/preview.css';
 import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
-import '@/views/RedBook/github.css';
 import createCopyCodePlugin from '@kangc/v-md-editor/lib/plugins/copy-code/index';
 import '@kangc/v-md-editor/lib/plugins/copy-code/copy-code.css';
 import createLineNumbertPlugin from '@kangc/v-md-editor/lib/plugins/line-number/index';
 import createKatexPlugin from '@kangc/v-md-editor/lib/plugins/katex/cdn';
-import '@kangc/v-md-editor/lib/style/base-editor.css';
+// import '@kangc/v-md-editor/lib/style/base-editor.css';
+import VMdEditor from '@kangc/v-md-editor';
+// import '@/views/RedBook/github.css';
+
+// import '@kangc/v-md-editor/lib/style/base-editor.css';
+// import githubTheme from '@kangc/v-md-editor/lib/theme/github.js';
+// import '@kangc/v-md-editor/lib/theme/style/github.css';
+import '@/views/RedBook/github.css';
+import '@/views/RedBook/base-editor.css';
+
+// import '@kangc/v-md-editor/lib/style/base-editor.css';
 // 引入使用主题的样式
 // import '@kangc/v-md-editor/lib/theme/style/vuepress';
 // highlightjs
@@ -47,6 +56,9 @@ VMdPreview.use(createCopyCodePlugin())
 VMdPreview.use(createKatexPlugin())
 // VMdPreview.use(createLineNumbertPlugin())
 
+VMdEditor.use(githubTheme, {
+  Hljs: hljs,
+});
 
 // 初始化 SDK版本 2.0.0 以下保留之前的初始化方法
 Bmob.initialize("5f599fe64a4e2b0c", "tangzihangtangzi");
@@ -62,6 +74,7 @@ const app = createApp(App);
 app.config.globalProperties.$Bmob = Bmob
 
 app.use(VMdPreview);
+app.use(VMdEditor);
 // 注册Vant组件
 app.use(Tab);
 app.use(Tabs);
