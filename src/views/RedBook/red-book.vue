@@ -480,6 +480,7 @@
                                 :style="{ 'margin-left': '12px', 'color': '#969799' }">
                                 <use xlink:href="#chat"></use>
                             </svg>
+                            <van-icon size="24" class="reds-icon" :style="{'margin-left': '12px','color': commentContentPreview ? '#13386c' : '#969799'}"  name="eye-o" @click="commentContentPreview = !commentContentPreview"/>
                         </van-col>
                         <van-col span="8">
                             <div @click="submitComment" style="
@@ -497,11 +498,13 @@
                     </van-row>
                     <!-- <van-field @keydown.enter.native="handleKeyBoard" :border="false" v-model="commentContent"
                         :placeholder=commentContentPlaceHolder.content type="textarea" rows="1" autosize ref="commentFieldPopup" /> -->
-                    <van-field @keydown="handleKeyDown" @input="handleInput" @keydown.enter.native="handleKeyBoard"
+                    <van-field v-if="!commentContentPreview" @keydown="handleKeyDown" @input="handleInput" @keydown.enter.native="handleKeyBoard"
                         id="commentFieldFocus" ref="commentField" type="textarea" :autosize="{ maxHeight: 200 }" rows="1"
                         style="background-color: rgba(0, 0, 0, 0.03); border-radius: 12px;" v-model="commentContent"
                         :placeholder=commentContentPlaceHolder.content>
                     </van-field>
+                    <v-md-preview v-if="commentContentPreview" @copy-code-success="handleCopyCodeSuccess" :text="commentContent"
+                        data-v-5245913a="" style="padding: 8px; font-size: 8px;" class="desc"></v-md-preview>
                     <!-- <v-md-editor :placeholder="commentContentPlaceHolder.content" id="commentFieldFocus" 
                         ref="commentField" @keydown="handleKeyDown" @input="handleInput" 
                         @keydown.enter.native="handleKeyBoard"
@@ -529,6 +532,7 @@ import pinyin from 'pinyin';
 
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 const articleDescriptionPreview = ref(true)
+const commentContentPreview = ref(false)
 // const clipboardItems = ref([])
 
 // onMounted(() => {
