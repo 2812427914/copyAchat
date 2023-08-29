@@ -1084,7 +1084,7 @@ const submitComment = async () => {  // 发表评论
     if (commentListRef.value.length>0){
         setTimeout(() => {
             // console.log(index_,  commentListRef.value.length)
-            if (index_==-1){
+            if (index_==-1 ||index_+1 == commentListRef.value.length){
                 // commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
                 bottomRef.value.scrollIntoView({behavior: 'smooth'})
             }
