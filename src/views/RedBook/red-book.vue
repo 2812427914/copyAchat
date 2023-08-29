@@ -505,7 +505,7 @@
                         :placeholder=commentContentPlaceHolder.content>
                     </van-field>
                     <v-md-preview v-if="commentContentPreview" @copy-code-success="handleCopyCodeSuccess" :text="commentContent"
-                        data-v-5245913a="" style="padding: 8px; font-size: 8px;" class="desc"></v-md-preview>
+                        data-v-5245913a="" style="padding: 10px; font-size: 14px;" class="desc"></v-md-preview>
                     <!-- <v-md-editor :placeholder="commentContentPlaceHolder.content" id="commentFieldFocus" 
                         ref="commentField" @keydown="handleKeyDown" @input="handleInput" 
                         @keydown.enter.native="handleKeyBoard"
@@ -1577,8 +1577,8 @@ a {
 .desc[data-v-5245913a] {
     margin: 0;
     font-weight: 400;
-    font-size: 16px;
-    line-height: 28px;
+    font-size: 14px;
+    line-height: 22px;
     color: #333;
     // white-space: pre-wrap;
     overflow-wrap: break-word;
