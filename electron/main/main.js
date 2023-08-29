@@ -1,7 +1,12 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, ipcMain, clipboard } = require('electron')
+
 const createWindow = () => {
     // Create the browser window.
-    const win = new BrowserWindow({width: 400, height: 732, title: 'copyAchat'})
+    const win = new BrowserWindow({width: 400, height: 732, title: 'copyAchat', webPreferences: {
+        contextIsolation: false,
+        preload: '/Users/ganson/personal_dev/copyAchat/electron/main/preload.js',
+        nodeIntegration: true
+    }})
 
     // and load the index.html of the app.
     // win.webContents.setUserAgent("Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko; googleweblight) Chrome/38.0.1025.166 Mobile Safari/535.19");
@@ -11,10 +16,28 @@ const createWindow = () => {
     //     width: 800,
     //     height: 600
     // })
-
+    
     win.loadURL('http://localhost:5173/')
-    // win.loadFile('index.html')
+    // 开启开发者工具
+    win.webContents.openDevTools()
+    const history = []
 
+    // 定时任务，每 500 毫秒监听一次剪贴板变化
+    setInterval(() => {
+        const text = clipboard.readText()
+        if (text){
+            if (history.length != 0 && text == history[0]) {
+                return 
+            }
+            history.unshift(text)
+            win.webContents.send('clipboard-history', history)
+        }
+        
+    }, 500)
+
+    ipcMain.on('getClipBoardHistory', (e, args) => {
+        win.webContents.send('clipboard-history', history)
+    })
 }
 app.whenReady().then(() => {
     createWindow()

@@ -3,12 +3,24 @@ import vue from '@vitejs/plugin-vue'
 import path from 'path'
 import postcsspxtoviewport from 'postcss-px-to-viewport'
 import prismjs from 'vite-plugin-prismjs';
+// import electron from 'vite-plugin-electron'
+// import electronRender from 'vite-plugin-electron-renderer'
+
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(),prismjs({
-    languages: ['json'],
-  }),],
+  plugins: [
+    vue(),
+    // electron({
+    //   main: {
+    //     entry: "electron/main/main.js"
+    //   }
+    // }),  
+    prismjs({
+      languages: ['json'],
+    }),
+    // electronRender(),
+  ],
   // optimizeDeps: {
   //   include: ['@kangc/v-md-editor/lib/theme/vuepress.js'],
   // },

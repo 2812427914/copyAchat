@@ -530,6 +530,19 @@ import { useRoute, useRouter } from 'vue-router';
 import useClipboard from "vue-clipboard3";
 import { nextTick } from 'vue';
 import pinyin from 'pinyin';
+// import {ipcRenderer} from 'electron'
+
+// import ClipboardObserver from "electron-clipboard-observer"
+// // import clipboard from 'electron';
+// const clipboardObserver = new ClipboardObserver({
+//     textChange() {},
+//     imageChange() {}
+// })
+
+// clipboardObserver.start()
+
+// console.log(clipboardObserver)
+
 
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 const articleDescriptionPreview = ref(true)
@@ -683,7 +696,7 @@ const reply_ids = ref([]);
 const getCommentsList = async () => {
     let data = await getRedBookCommentsList()
     // console.log('commentlist', data)
-    for (let i = 0; i < data.count; i++) {
+    for (let i = 0; i < data.results.length; i++) {
         data.results[i].id = data.results[i].objectId
         data.results[i].reply_cnt = -1//data.results[i].replyCnt
         data.results[i].replys = []
@@ -814,12 +827,19 @@ const fromButton = ref(false)
 const preShowIndex = ref(-1)
 const bottomShowList = ref([false, false])
 
-const clipBoardList = ref(['1', '2', '34', '5', '6', '7', '8'])
+const clipBoardList = ref(['1','2','3'])
 const checkedClipBoard = ref([])
 const checkboxRefsClipBoard = ref([])
 const toggleClipBoard = (index) => {
     checkboxRefsClipBoard.value[index].toggle()
 }
+
+if (!isMobile){
+    window.ipcRenderer.on('clipboard-history', (e, history) => {
+        clipBoardList.value = history.slice(0, 10)
+    })
+}
+
 
 const agentListOri = ref([
     { 'role': 'alex', 'content': 'you are alex, a excellent agent.', 'readonly': true },
@@ -1431,12 +1451,30 @@ const clearReplyTo = () => {
 //   });
 // }
 
+const history = ref([])
+
+// const checkClipboard = () => {
+//     const text = clipboard.readText();
+//     if (history.value[history.value.length - 1].text !== text) {
+//     history.value.push({
+//         text,
+//         clipped: new Date()
+//     });
+//     }
+//     console.log(history.value)
+//     }
+
 // 声明一个 ref 来存放该元素的引用
 // 必须和模板里的 ref 同名
 onMounted(() => {
     getCommentsList()
     getArticle()
     getAgent()
+    if (!isMobile){
+        window.ipcRenderer.send('getClipBoardHistory', '')
+    }
+    // setInterval(checkClipboard, 500)
+    
 
     // if ('ClipboardItem' in window) {
     //     navigator.clipboard.read().then((items) => {

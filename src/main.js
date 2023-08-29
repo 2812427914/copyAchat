@@ -20,7 +20,7 @@ import 'vant/lib/index.css'
 import "@/assets/styles/base.less";
 import "@/assets/styles/iconfont.less";
 import "@/mock/index.js";
-import VueEllipsis3 from 'vue-ellipsis-3';
+// import VueEllipsis3 from 'vue-ellipsis-3';
 // 打开 main.js
 import Bmob from "hydrogen-js-sdk";
 import VMdPreview from '@kangc/v-md-editor/lib/preview';
@@ -87,7 +87,7 @@ app.use(CellGroup);
 app.use(Cell)
 app.use(Popup)
 app.use(TextEllipsis)
-app.use(VueEllipsis3)
+// app.use(VueEllipsis3)
 app.use(router);
 app.use(ConfigProvider);
 app.use(List);
