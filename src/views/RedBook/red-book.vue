@@ -209,11 +209,11 @@
 
                                                                         <span data-v-67377e58=""
                                                                             style="color:rgba(51, 51, 51, 0.6); margin-left: 4px;">
-                                                                            {{ idx + 2 }}楼 -
+                                                                            {{ idx + 2 }}楼
                                                                         </span>
-                                                                        <span style='color:#13386C'
+                                                                        <span v-if="comment_reply.reply_to_floor != idx+1" style='color:#13386C'
                                                                             @click="replyComment(index, comment_reply.reply_to_floor, comment_reply.reply_to_floor == 1 ? item : item.replys[comment_reply.reply_to_floor - 2])">
-                                                                            {{ ' ' + comment_reply.reply_to_username + ' '+comment_reply.reply_to_floor}}楼 </span>
+                                                                            {{ ' - ' + comment_reply.reply_to_username + ' '+comment_reply.reply_to_floor}}楼 </span>
                                                                         <!-- <span style='color:#13386C'> ${comment_reply.reply_to_floor}楼 ${comment_reply.reply_to_username}</span>: ${comment_reply.content}`" -->
                                                                     </div>
                                                                     <div data-v-67377e58="" class="interactions"
@@ -310,6 +310,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div ref="bottomRef"></div>
                             </div>
                         </div>
                     </div>
@@ -533,6 +534,7 @@ import pinyin from 'pinyin';
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 const articleDescriptionPreview = ref(true)
 const commentContentPreview = ref(false)
+const bottomRef = ref('')
 // const clipboardItems = ref([])
 
 // onMounted(() => {
@@ -1083,7 +1085,8 @@ const submitComment = async () => {  // 发表评论
         setTimeout(() => {
             // console.log(index_,  commentListRef.value.length)
             if (index_==-1){
-                commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
+                // commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
+                bottomRef.value.scrollIntoView({behavior: 'smooth'})
             }
             else if (index_+1 < commentListRef.value.length){
                 commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
