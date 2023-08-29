@@ -1086,7 +1086,7 @@ const submitComment = async () => {  // 发表评论
             // console.log(index_,  commentListRef.value.length)
             if (index_==-1 ||index_+1 == commentListRef.value.length){
                 // commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
-                bottomRef.value.scrollIntoView({behavior: 'smooth'})
+                bottomRef.value.scrollIntoView({behavior: 'smooth', block: 'center'})
             }
             else if (index_+1 < commentListRef.value.length){
                 commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
