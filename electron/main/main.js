@@ -3,7 +3,7 @@ const path = require('path')
 
 const createWindow = () => {
     // Create the browser window.
-    const win = new BrowserWindow({width: 400, height: 732, title: 'copyAchat', webPreferences: {
+    const win = new BrowserWindow({frame:false, titleBarStyle: 'customButtonsOnHover', width: 400, height: 732, title: 'copyAchat', webPreferences: {
         contextIsolation: false,
         preload: path.join(__dirname, 'preload.js'), // '/Users/tangzihang1/copyAchat/electron/main/preload.js',
         nodeIntegration: true
@@ -38,6 +38,14 @@ const createWindow = () => {
     ipcMain.on('getClipBoardHistory', (e, args) => {
         win.webContents.send('clipboard-history', history)
     })
+
+    ipcMain.on('setAlwaysOnTop', (event, alwaysOnTop) => {
+        // console.log(alwaysOnTop)
+        if (win) {
+            // alwaysOnTop = !alwaysOnTop
+          win.setAlwaysOnTop(alwaysOnTop);
+        }
+      })
 }
 app.whenReady().then(() => {
     createWindow()

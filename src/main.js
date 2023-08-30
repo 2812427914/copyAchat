@@ -13,7 +13,7 @@
 // createApp(App).mount('#app')
 
 import { createApp } from "vue";
-import { Col,Icon,NavBar,ContactList,RadioGroup, Radio, Row, Toast,FloatingBubble, ConfigProvider,Checkbox, Button,  CheckboxGroup,Tab,List, Tabs, Swipe,TextEllipsis, SwipeItem, Sticky, Field, CellGroup,Cell, Popup} from "vant";
+import { Col,BackTop, Icon,NavBar,ContactList,RadioGroup, Radio, Row, Toast,FloatingBubble, ConfigProvider,Checkbox, Button,  CheckboxGroup,Tab,List, Tabs, Swipe,TextEllipsis, SwipeItem, Sticky, Field, CellGroup,Cell, Popup} from "vant";
 import App from "./App.vue";
 import router from "./router";
 import 'vant/lib/index.css'
@@ -86,6 +86,7 @@ app.use(Field);
 app.use(CellGroup);
 app.use(Cell)
 app.use(Popup)
+app.use(BackTop);
 app.use(TextEllipsis)
 // app.use(VueEllipsis3)
 app.use(router);

@@ -68,8 +68,12 @@
         <div data-v-70c71a67="" data-v-024e536f="" id="" data-v-956360f6="" class="note-container" data-type="normal">
             <div data-v-11b921ce="" data-v-70c71a67="" class="">
                 <div data-v-d21d8bf9="" data-v-11b921ce="" class="note-scroller">
-                    <van-nav-bar fixed :border="false" title="" left-text="返回" left-arrow :z-index='30' @click-left="onClickLeft"
-                        />
+                    <van-nav-bar fixed :border="false" title="" left-text="返回" left-arrow :z-index='30' @click-left="onClickLeft">
+                        <template #right>
+<van-icon name="bookmark-o" size="18" :style="{'color': alwaysOnTop ? '#13386c' : '#969799', '-webkit-app-region': 'no-drag'}" @click="setAlwaysOnTop"/>
+                        </template>
+                    </van-nav-bar>
+                    <!-- <van-back-top immediate bottom="16vh"/> -->
                     <div data-v-5245913a="" class="note-content">
                         <!-- <van-cell-group> -->
                         <van-field style="padding: 0;" :border="false" v-model="article.title" autosize rows="1" type="textarea" placeholder="请输入标题"
@@ -519,6 +523,7 @@
             </div>
         </div>
     </div>
+    
     <!-- </keep-alive> -->
 </template>
 
@@ -548,6 +553,15 @@ const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/
 const articleDescriptionPreview = ref(true)
 const commentContentPreview = ref(false)
 const bottomRef = ref('')
+
+const alwaysOnTop = ref(false)
+const setAlwaysOnTop = () => {
+    alwaysOnTop.value = !alwaysOnTop.value
+    if (!isMobile){
+        // console.log()
+        window.ipcRenderer.send('setAlwaysOnTop', alwaysOnTop.value)
+    }
+}
 // const clipboardItems = ref([])
 
 // onMounted(() => {
@@ -927,8 +941,8 @@ const deleteAgent = async (index) => {
     }
     const query = Bmob.Query(assistantTableName.value);
     let res = await query.destroy(agentList.value[index].objectId)
-    agentList.value.splice(index,index)
-    agentListOri.value.splice(index,index)
+    // agentList.value.splice(index,1)
+    agentListOri.value.splice(index,1)
     console.log('删除agent成功')
 }
 
