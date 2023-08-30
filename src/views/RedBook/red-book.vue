@@ -93,6 +93,13 @@
                         <div data-v-6b20f11f="" class="comments-container">
                             <div data-v-6b20f11f="" class="total">共 {{ articleCommentCnt }} 条评论</div>
                             <div data-v-6b20f11f="" tag="div" name="list" class="list-container">
+                                <van-list
+                                    v-model:loading="loading"
+                                    :finished="finished"
+                                    finished-text="没有更多了"
+                                    @load="getCommentsList"
+                                    >
+
                                 <div data-v-67377e58="" data-v-6b20f11f="" class="comment-item"
                                     v-for="(item, index) in commentsList" :key="item.id" :ref="setCommentListRef">
                                     <div data-v-67377e58="" class="comment-inner-container">
@@ -314,6 +321,7 @@
                                         </div>
                                     </div>
                                 </div>
+                            </van-list>
                                 <div ref="bottomRef"></div>
                             </div>
                         </div>
@@ -548,6 +556,8 @@ import pinyin from 'pinyin';
 
 // console.log(clipboardObserver)
 
+const loading = ref(false);
+const finished = ref(false);
 
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 const articleDescriptionPreview = ref(true)
@@ -620,12 +630,12 @@ const onClickLeft = async () => {
     router.go(-1)
 }
 
-const onClickRight = async () => {
-    await submitArticle()
-    router.push({
-        path: '/assistant'
-    })
-}
+// const onClickRight = async () => {
+//     await submitArticle()
+//     router.push({
+//         path: '/assistant'
+//     })
+// }
 const commentContent = ref('')
 // watch(commentContent,(newValue, oldValue) => {
 //     if (newValue.length>oldValue){ //新增字符
@@ -682,6 +692,8 @@ const getRedBookCommentsList = async () => {
     let query = Bmob.Query(articleTableName.value)
     query.order("createdAt")
     query.field('comments', articleId.value)
+    query.limit(10)
+    query.skip(commentsList.value.length)
     let res = await query.relation('sub_comment')
     articleCommentCnt.value = res.count
     return res
@@ -708,7 +720,15 @@ const commentsList = ref([]);
 const names = ref([]);
 const reply_ids = ref([]);
 const getCommentsList = async () => {
+    if (finished.value){
+        return 
+    }
+    // console.log('getCommentsList')
     let data = await getRedBookCommentsList()
+    loading.value = false
+    if (data.results.length == 0){
+        finished.value = true
+    }
     // console.log('commentlist', data)
     for (let i = 0; i < data.results.length; i++) {
         data.results[i].id = data.results[i].objectId
@@ -1481,7 +1501,7 @@ const history = ref([])
 // 声明一个 ref 来存放该元素的引用
 // 必须和模板里的 ref 同名
 onMounted(() => {
-    getCommentsList()
+    // getCommentsList()
     getArticle()
     getAgent()
     if (!isMobile){
