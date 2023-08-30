@@ -68,7 +68,7 @@
         <div data-v-70c71a67="" data-v-024e536f="" id="" data-v-956360f6="" class="note-container" data-type="normal">
             <div data-v-11b921ce="" data-v-70c71a67="" class="">
                 <div data-v-d21d8bf9="" data-v-11b921ce="" class="note-scroller">
-                    <van-nav-bar fixed :border="false" title="" left-text="返回" left-arrow :z-index='30' @click-left="onClickLeft">
+                    <van-nav-bar fixed style="-webkit-app-region: drag" :border="false" title="" left-text="返回" left-arrow :z-index='30' @click-left="onClickLeft">
                         <template #right>
 <van-icon name="bookmark-o" size="18" :style="{'color': alwaysOnTop ? '#13386c' : '#969799', '-webkit-app-region': 'no-drag'}" @click="setAlwaysOnTop"/>
                         </template>
