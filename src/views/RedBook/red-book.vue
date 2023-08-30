@@ -78,7 +78,7 @@
                         </template>
                     </van-nav-bar>
                     <!-- <van-back-top immediate bottom="16vh"/> -->
-                    <div data-v-5245913a="" class="note-content">
+                    <div data-v-5245913a="" class="note-content" ref="topRef">
                         <!-- <van-cell-group> -->
                         <van-field style="padding: 0;" :border="false" v-model="article.title" autosize rows="1" type="textarea" placeholder="请输入标题"
                             data-v-5245913a="" id="detail-title" class="title" />
@@ -498,6 +498,7 @@
                                 <use xlink:href="#chat"></use>
                             </svg>
                             <van-icon size="24" class="reds-icon" :style="{'margin-left': '12px','color': commentContentPreview ? '#13386c' : '#969799'}"  name="eye-o" @click="commentContentPreview = !commentContentPreview"/>
+                            <van-icon size="24" class="reds-icon" :style="{'margin-left': '12px', 'color': '#969799'}"  name="arrow-up" @click="scrollTop"/>
                         </van-col>
                         <van-col span="8">
                             <div @click="submitComment" style="
@@ -688,6 +689,11 @@ const getArticle = async () => {
     article.value.description = res.description
     oldArticle.title = article.value.title
     oldArticle.description = article.value.description
+}
+
+const topRef = ref('')
+const scrollTop = () => {
+    topRef.value.scrollIntoView({behavior: 'smooth', block: 'center'})
 }
 
 // 获取 一级评论 数据

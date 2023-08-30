@@ -3,11 +3,16 @@ const path = require('path')
 
 const createWindow = () => {
     // Create the browser window.
-    const win = new BrowserWindow({frame:false, titleBarStyle: 'customButtonsOnHover', width: 400, height: 732, title: 'copyAchat', webPreferences: {
+    const win = new BrowserWindow({width: 400, height: 732, 
+        // title: 'copyAchat', 
+        webPreferences: {
         contextIsolation: false,
         preload: path.join(__dirname, 'preload.js'), // '/Users/tangzihang1/copyAchat/electron/main/preload.js',
         nodeIntegration: true
-    }})
+    },
+    frame:false,
+    // titleBarStyle: 'customButtonsOnHover'
+})
     // and load the index.html of the app.
     // win.webContents.setUserAgent("Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko; googleweblight) Chrome/38.0.1025.166 Mobile Safari/535.19");
     // win.loadURL('https://www.xiaohongshu.com/')
