@@ -107,17 +107,18 @@
                                 <div data-v-67377e58="" data-v-6b20f11f="" class="comment-item"
                                     v-for="(item, index) in commentsList" :key="item.id" :ref="setCommentListRef">
                                     <div data-v-67377e58="" class="comment-inner-container">
-                                        <div data-v-67377e58="" class="avatar"><a data-v-1d0a8701="" data-v-67377e58=""
-                                                 class="" target="_blank"><img
-                                                    data-v-1d0a8701="" class="avatar" :src="item.avatar"
-                                                    style="width: 32px; height: 32px;"></a></div>
-                                        <div data-v-67377e58="" class="right" style="max-width:90%">
+                                        
+                                        <div data-v-67377e58="" class="right" style="max-width:100%">
                                             <div data-v-67377e58="" class="author-wrapper">
                                                 <div data-v-67377e58="" class="author" style="margin-top: 4px;">
                                                     <!-- <div data-v-67377e58="" class="avatar"><a data-v-1d0a8701="" data-v-67377e58=""
                                                 href="/user/profile/6042256c000000000100152b" class="" target="_blank"><img
                                                     data-v-1d0a8701="" class="avatar" :src="item.avatar"
                                                     style="width: 20px; height: 20px;"></a></div> -->
+                                                    <div data-v-67377e58="" class="avatar"><a data-v-1d0a8701="" data-v-67377e58=""
+                                                 class="" target="_blank"><img
+                                                    data-v-1d0a8701="" class="avatar" :src="item.avatar"
+                                                    style="max-width: 18px; max-height: 18px;"></a></div>
                                                     <a data-v-67377e58=""
                                                         class="name" target="_blank" style="margin-left: 10px;">{{
                                                             item.username }}</a>
@@ -195,7 +196,7 @@
                                                     </div>
                                                 </div>
                                             </div> -->
-                                            <div data-v-67377e58="" class="reply-container">
+                                            <div data-v-67377e58="" style="margin-left: 20px;" class="reply-container">
                                                 <div data-v-6b20f11f="" data-v-67377e58-s="" tag="div" name="list"
                                                     class="list-container">
                                                     <div data-v-67377e58="" data-v-6b20f11f="" data-v-67377e58-s=""
@@ -215,7 +216,7 @@
                                                                         <div data-v-67377e58="" class="avatar">
                                                                             <img data-v-1d0a8701="" class="avatar"
                                                                                 :src="comment_reply.avatar"
-                                                                                style="width: 20px; height: 20px;" />
+                                                                                style="max-width: 18px; max-height: 18px;" />
                                                                         </div>
                                                                         <div data-v-67377e58="" class="name"
                                                                             style="margin-left: 12px;">{{
@@ -392,7 +393,7 @@
                     </template>
                 </van-popup> -->
 
-                <div data-v-11b921ce="" class="interactions">
+                <div data-v-11b921ce="" class="interactions" :style="{'padding-bottom': isMobile_ ? '30px' : '12px'}">
                     <!-- <van-field @input="handleInput" @keydown.enter.native="handleKeyBoard" id="commentFieldFocus"
                         ref="commentField" type="textarea" autosize rows="1"
                         style="background-color: rgba(0, 0, 0, 0.03); border-radius: 22px;" v-model="commentContent"
@@ -565,6 +566,7 @@ const loading = ref(false);
 const finished = ref(false);
 
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+const isMobile_ = ref(isMobile) ///Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 const articleDescriptionPreview = ref(true)
 const commentContentPreview = ref(false)
 const bottomRef = ref('')
@@ -1802,7 +1804,7 @@ a {
     flex-basis: 130px;
     background-color: #fff;
     z-index: 1;
-    padding: 12px 12px 30px;
+    padding: 12px 12px;
 }
 
 .interactions[data-v-11b921ce] {

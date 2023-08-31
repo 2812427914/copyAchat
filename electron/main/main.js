@@ -3,7 +3,11 @@ const path = require('path')
 
 const createWindow = () => {
     // Create the browser window.
-    const win = new BrowserWindow({width: 400, height: 732, 
+    const win = new BrowserWindow({
+        maxWidth: 400,
+        minWidth:300,
+        width: 360, 
+        height: 740, 
         // title: 'copyAchat', 
         webPreferences: {
         contextIsolation: false,
