@@ -284,7 +284,9 @@
                                     </div>
                                 </div>
                             </van-list>
+                                <div style="padding: 130px;"></div>
                                 <div ref="bottomRef"></div>
+                                
                             </div>
                         </div>
                     </div>
@@ -787,6 +789,15 @@ const readStream = async (
             appendLastMessageContent(content);
         }
     }
+    // setTimeout(() => {
+    //     if (index_+1 == commentListRef.value.length){
+    //         // commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
+    //         bottomRef.value.scrollIntoView({behavior: 'smooth', block: 'center'})
+    //     }
+    //     else if(index_+1 < commentListRef.value.length){
+    //         commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
+    //     }
+    // }, 200);
 };
 
 const appendLastMessageContent = (content) =>
@@ -901,6 +912,10 @@ const checkboxRefsAgent = ref([])
     //     commentContent.value = commentContent.value.slice(0, -1 * (agentList.value[index]['role'].length + 2))
     // }
 // }
+watch(checkedAgent, (newValue) => {
+  // 当 checkedAgent 的值变化时执行以下代码
+  commentField.value.focus()
+})
 
 const bottomShow = (index) => {
     // console.log(index, fromButton.value, preShowIndex.value, bottomShowList.value)
@@ -968,7 +983,20 @@ const deleteAgent = async (index) => {
     console.log('删除agent成功')
 }
 
+// const edictAgent = (idx) => {
+//     agentList.value[idx].readonly = false
+     
+// }
+
+// const clickRadio = () => {
+//     console.log('asdf')
+//     if (!isMobile){
+//         commentField.value.focus()  //聚焦到输入框
+//     }
+// }
+
 const submitAgent = async (index) => {
+    let oldCheckAgent = checkedAgent.value
     if (agentList.value[index].role == '待编辑'){
         console.log('请修改agent名称')
         return 
@@ -987,6 +1015,7 @@ const submitAgent = async (index) => {
     agentList.value[index].readonly = true
     agentListOri.value[index].role = agentList.value[index].role
     agentListOri.value[index].content = agentList.value[index].content
+    checkedAgent.value = oldCheckAgent
 }
 
 
@@ -1237,14 +1266,14 @@ const submitComment = async () => {  // 发表评论
             // console.log(index_,  commentListRef.value.length)
             if (index_+1 == commentListRef.value.length){
                 // commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
-                bottomRef.value.scrollIntoView({behavior: 'smooth', block: 'center'})
+                bottomRef.value.scrollIntoView({behavior: 'instant', block: 'center'})
             }
             else if (index_+1 < commentListRef.value.length){
                 commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
             }else{
                 commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
             }
-        }, 200)
+        }, 500)
     }
 
     // let agentContent = checkedAgent.value.map(item => agentList.value[item]['content'])
@@ -1474,9 +1503,9 @@ const replyComment = (index, floor, comment) => {
         index: index,
         comment: comment
     }
-    if (!isMobile){
-        commentField.value.focus()  //聚焦到输入框
-    }
+    // if (!isMobile){
+    commentField.value.focus()  //聚焦到输入框
+    // }
     // console.log(commentContentPlaceHolder.value)
 }
 
@@ -1488,9 +1517,9 @@ const clearReplyTo = () => {
         floor: -1,
         comment: {}
     }
-    if (!isMobile){
-        commentField.value.focus()  //聚焦到输入框
-    }
+    // if (!isMobile){
+    commentField.value.focus()  //聚焦到输入框
+    // }
 }
 
 const commentContentPreviewControl = () => {
@@ -1712,7 +1741,7 @@ a {
 .comments-container[data-v-6b20f11f] {
     // padding: 20px 30px;
     // padding: 0px 20px;
-    padding: 0px 20px 150px 20px;
+    padding: 0px 20px 20px 20px;
 }
 
 .total[data-v-6b20f11f] {
