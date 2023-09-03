@@ -94,10 +94,14 @@
                                                             class="reds-icon reply-icon" width="16" height="16">
                                                             <use data-v-7c2d5134="" xlink:href="#reply"></use>
                                                         </svg> -->
-                                                        <van-icon @click="replyComment(index, 1, item)" name="comment-o" class="reds-icon reply-icon" />
-                                                        <span v-if="item.reply_cnt != -1" data-v-67377e58=""
-                                                            class="count">{{ item.reply_cnt }}
+                                                        <span style="margin-right: 8px;">
+                                                            <van-icon @click="replyComment(index, 1, item)" name="comment-o" style="margin-right: 2px;" class="reds-icon reply-icon" />
+                                                            <span v-if="item.reply_cnt != -1" data-v-67377e58="" 
+                                                                >{{ item.reply_cnt }}
+                                                            </span>
                                                         </span>
+                                                        
+                                                        <van-icon name="delete-o" @click="deleteComment(index, 1, item)" class="reds-icon reply-icon" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -204,7 +208,8 @@
                                                                                 <use data-v-7c2d5134="" xlink:href="#reply">
                                                                                 </use>
                                                                             </svg> -->
-                                                                            <van-icon @click="replyComment(index, idx + 2, comment_reply)" name="comment-o" class="reds-icon reply-icon" />
+                                                                            <van-icon @click="replyComment(index, idx + 2, comment_reply)" name="comment-o" class="reds-icon reply-icon" style="margin-right: 8px;"/>
+                                                                            <van-icon name="delete-o" @click="deleteComment(index, idx+2, comment_reply)" class="reds-icon reply-icon" />
                                                                         </div>
                                                                     </div>
 
@@ -1555,6 +1560,10 @@ const replyComment = (index, floor, comment) => {
     // console.log(commentContentPlaceHolder.value)
 }
 
+const deleteComment = (index, floor, comment) => {
+    console.log('deleteComment')
+}
+
 // 清除commentContentPlaceHolder按钮， 清除回复某个评论的 placeholder，直接成为一级评论
 const clearReplyTo = () => {
     commentContentPlaceHolder.value = {
@@ -2208,9 +2217,9 @@ img {
     transform: scale(1.7);
 }
 
-.count {
-    margin-left: 4px;
-}
+// .count {
+//     margin-right: 4px;
+// }
 
 // .comment-floor {
 //     margin-left;
