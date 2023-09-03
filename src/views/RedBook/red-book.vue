@@ -1363,8 +1363,6 @@ const llmResponse = async (messages) => {
     //     reply_to_floor = replys.length + 1
     //     reply_to_username = replys[replys.length - 1].username
     // }
-    let { body, status } = await chat(messages.value, apiKey)
-
     commentsList.value[index].replys.push({
         // id: reply_id,
         avatar: 'https://avatars.githubusercontent.com/u/14957082?s=200&v=4',
@@ -1377,6 +1375,9 @@ const llmResponse = async (messages) => {
         reply_to_username: reply_to_username,
         ellipsisShow: false
     })
+    let { body, status } = await chat(messages.value, apiKey)
+
+
     // console.log('llm response')
     // 回复成功，当前评论的一级评论的子评论数量+1
     commentsList.value[index].reply_cnt += 1
