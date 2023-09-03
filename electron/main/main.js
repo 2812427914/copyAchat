@@ -1,13 +1,17 @@
-const { app, BrowserWindow, ipcMain, clipboard } = require('electron')
+const { app, BrowserWindow, ipcMain, clipboard, screen } = require('electron')
 const path = require('path')
 
 const createWindow = () => {
     // Create the browser window.
+    const {width, height} = screen.getPrimaryDisplay().workAreaSize
+    console.log(width, height)
     const win = new BrowserWindow({
         maxWidth: 400,
         minWidth:300,
-        width: 360, 
+        width: 320, 
         height: 740, 
+        x: width, // 设置窗口的x坐标，使其位于屏幕的右侧
+        y: 200, // 设置窗口的y坐标，使其位于屏幕的顶部
         // title: 'copyAchat', 
         webPreferences: {
         contextIsolation: false,
@@ -47,6 +51,8 @@ const createWindow = () => {
     ipcMain.on('getClipBoardHistory', (e, args) => {
         win.webContents.send('clipboard-history', history)
     })
+
+    win.setAlwaysOnTop(true)
 
     ipcMain.on('setAlwaysOnTop', (event, alwaysOnTop) => {
         // console.log(alwaysOnTop)

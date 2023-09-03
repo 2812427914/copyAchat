@@ -84,7 +84,7 @@
                                                         1楼
                                                     </span>
                                                 </div>
-                                                <div data-v-67377e58="" class="interactions" style="font-size: 12px">
+                                                <div data-v-67377e58="" class="interactions" >
                                                     <div data-v-67377e58="" class="reply icon-container">
                                                         <span data-v-67377e58="" style="margin-right: 4px;"
                                                             @click="copy_comment(item.content)">复制</span>
@@ -459,6 +459,7 @@
                             </svg>
                             <van-icon size="24" class="reds-icon" :style="{'margin-left': '12px','color': commentContentPreview ? '#13386c' : '#969799'}"  name="eye-o" @click="commentContentPreviewControl"/>
                             <van-icon size="24" class="reds-icon" :style="{'margin-left': '12px', 'color': '#969799'}"  name="arrow-up" @click="scrollTop"/>
+                            <van-icon size="24" class="reds-icon"  name="aim" :style="{'margin-left': '12px', 'color': '#969799'}" @click="scrollToComment"/>
                         </van-col>
                         <van-col span="8">
                             <div @click="submitComment" style="
@@ -479,7 +480,7 @@
                     <van-field v-if="!commentContentPreview" @keydown="handleKeyDown" @input="handleInput" @keydown.enter.native="handleKeyBoard"
                         id="commentFieldFocus" ref="commentField" type="textarea" :autosize="{ maxHeight: 200 }" rows="1"
                         style="background-color: rgba(0, 0, 0, 0.03); border-radius: 12px;" v-model="commentContent"
-                        :placeholder=commentContentPlaceHolder.content>
+                        :placeholder=commentContentPlaceHolder.content @focus="mobileUp" @blur="mobileDown">
                     </van-field>
                     <v-md-preview v-if="commentContentPreview" @copy-code-success="handleCopyCodeSuccess" :text="commentContent"
                         data-v-5245913a="" style="padding: 10px; font-size: 14px;" class="desc"></v-md-preview>
@@ -704,6 +705,7 @@ const getCommentsList = async () => {
     loading.value = false
     if (data.results.length == 0){
         finished.value = true
+        return 
     }
     // console.log('commentlist', data)
     for (let i = 0; i < data.results.length; i++) {
@@ -744,7 +746,8 @@ const readStream = async (
     commentsList.value.at(index_).replys.at(-1).content = ''
     while (true) {
         timer++
-        if (timer == 50){
+        if (timer % 30 == 0 && timer<70){
+            // console.log('readStream', index_, commentListRef.value.length)
             if (index_+1 == commentListRef.value.length){
                 // commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
                 bottomRef.value.scrollIntoView({behavior: 'smooth', block: 'center'})
@@ -757,7 +760,7 @@ const readStream = async (
             // }else{
             //     commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
             // }
-            timer = 0
+            // timer = 0
         }
         // eslint-disable-next-line no-await-in-loop
         const { value, done } = await reader.read();
@@ -917,10 +920,34 @@ watch(checkedAgent, (newValue) => {
   commentField.value.focus()
 })
 
+const mobileUp = () => {
+    if (isMobile){
+        document.body.style.transform = 'translateY(-200px)'; // 可根据实际情况调整上移的距离
+    }
+}
+
+const mobileDown = () => {
+    if (isMobile){
+        document.body.style.transform = 'translateY(0)'; // 可根据实际情况调整上移的距离
+    }
+}
+
+// watch(commentField, (newValue, oldValue) => {
+//       if (newValue === document.activeElement) {
+//         // commentRef is focused
+//         console.log('commentRef is focused');
+//       } else {
+//         // commentRef is not focused
+//         console.log('commentRef is not focused');
+//       }
+//     })
+
 const bottomShow = (index) => {
     // console.log(index, fromButton.value, preShowIndex.value, bottomShowList.value)
     // fromButton.value = true
-
+    if (!isMobile){
+        commentField.value.focus()  //聚焦到输入框
+    }
     if (preShowIndex.value == -1) {
         bottomShowList.value[preShowIndex.value] = false
         preShowIndex.value = -1
@@ -940,9 +967,9 @@ const bottomShow = (index) => {
     //     commentFieldPopup.value.focus()
     // })
     // console.log(index, fromButton.value, preShowIndex.value, bottomShowList.value)
-    if (!isMobile){
-        commentField.value.focus()  //聚焦到输入框
-    }
+    // if (!isMobile){
+        // commentField.value.focus()  //聚焦到输入框
+    // }
 }
 
 const getAgent = async () => {
@@ -1080,6 +1107,17 @@ const handleKeyBoard = (event) => {
     submitComment()
 }
 
+const scrollToComment = () => {
+    let index_ = commentContentPlaceHolder.value.index
+    if (index_+1 == commentListRef.value.length){
+        // commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
+        bottomRef.value.scrollIntoView({behavior: 'smooth', block: 'center'})
+    }
+    else if(index_+1 < commentListRef.value.length){
+        commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
+    }
+}
+
 const searchAgent = ref(false)
 const pos_alta = ref('-1')
 const handleKeyDown = (event) => {
@@ -1151,10 +1189,10 @@ const submitComment = async () => {  // 发表评论
     // agentRole = agentRole.join('->')
     // let agentRole = agentList.value[checkedAgent.value]['role']
     // return 
-    let clipboard_ = checkedClipBoard.value.join(',')
+    let clipboard_ = checkedClipBoard.value.join('\n')
     let commentContent_ = commentContent.value
     // let composedComment = agentRole + ' ' + clipboard_ + commentContent_
-    let composedComment = clipboard_ + commentContent_
+    let composedComment = clipboard_ + '\n' +commentContent_
     let avatar = 'https://i2.hdslb.com/bfs/face/27ec942e8d4e6e024d3a9f11240d81a0aa90caca.jpg@60w_60h_1c.png'
     let username = '唐某人'
     let date = '08-11'
@@ -1263,10 +1301,11 @@ const submitComment = async () => {  // 发表评论
     let index_ = commentContentPlaceHolder.value.index
     if (commentListRef.value.length>0){
         setTimeout(() => {
+            // console.log('submitComment', index_, commentListRef.value.length)
             // console.log(index_,  commentListRef.value.length)
             if (index_+1 == commentListRef.value.length){
                 // commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
-                bottomRef.value.scrollIntoView({behavior: 'instant', block: 'center'})
+                bottomRef.value.scrollIntoView({behavior: 'smooth', block: 'center'})
             }
             else if (index_+1 < commentListRef.value.length){
                 commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
@@ -1478,7 +1517,11 @@ const commentListRef = ref([])
 
 const setCommentListRef = (el) => {
     // console.log(el)
-    commentListRef.value.push(el)
+    if (!commentListRef.value.includes(el)) {
+        commentListRef.value.push(el)
+    }
+    // commentListRef.value.push(el)
+    // console.log('setCommentListRef', commentListRef.value.length)
     // console.log(commentListRef)
 }
 
@@ -1533,18 +1576,7 @@ const commentContentPreviewControl = () => {
 }
 
 
-// if (isMobile) {
-//   const inputElement = document.getElementById('input'); // 假设输入框的id为input
-//   inputElement.addEventListener('focus', () => {
-//     // 修改页面样式，将页面上移
-//     document.body.style.transform = 'translateY(-200px)'; // 可根据实际情况调整上移的距离
-//   });
 
-//   inputElement.addEventListener('blur', () => {
-//     // 恢复页面样式，取消上移
-//     document.body.style.transform = 'translateY(0)';
-//   });
-// }
 
 const history = ref([])
 
@@ -1571,6 +1603,20 @@ onMounted(() => {
     if (!isMobile){
         commentField.value.focus()  //聚焦到输入框
     }
+
+    // if (isMobile) {
+    //     //   const inputElement = document.getElementById('input'); // 假设输入框的id为input
+    //     commentField.value.focus()
+    //     commentField.value.addEventListener('focus', () => {
+    //         // 修改页面样式，将页面上移
+    //         document.body.style.transform = 'translateY(-200px)'; // 可根据实际情况调整上移的距离
+    //     });
+
+    //     commentField.value.addEventListener('blur', () => {
+    //         // 恢复页面样式，取消上移
+    //         document.body.style.transform = 'translateY(0)';
+    //     });
+    // }
     // setInterval(checkClipboard, 500)
     
 
