@@ -455,7 +455,7 @@
                                 :style="{ 'margin-left': '12px', 'color': '#969799' }">
                                 <use xlink:href="#chat"></use>
                             </svg>
-                            <van-icon size="24" class="reds-icon" :style="{'margin-left': '12px','color': commentContentPreview ? '#13386c' : '#969799'}"  name="eye-o" @click="commentContentPreview = !commentContentPreview"/>
+                            <van-icon size="24" class="reds-icon" :style="{'margin-left': '12px','color': commentContentPreview ? '#13386c' : '#969799'}"  name="eye-o" @click="commentContentPreviewControl"/>
                             <van-icon size="24" class="reds-icon" :style="{'margin-left': '12px', 'color': '#969799'}"  name="arrow-up" @click="scrollTop"/>
                         </van-col>
                         <van-col span="8">
@@ -652,7 +652,12 @@ const getArticle = async () => {
 
 const topRef = ref('')
 const scrollTop = () => {
-    topRef.value.scrollIntoView({behavior: 'smooth', block: 'center'})
+    topRef.value.scrollIntoView({behavior: 'instant', block: 'center'})
+    if (!isMobile){
+        setTimeout(() => {
+            commentField.value.focus()  //聚焦到输入框
+        }, 2000)
+    }
 }
 
 // 获取 一级评论 数据
@@ -819,11 +824,17 @@ const text_expand = async (comment_index) => {
     commentsList.value[comment_index].replys = commentsList.value[comment_index].replys.concat(data.results)
     names.value[comment_index] = tmp_names
     reply_ids.value[comment_index] = tmp_reply_ids
+    if (!isMobile){
+        commentField.value.focus()  //聚焦到输入框
+    }
 }
 
 // 点击复制按钮
 const copy_comment = async (content) => {
-    await toClipboard(content);
+    await toClipboard(content)
+    if (!isMobile){
+        commentField.value.focus()  //聚焦到输入框
+    }
     // getClipBoard()
     // console.log(content)
 }
@@ -914,6 +925,9 @@ const bottomShow = (index) => {
     //     commentFieldPopup.value.focus()
     // })
     // console.log(index, fromButton.value, preShowIndex.value, bottomShowList.value)
+    if (!isMobile){
+        commentField.value.focus()  //聚焦到输入框
+    }
 }
 
 const getAgent = async () => {
@@ -1363,7 +1377,7 @@ const llmResponse = async (messages) => {
     //     reply_to_floor = replys.length + 1
     //     reply_to_username = replys[replys.length - 1].username
     // }
-    commentsList.value[index].replys.push({
+        commentsList.value[index].replys.push({
         // id: reply_id,
         avatar: 'https://avatars.githubusercontent.com/u/14957082?s=200&v=4',
         username: username,
@@ -1474,6 +1488,19 @@ const clearReplyTo = () => {
         floor: -1,
         comment: {}
     }
+    if (!isMobile){
+        commentField.value.focus()  //聚焦到输入框
+    }
+}
+
+const commentContentPreviewControl = () => {
+    commentContentPreview.value = !commentContentPreview.value
+    if (!isMobile){
+        nextTick(() => {
+            commentField.value.focus()  //聚焦到输入框
+        })  
+       
+    }
 }
 
 
@@ -1511,6 +1538,9 @@ onMounted(() => {
     getAgent()
     if (!isMobile){
         window.ipcRenderer.send('getClipBoardHistory', '')
+    }
+    if (!isMobile){
+        commentField.value.focus()  //聚焦到输入框
     }
     // setInterval(checkClipboard, 500)
     
