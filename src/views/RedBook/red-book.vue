@@ -31,7 +31,7 @@
                             
                         </template>
                         <template #right>
-                            <van-icon name="bookmark-o" size="18" :style="{'color': alwaysOnTop ? '#13386c' : '#969799', '-webkit-app-region': 'no-drag'}" @click="setAlwaysOnTop"/>
+                            <van-icon name="bookmark-o" :style="{'color': alwaysOnTop ? '#13386c' : '#969799', '-webkit-app-region': 'no-drag'}" @click="setAlwaysOnTop"/>
                         </template>
                     </van-nav-bar>
                     <!-- <van-back-top immediate bottom="16vh"/> -->
@@ -86,14 +86,15 @@
                                                 </div>
                                                 <div data-v-67377e58="" class="interactions" >
                                                     <div data-v-67377e58="" class="reply icon-container">
-                                                        <span data-v-67377e58="" style="margin-right: 4px;"
+                                                        <span data-v-67377e58="" style="margin-right: 8px;"
                                                             @click="copy_comment(item.content)">复制</span>
 
-                                                        <svg @click="replyComment(index, 1, item)" data-v-7c2d5134=""
-                                                            data-v-67377e58="" style="margin-left: 8px"
+                                                        <!-- <svg @click="replyComment(index, 1, item)" 
+                                                            style="margin-left: 8px"
                                                             class="reds-icon reply-icon" width="16" height="16">
                                                             <use data-v-7c2d5134="" xlink:href="#reply"></use>
-                                                        </svg>
+                                                        </svg> -->
+                                                        <van-icon @click="replyComment(index, 1, item)" name="comment-o" class="reds-icon reply-icon" />
                                                         <span v-if="item.reply_cnt != -1" data-v-67377e58=""
                                                             class="count">{{ item.reply_cnt }}
                                                         </span>
@@ -190,20 +191,20 @@
                                                                         <!-- <span style='color:#13386C'> ${comment_reply.reply_to_floor}楼 ${comment_reply.reply_to_username}</span>: ${comment_reply.content}`" -->
                                                                     </div>
                                                                     <div data-v-67377e58="" class="interactions"
-                                                                        style="font-size: 12px">
+                                                                        >
                                                                         <div data-v-67377e58=""
                                                                             class="reply icon-container">
                                                                             <span data-v-67377e58=""
-                                                                                style="margin-right: 4px;"
+                                                                                style="margin-right: 8px;"
                                                                                 @click="copy_comment(comment_reply.content)">复制</span>
 
-                                                                            <svg @click="replyComment(index, idx + 2, comment_reply)"
-                                                                                data-v-7c2d5134="" data-v-67377e58=""
+                                                                            <!-- <svg @click="replyComment(index, idx + 2, comment_reply)"
                                                                                 class="reds-icon reply-icon" width="16"
                                                                                 height="16" style="margin-left: 8px">
                                                                                 <use data-v-7c2d5134="" xlink:href="#reply">
                                                                                 </use>
-                                                                            </svg>
+                                                                            </svg> -->
+                                                                            <van-icon @click="replyComment(index, idx + 2, comment_reply)" name="comment-o" class="reds-icon reply-icon" />
                                                                         </div>
                                                                     </div>
 
@@ -441,45 +442,47 @@
                             </van-field> -->
                         </van-cell-group>
                     </van-radio-group>
-                    <van-row style="padding-bottom:12px;">
-                        <van-col span="16">
+                    <van-row style="padding-bottom:8px;">
+                        <van-col span="20">
 
                             <!-- <svg @click="bottomShow(0)" class="reds-icon" width="24" height="24"
                                 :style="{ 'color': preShowIndex == 0 ? '#13386c' : '#969799' }">
                                 <use data-v-7c2d5134="" xlink:href="#chat"></use>
                             </svg> -->
-                            <van-icon @click="bottomShow(0)" class="reds-icon" size="24" name="notes-o" :style="{ 'color': preShowIndex == 0 ? '#13386c' : '#969799' }"/>
-                            <svg @click="bottomShow(1)" class="reds-icon" width="24" height="24"
-                                :style="{ 'margin-left': '12px', 'color': preShowIndex == 1 ? '#13386c' : '#969799' }">
+                            <van-icon @click="bottomShow(0)" class="reds-icon"  name="notes-o" :style="{ 'color': preShowIndex == 0 ? '#13386c' : '#969799' }"/>
+                            <!-- <svg @click="bottomShow(1)" class="reds-icon" width="20" height="20"
+                                :style="{ 'margin-left': '8px', 'color': preShowIndex == 1 ? '#13386c' : '#969799' }">
                                 <use data-v-7c2d5134="" xlink:href="#mention"></use>
-                            </svg>
-                            <svg @click="clearReplyTo" class="reds-icon" width="24" height="24"
-                                :style="{ 'margin-left': '12px', 'color': '#969799' }">
+                            </svg> -->
+                            <!-- <svg @click="clearReplyTo" class="reds-icon" width="20" height="20"
+                                :style="{ 'margin-left': '8px', 'color': '#969799' }">
                                 <use xlink:href="#chat"></use>
-                            </svg>
-                            <van-icon size="24" class="reds-icon" :style="{'margin-left': '12px','color': commentContentPreview ? '#13386c' : '#969799'}"  name="eye-o" @click="commentContentPreviewControl"/>
-                            <van-icon size="24" class="reds-icon" :style="{'margin-left': '12px', 'color': '#969799'}"  name="arrow-up" @click="scrollTop"/>
-                            <van-icon size="24" class="reds-icon"  name="aim" :style="{'margin-left': '12px', 'color': '#969799'}" @click="scrollToComment"/>
+                            </svg> -->
+                            <van-icon :style="{ 'margin-left': '8px', 'color': preShowIndex == 1 ? '#13386c' : '#969799' }"  @click="bottomShow(1)" class="reds-icon" name="contact" />
+                            <van-icon @click="clearReplyTo" name="comment-o" class="reds-icon" :style="{ 'margin-left': '8px', 'color': '#969799' }"/>
+                            <van-icon  class="reds-icon" :style="{'margin-left': '8px','color': commentContentPreview ? '#13386c' : '#969799'}"  name="eye-o" @click="commentContentPreviewControl"/>
+                            <van-icon  class="reds-icon" :style="{'margin-left': '8px', 'color': '#969799'}"  name="arrow-up" @click="scrollTop"/>
+                            <van-icon  class="reds-icon"  name="aim" :style="{'margin-left': '8px', 'color': '#969799'}" @click="scrollToComment"/>
                         </van-col>
-                        <van-col span="8">
+                        <van-col span="4">
                             <div @click="submitComment" style="
                                     background-color: #1989FA;
-                                    font-size: 14px;
+                                    font-size: 10px;
                                     position: absolute;
-                                    right: 24px;
+                                    right: 8px;
                                     color: white;
                                     border-radius: 18px;
                                     padding-top: 3px;
                                     padding-bottom: 3px;
-                                    padding-left: 18px;
-                                    padding-right: 18px;">回复</div>
+                                    padding-left: 10px;
+                                    padding-right: 10px;">回复</div>
                         </van-col>
                     </van-row>
                     <!-- <van-field @keydown.enter.native="handleKeyBoard" :border="false" v-model="commentContent"
                         :placeholder=commentContentPlaceHolder.content type="textarea" rows="1" autosize ref="commentFieldPopup" /> -->
                     <van-field v-if="!commentContentPreview" @keydown="handleKeyDown" @input="handleInput" @keydown.enter.native="handleKeyBoard"
                         id="commentFieldFocus" ref="commentField" type="textarea" :autosize="{ maxHeight: 200 }" rows="1"
-                        style="background-color: rgba(0, 0, 0, 0.03); border-radius: 12px;" v-model="commentContent"
+                        style="background-color: rgba(0, 0, 0, 0.03); border-radius: 8px;" v-model="commentContent"
                         :placeholder=commentContentPlaceHolder.content @focus="mobileUp" @blur="mobileDown">
                     </van-field>
                     <v-md-preview v-if="commentContentPreview" @copy-code-success="handleCopyCodeSuccess" :text="commentContent"
@@ -1902,7 +1905,7 @@ a {
     flex-basis: 130px;
     background-color: #fff;
     z-index: 1;
-    padding: 12px 12px;
+    padding: 8px 8px;
 }
 
 .interactions[data-v-11b921ce] {
@@ -1936,12 +1939,6 @@ a {
     transform: scale(1.7);
 }
 
-.reds-icon[data-v-7c2d5134] {
-    display: inline-block;
-    vertical-align: middle;
-    fill: currentColor;
-}
-
 .collect-wrapper[data-v-ffc64454] {
     position: relative;
     cursor: pointer;
@@ -1955,11 +1952,6 @@ a {
     color: #333;
 }
 
-.reds-icon[data-v-7c2d5134] {
-    display: inline-block;
-    vertical-align: middle;
-    fill: currentColor;
-}
 
 .buttons[data-v-36e1f3e7] .count {
     margin-left: 6px;
@@ -1988,12 +1980,6 @@ a {
 .buttons .share-icon[data-v-36e1f3e7] {
     cursor: pointer;
     color: #333;
-}
-
-.reds-icon {
-    display: inline-block;
-    vertical-align: middle;
-    fill: currentColor;
 }
 
 // .comment-comp[data-v-e223d0aa] {
@@ -2082,12 +2068,6 @@ a {
     display: inline-block;
     vertical-align: middle;
     fill: currentColor;
-}
-
-.input-buttons .reds-icon {
-    margin: 0 6px;
-    cursor: pointer;
-    transition: all .2s;
 }
 
 .submit[data-v-e6930618] {
@@ -2228,12 +2208,6 @@ img {
     transform: scale(1.7);
 }
 
-.reds-icon[data-v-7c2d5134] {
-    display: inline-block;
-    vertical-align: middle;
-    fill: currentColor;
-}
-
 .count {
     margin-left: 4px;
 }
@@ -2279,11 +2253,6 @@ img {
     z-index: 5;
 }
 
-.reds-icon[data-v-7c2d5134] {
-    display: inline-block;
-    vertical-align: middle;
-    fill: currentColor;
-}
 
 [data-v-956360f6] .note-container {
     box-shadow: none;
