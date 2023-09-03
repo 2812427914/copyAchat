@@ -4,38 +4,9 @@
     <!-- <van-config-provider theme=""></van-config-provider> -->
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
         style="position: absolute; width: 0; height: 0" aria-hidden="true" id="__SVG_SPRITE_NODE__">
-        <symbol xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16" id="like">
-            <path
-                d="M3.256 3.913a3.083 3.083 0 00-.003 4.397L8 12.998l4.743-4.684h.001a3.085 3.085 0 000-4.4C12.145 3.32 11.345 3 10.511 3a3.17 3.17 0 00-1.91.635l-.6.452-.602-.452A3.173 3.173 0 005.49 3c-.834 0-1.633.321-2.233.913zm10.191 5.111L8.7 13.714a.996.996 0 01-1.398 0L2.55 9.02a4.083 4.083 0 01.003-5.82A4.165 4.165 0 015.49 2c.907 0 1.786.29 2.511.835A4.17 4.17 0 0110.511 2c1.093 0 2.147.422 2.936 1.202a4.085 4.085 0 010 5.822z">
-            </path>
-        </symbol>
-        <symbol xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16" id="liked">
-            <path
-                d="M8 2.88A4.126 4.126 0 005.447 2a4.12 4.12 0 00-2.906 1.192 4.053 4.053 0 00-.004 5.769l4.83 4.78a.901.901 0 001.266 0l4.826-4.776a4.055 4.055 0 000-5.773A4.122 4.122 0 0010.552 2C9.626 2 8.73 2.306 8 2.88z"
-                fill="#FF2442"></path>
-        </symbol>
-
-        <symbol xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 28 28" id="collect">
-            <path
-                d="M19.049 24.906a2.127 2.127 0 002.1-.229c.61-.443.938-1.176.86-1.924l-.526-5.115a.583.583 0 01.147-.45l3.493-3.873a2.11 2.11 0 00.44-2.066 2.119 2.119 0 00-1.571-1.415l-5.138-1.102a.583.583 0 01-.38-.275L15.83 3.962a2.123 2.123 0 00-3.66 0L9.527 8.457a.583.583 0 01-.38.275L4.008 9.834a2.119 2.119 0 00-1.571 1.415 2.11 2.11 0 00.44 2.066l3.494 3.872c.11.123.164.287.147.45l-.527 5.116c-.077.748.25 1.481.86 1.924.61.444 1.41.53 2.1.229l4.816-2.102a.583.583 0 01.466 0l4.816 2.102zM4.177 12.143a.36.36 0 01-.076-.353.369.369 0 01.275-.245l5.138-1.102a2.333 2.333 0 001.522-1.099l2.643-4.495A.372.372 0 0114 4.667c.135 0 .256.07.322.182l2.643 4.495c.33.563.883.962 1.522 1.099l5.138 1.102a.369.369 0 01.274.245.36.36 0 01-.076.353l-3.493 3.872a2.333 2.333 0 00-.588 1.802l.527 5.115a.362.362 0 01-.148.33.377.377 0 01-.372.04L14.934 21.2a2.333 2.333 0 00-1.867 0l-4.815 2.102a.377.377 0 01-.372-.04.362.362 0 01-.149-.33l.528-5.115a2.333 2.333 0 00-.589-1.802l-3.493-3.873z"
-                fill="currentColor"></path>
-        </symbol>
-        <symbol xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 28 28" id="collected">
-            <path
-                d="M6.853 24.666a2.169 2.169 0 01-.884-1.976l.547-5.308-3.623-4.016a2.166 2.166 0 01-.453-2.12c.24-.738.855-1.292 1.615-1.455L9.38 8.65l2.74-4.659a2.18 2.18 0 013.76 0l2.741 4.66 5.326 1.141c.76.163 1.375.717 1.614 1.454.24.737.067 1.545-.452 2.121l-3.624 4.016.547 5.308a2.169 2.169 0 01-.884 1.976 2.186 2.186 0 01-2.158.235L14 22.724 9.012 24.9c-.71.31-1.532.22-2.158-.235z"
-                fill="#FCBD54"></path>
-        </symbol>
         <symbol xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 28 28" id="chat">
             <path
                 d="M5.57 19.224c.306.495.386 1.108.197 1.676l-.937 2.811 1.06-.2a62.665 62.665 0 011.582-.272c.424-.066.935-.139 1.278-.139.497 0 1.06.152 1.424.25l.093.025c.87.232 2.035.542 3.733.542 5.453 0 9.917-4.443 9.917-9.917 0-5.477-4.44-9.916-9.917-9.916-5.477 0-9.916 4.44-9.916 9.916 0 1.92.544 3.709 1.485 5.224zm-1.641 6.443a1.167 1.167 0 01-1.084-1.536l1.262-3.784a.236.236 0 00-.024-.199A11.612 11.612 0 012.333 14C2.333 7.557 7.558 2.334 14 2.334c6.444 0 11.667 5.223 11.667 11.666 0 6.444-5.25 11.667-11.667 11.667-1.932 0-3.277-.359-4.184-.6-.462-.124-.81-.217-1.066-.217-.725 0-4.467.75-4.777.813a.19.19 0 01-.044.004zm15.496-11.375a1.458 1.458 0 10-2.917 0 1.458 1.458 0 002.917 0zm-9.391 1.458a1.458 1.458 0 110-2.917 1.458 1.458 0 010 2.917z"
-                fill="currentColor"></path>
-        </symbol>
-        <symbol xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 28 28" id="share">
-            <path
-                d="M8.167 5.25h2.041a.875.875 0 100-1.75H8.167A4.667 4.667 0 003.5 8.167v11.667A4.667 4.667 0 008.167 24.5h11.666a4.667 4.667 0 004.667-4.666v-2.042a.875.875 0 10-1.75 0v2.041a2.917 2.917 0 01-2.917 2.917H8.167a2.917 2.917 0 01-2.917-2.916V8.167A2.917 2.917 0 018.167 5.25z"
-                fill="currentColor"></path>
-            <path
-                d="M15.458 5.25h6.044l-9.344 9.344a.875.875 0 101.237 1.237l9.355-9.354v6.065a.875.875 0 001.75 0V4.667c0-.645-.522-1.167-1.167-1.167h-7.875a.875.875 0 000 1.75z"
                 fill="currentColor"></path>
         </symbol>
         <symbol xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 16" id="reply">
@@ -47,20 +18,6 @@
             <path
                 d="M15.853 8.977c.022-.364.044-.637.06-.791a.75.75 0 111.491.146c-.013.136-.034.39-.055.736-.066 1.1-.08 2.252-.008 3.322.148 2.218.65 3.48 1.256 3.48 1.197 0 1.898-1.896 1.898-3.87a8.001 8.001 0 10-3.994 6.928.75.75 0 11.753 1.296 9.442 9.442 0 01-4.76 1.276 9.5 9.5 0 119.5-9.5c0 2.758-.965 5.37-3.397 5.37-1.37 0-2.13-1.077-2.504-2.907a4.356 4.356 0 01-7.949-2.459 4.356 4.356 0 017.695-2.793l.014-.234zm-.5 3.027a2.855 2.855 0 10-5.713.002 2.855 2.855 0 005.714-.001v-.001z">
             </path>
-        </symbol>
-        <symbol xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="emoji">
-            <path d="M10.496 14.5a1.802 1.802 0 003.008.005" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                stroke-linejoin="round"></path>
-            <path fill-rule="evenodd" clip-rule="evenodd"
-                d="M8.999 12a1 1 0 11.003-2 1 1 0 01-.003 2zM14.999 12a1 1 0 11.003-2A1 1 0 0115 12z" fill="currentColor">
-            </path>
-            <path clip-rule="evenodd" d="M12 20.5a8.5 8.5 0 100-17 8.5 8.5 0 000 17z" stroke="currentColor"
-                stroke-width="1.5"></path>
-        </symbol>
-
-        <symbol xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 25" id="thanks">
-            <rect y=".5" width="24" height="24" rx="12" fill="#FF2442"></rect>
-            <path d="M6 13l4 4 8-8" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
         </symbol>
     </svg>
     <div data-v-024e536f="" class="note-detail-mask"
@@ -774,8 +731,27 @@ const readStream = async (
     status
 ) => {
     let partialLine = "";
-    commentsList.value.at(commentContentPlaceHolder.value.index).replys.at(-1).content = ''
+    let timer = 0 
+    let index_ = commentContentPlaceHolder.value.index
+    
+    commentsList.value.at(index_).replys.at(-1).content = ''
     while (true) {
+        timer++
+        if (timer == 50){
+            if (index_+1 == commentListRef.value.length){
+                // commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
+                bottomRef.value.scrollIntoView({behavior: 'smooth', block: 'center'})
+            }
+            else if(index_+1 < commentListRef.value.length){
+                commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
+            }
+            // if (commentContentPlaceHolder.value.floor == 1 && commentsList.value[index].replys.length==0){  // llm 回复新建的一级评论
+            //     bottomRef.value.scrollIntoView({behavior: 'smooth', block: 'center'})
+            // }else{
+            //     commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
+            // }
+            timer = 0
+        }
         // eslint-disable-next-line no-await-in-loop
         const { value, done } = await reader.read();
         if (done) break;
@@ -1145,25 +1121,6 @@ const submitComment = async () => {  // 发表评论
     let reply_to = articleId.value
     let reply_to_floor = -1
     let reply_to_username = '-1'
-
-    let index_ = commentContentPlaceHolder.value.index
-    if (commentListRef.value.length>0){
-        setTimeout(() => {
-            // console.log(index_,  commentListRef.value.length)
-            if (index_==-1 ||index_+1 == commentListRef.value.length){
-                // commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
-                bottomRef.value.scrollIntoView({behavior: 'smooth', block: 'center'})
-            }
-            else if (index_+1 < commentListRef.value.length){
-                commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
-            }else{
-                commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
-            }
-        }, 200)
-    }
-
-    
-
     // 评论上传数据库，请求success，同时更新 names 和 reply_ids
     if (commentContentPlaceHolder.value.index == -1) {  //一级评论    
         let newCommentRes = await newComment({
@@ -1200,6 +1157,12 @@ const submitComment = async () => {  // 发表评论
             ellipsisShow: true
         })
         articleCommentCnt.value += 1
+        commentContentPlaceHolder.value = {
+            content: `回复 1楼 ${username}`,
+            floor: 1,
+            index: commentsList.value.length-1,
+            comment: commentsList.value.at(-1)
+        }
     } else {                                              // 评论的子评论
         reply_to_floor = commentContentPlaceHolder.value.floor
         reply_to_username = commentContentPlaceHolder.value.comment.username
@@ -1254,6 +1217,21 @@ const submitComment = async () => {  // 发表评论
     }
     // console.log('回复成功', commentContentPlaceHolder.value.index, commentsList)
 
+    let index_ = commentContentPlaceHolder.value.index
+    if (commentListRef.value.length>0){
+        setTimeout(() => {
+            // console.log(index_,  commentListRef.value.length)
+            if (index_+1 == commentListRef.value.length){
+                // commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
+                bottomRef.value.scrollIntoView({behavior: 'smooth', block: 'center'})
+            }
+            else if (index_+1 < commentListRef.value.length){
+                commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
+            }else{
+                commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
+            }
+        }, 200)
+    }
 
     // let agentContent = checkedAgent.value.map(item => agentList.value[item]['content'])
     let agentContent = checkedAgent.value == -1 ? '' : agentList.value[checkedAgent.value]['content']
@@ -1308,7 +1286,6 @@ const submitComment = async () => {  // 发表评论
     // 如果 @ 了agent，或者回复了agent的消息，需要agent做出回应
     // if (checkedAgent.value.length >= 1 || agentList.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
     if (checkedAgent.value != -1 || agentListOri.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
-        
         llmResponse(messages)
     } else {
         
@@ -1327,10 +1304,10 @@ const submitComment = async () => {  // 发表评论
         //     comment: {}
         // }
         // 回复成功后默认继续回复agent的当前回复
-        if (commentContentPlaceHolder.value.index == -1){
-            replyComment(commentsList.value.length-1, 1, commentsList.value.at(-1))    
+        if (commentContentPlaceHolder.value.floor == 1 && commentsList.value[index_].replys.length==0){  // 新建一级评论
+            replyComment(index_, 1, commentsList.value.at(index_))   
         }else{
-            replyComment(commentContentPlaceHolder.value.index, commentsList.value[commentContentPlaceHolder.value.index].replys.length+1, commentsList.value[commentContentPlaceHolder.value.index].replys.at(-1))
+            replyComment(index_, commentsList.value[index_].replys.length+1, commentsList.value[index_].replys.at(-1))
         }
         // let agentFloor = reply_to_floor + 1 // commentsList.value[index].replys.length+1
         // replyComment(index, agentFloor, commentsList.value[index].replys[agentFloor - 2])
@@ -1354,23 +1331,38 @@ const llmResponse = async (messages) => {
     //     return
     // }
 
-    // 如果是@agent回复新建的一级评论
-    let index = commentsList.value.length - 1
+    let index = commentContentPlaceHolder.value.index
     let username = checkedAgent.value != -1 ? agentList.value[checkedAgent.value]['role'] : commentContentPlaceHolder.value.comment.username
-    // let reply_id = ''
-    let reply_to = commentsList.value[index].id
-    let reply_to_floor = 1
-    let reply_to_username = commentsList.value[index].username
-
-    if (commentContentPlaceHolder.value.index != -1) {  // @agent 二级评论
-        index = commentContentPlaceHolder.value.index
-        // reply_id = ''
+    let reply_to = ''
+    let reply_to_floor = -1
+    let reply_to_username = ''
+    if (commentContentPlaceHolder.value.floor == 1 && commentsList.value[index].replys.length==0){  // llm 回复新建的一级评论
+        reply_to = commentsList.value[index].id
+        reply_to_floor = 1
+        reply_to_username = commentsList.value[index].username
+        
+    }else{          // @agent 二级评论
         let replys = commentsList.value[index].replys
         reply_to = replys[replys.length - 1].id,
-            reply_to_floor = replys.length + 1
+        reply_to_floor = replys.length + 1
         reply_to_username = replys[replys.length - 1].username
     }
-    // console.log('asdf')
+    // 如果是@agent回复新建的一级评论
+    // let index = commentsList.value.length - 1
+    // let username = checkedAgent.value != -1 ? agentList.value[checkedAgent.value]['role'] : commentContentPlaceHolder.value.comment.username
+    // let reply_id = ''
+    // let reply_to = commentsList.value[index].id
+    // let reply_to_floor = 1
+    // let reply_to_username = commentsList.value[index].username
+
+    // if (commentContentPlaceHolder.value.index != -1) {  // @agent 二级评论
+    //     index = commentContentPlaceHolder.value.index
+    //     // reply_id = ''
+    //     let replys = commentsList.value[index].replys
+    //     reply_to = replys[replys.length - 1].id,
+    //     reply_to_floor = replys.length + 1
+    //     reply_to_username = replys[replys.length - 1].username
+    // }
     let { body, status } = await chat(messages.value, apiKey)
 
     commentsList.value[index].replys.push({
