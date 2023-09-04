@@ -54,6 +54,10 @@ const createWindow = () => {
 
     win.setAlwaysOnTop(true)
 
+    win.on('focus', ()=>{
+        win.webContents.send('electron_focus')
+    })
+
     ipcMain.on('setAlwaysOnTop', (event, alwaysOnTop) => {
         // console.log(alwaysOnTop)
         if (win) {

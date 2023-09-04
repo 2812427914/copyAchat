@@ -20,9 +20,9 @@
             </path>
         </symbol>
     </svg>
-    <div data-v-024e536f="" class="note-detail-mask"
+    <div ref="containerRef" data-v-024e536f="" class="note-detail-mask"
         style="transition: background-color 0.4s ease 0s; background: var(--mask-paper);">
-        <div data-v-70c71a67="" data-v-024e536f="" id="" data-v-956360f6="" class="note-container" data-type="normal">
+        <div  data-v-70c71a67="" data-v-024e536f="" id="" data-v-956360f6="" class="note-container" data-type="normal">
             <div data-v-11b921ce="" data-v-70c71a67="" class="">
                 <div data-v-d21d8bf9="" data-v-11b921ce="" class="note-scroller">
                     <van-nav-bar fixed style="-webkit-app-region: drag" :border="false" title="ChatBranch" :z-index='30' @click-left="onClickLeft">
@@ -754,7 +754,7 @@ const readStream = async (
     commentsList.value.at(index_).replys.at(-1).content = ''
     while (true) {
         timer++
-        if (timer % 30 == 0 && timer<70){
+        if (timer % 30 == 0 && timer<50){
             // console.log('readStream', index_, commentListRef.value.length)
             if (index_+1 == commentListRef.value.length){
                 // commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
@@ -887,11 +887,17 @@ const checkedClipBoard = ref([])
 const checkboxRefsClipBoard = ref([])
 const toggleClipBoard = (index) => {
     checkboxRefsClipBoard.value[index].toggle()
+    if (!isMobile) {
+        commentField.value.focus()
+    }
 }
 
 if (!isMobile){
     window.ipcRenderer.on('clipboard-history', (e, history) => {
         clipBoardList.value = history.slice(0, 10)
+    })
+    window.ipcRenderer.on('electron_focus', (e) => {
+        commentField.value.focus()
     })
 }
 
@@ -928,17 +934,19 @@ watch(checkedAgent, (newValue) => {
   commentField.value.focus()
 })
 
-const mobileUp = () => {
-    if (isMobile){
-        document.body.style.transform = 'translateY(-200px)'; // 可根据实际情况调整上移的距离
-    }
-}
+// const containerRef = ref('')
 
-const mobileDown = () => {
-    if (isMobile){
-        document.body.style.transform = 'translateY(0)'; // 可根据实际情况调整上移的距离
-    }
-}
+// const mobileUp = () => {
+//     if (isMobile){
+//         containerRef.value.style.transform = 'translateY(-200px)'; // 可根据实际情况调整上移的距离
+//     }
+// }
+
+// const mobileDown = () => {
+//     if (isMobile){
+//         containerRef.value.style.transform = 'translateY(0)'; // 可根据实际情况调整上移的距离
+//     }
+// }
 
 // watch(commentField, (newValue, oldValue) => {
 //       if (newValue === document.activeElement) {
