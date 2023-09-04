@@ -86,22 +86,27 @@
                                                 </div>
                                                 <div data-v-67377e58="" class="interactions" >
                                                     <div data-v-67377e58="" class="reply icon-container">
-                                                        <span data-v-67377e58="" style="margin-right: 8px;"
-                                                            @click="copy_comment(item.content)">复制</span>
+                                                        <!-- <span data-v-67377e58="" style="margin-right: 8px;"
+                                                            @click="copy_comment(item.content)">复制</span> -->
 
                                                         <!-- <svg @click="replyComment(index, 1, item)" 
                                                             style="margin-left: 8px"
                                                             class="reds-icon reply-icon" width="16" height="16">
                                                             <use data-v-7c2d5134="" xlink:href="#reply"></use>
                                                         </svg> -->
+                                                        <van-icon name="expand-o" @click="changeOverflowAuto(index, 1)"  class="reds-icon reply-icon" :style="{'margin-right': '8px', 'color': item.overflowAuto ? '#13386c' : '#969799'}"/>
                                                         <span style="margin-right: 8px;">
                                                             <van-icon @click="replyComment(index, 1, item)" name="comment-o" style="margin-right: 2px;" class="reds-icon reply-icon" />
                                                             <span v-if="item.reply_cnt != -1" data-v-67377e58="" 
                                                                 >{{ item.reply_cnt }}
                                                             </span>
                                                         </span>
-                                                        
-                                                        <van-icon name="delete-o" @click="deleteComment(index, 1, item)" class="reds-icon reply-icon" />
+                                                        <van-popover v-model:show="item.showCommentPopover" :actions="actions" @open="changeCommentPopover(index, 1, item)" @select="onSelect">
+                                                        <template #reference>
+                                                            <van-icon name="more-o" class="reds-icon reply-icon"/>
+                                                        </template>
+                                                        </van-popover>
+                                                        <!-- <van-icon name="delete-o" @click="deleteComment(index, 1, item)" class="reds-icon reply-icon" /> -->
                                                     </div>
                                                 </div>
                                             </div>
@@ -110,7 +115,7 @@
                                                 <!-- <van-text-ellipsis style="white-space: normal;" rows="5"
                                                     :content="item.content" expand-text="展开" collapse-text="收起"
                                                     position="middle" /> -->
-                                                <v-md-preview style="overflow:auto; max-height: 300px;"
+                                                <v-md-preview :style="{'overflow': item.overflowAuto ? 'auto' : 'hidden', 'max-height': item.overflowAuto ? '300px' : '100px'}"
                                                     @copy-code-success="handleCopyCodeSuccess" :text="item.content"
                                                     data-v-67377e58="" class="content"></v-md-preview>
                                                 <!-- <vue-ellipsis-3
@@ -198,9 +203,9 @@
                                                                         >
                                                                         <div data-v-67377e58=""
                                                                             class="reply icon-container">
-                                                                            <span data-v-67377e58=""
+                                                                            <!-- <span data-v-67377e58=""
                                                                                 style="margin-right: 8px;"
-                                                                                @click="copy_comment(comment_reply.content)">复制</span>
+                                                                                @click="copy_comment(comment_reply.content)">复制</span> -->
 
                                                                             <!-- <svg @click="replyComment(index, idx + 2, comment_reply)"
                                                                                 class="reds-icon reply-icon" width="16"
@@ -208,8 +213,14 @@
                                                                                 <use data-v-7c2d5134="" xlink:href="#reply">
                                                                                 </use>
                                                                             </svg> -->
+                                                                            <van-icon name="expand-o" @click="changeOverflowAuto(index, idx+2)"  class="reds-icon reply-icon" :style="{'margin-right': '8px', 'color': comment_reply.overflowAuto ? '#13386c' : '#969799'}"/>
                                                                             <van-icon @click="replyComment(index, idx + 2, comment_reply)" name="comment-o" class="reds-icon reply-icon" style="margin-right: 8px;"/>
-                                                                            <van-icon name="delete-o" @click="deleteComment(index, idx+2, comment_reply)" class="reds-icon reply-icon" />
+                                                                            <van-popover v-model:show="comment_reply.showCommentPopover" :actions="actions" @open="changeCommentPopover(index, idx+2, comment_reply)" @select="onSelect">
+                                                                                <template #reference>
+                                                                                    <van-icon name="more-o" class="reds-icon reply-icon"/>
+                                                                                </template>
+                                                                            </van-popover>
+                                                                            <!-- <van-icon name="delete-o" @click="deleteComment(index, idx+2, comment_reply)" class="reds-icon reply-icon" /> -->
                                                                         </div>
                                                                     </div>
 
@@ -230,7 +241,7 @@
                                                                 <!-- <div  v-else v-html="md.render(comment_reply.content)">
                                                                 </div> -->
                                                                 <!-- <v-md-preview-html :html="xss.process(VMdPreview.vMdParser.themeConfig.markdownParser.render(comment_reply.content))" preview-class="vuepress-markdown-body"></v-md-preview-html> -->
-                                                                <v-md-preview style="max-height: 300px;  overflow:auto"
+                                                                <v-md-preview :style="{'overflow': comment_reply.overflowAuto ? 'auto' : 'hidden', 'max-height': comment_reply.overflowAuto ? '300px' : '100px'}"
                                                                     @copy-code-success="handleCopyCodeSuccess"
                                                                     :text="comment_reply.content" data-v-67377e58=""
                                                                     class="content"></v-md-preview>
@@ -488,7 +499,7 @@
                     <van-field v-if="!commentContentPreview" @keydown="handleKeyDown" @input="handleInput" @keydown.enter.native="handleKeyBoard"
                         id="commentFieldFocus" ref="commentField" type="textarea" :autosize="{ maxHeight: 200 }" rows="1"
                         style="background-color: rgba(0, 0, 0, 0.03); border-radius: 8px;" v-model="commentContent"
-                        :placeholder=commentContentPlaceHolder.content @focus="mobileUp" @blur="mobileDown">
+                        :placeholder=commentContentPlaceHolder.content>
                     </van-field>
                     <v-md-preview v-if="commentContentPreview" @copy-code-success="handleCopyCodeSuccess" :text="commentContent"
                         data-v-5245913a="" style="padding: 10px; font-size: 14px;" class="desc"></v-md-preview>
@@ -517,6 +528,8 @@ import { useRoute, useRouter } from 'vue-router';
 import useClipboard from "vue-clipboard3";
 import { nextTick } from 'vue';
 import pinyin from 'pinyin';
+import { showToast } from 'vant';
+
 // import {ipcRenderer} from 'electron'
 
 // import ClipboardObserver from "electron-clipboard-observer"
@@ -561,6 +574,61 @@ const setAlwaysOnTop = () => {
 
 // import { Mentionable } from 'vue-mention'
 // import 'floating-vue/dist/style.css'
+
+const changeOverflowAuto = (index, floor) => {
+    if (floor == 1){
+        commentsList.value[index].overflowAuto = !commentsList.value[index].overflowAuto
+    }else{
+        commentsList.value[index].replys[floor-2].overflowAuto = !commentsList.value[index].replys[floor-2].overflowAuto
+    }
+}
+
+const commentPopoverValue = ref({
+    'index': -1,
+    'floor': -1,
+    'comment': {}
+})
+
+const changeCommentPopover = (index, floor, comment) => {
+    console.log(index,floor, commentPopoverValue.value.index)
+    let preIndex = commentPopoverValue.value.index
+    let preFloor = commentPopoverValue.value.floor
+    if (index!=preIndex || floor !=preFloor){
+        if(preIndex != -1){
+            if(preFloor==1){
+                commentsList.value[preIndex].showCommentPopover = false
+            }else{
+                commentsList.value[preIndex].replys[preFloor-2].showCommentPopover = false
+            }
+        }
+        
+        if(floor==1){
+            commentsList.value[index].showCommentPopover = true
+        }else{
+            commentsList.value[index].replys[floor-2].showCommentPopover = true
+        }
+        commentPopoverValue.value = {
+            'index': index,
+            'floor': floor,
+            'comment': comment
+        }
+    }
+}
+
+// 通过 actions 属性来定义菜单选项
+const actions = [
+  { text: '复制' },
+  { text: '删除' },
+]
+const onSelect = (action) => {
+    // showToast(action.text);
+    if(action.text == '复制'){
+        copy_comment(commentPopoverValue.value.comment.content)
+        showToast('复制成功')
+    }else if(action.text == '删除'){
+        deleteComment(commentPopoverValue.value.index, commentPopoverValue.value.floor, commentPopoverValue.value.comment)
+    }
+}
 
 const { toClipboard } = useClipboard();
 // import { xss } from '@kangc/v-md-editor';
@@ -721,6 +789,8 @@ const getCommentsList = async () => {
         data.results[i].reply_cnt = -1//data.results[i].replyCnt
         data.results[i].replys = []
         data.results[i].ellipsisShow = true
+        data.results[i].showCommentPopover = false
+        data.results[i].overflowAuto = false
         let replys_length = data.results[i].replys.length;
         let tmp_reply_ids = []
         let tmp_names = []
@@ -836,6 +906,8 @@ const text_expand = async (comment_index) => {
         data.results[j].reply_to = data.results[j].replyTo
         data.results[j].id = data.results[j].objectId
         data.results[j].ellipsisShow = true
+        data.results[j].showCommentPopover = false
+        data.results[j].overflowAuto = false
         let reply_to_floor = tmp_reply_ids.indexOf(data.results[j].reply_to) + 1
         // console.log('reply_to_floor', data.results[j].reply_to, tmp_reply_ids)
         data.results[j].reply_to_floor = reply_to_floor
@@ -1251,7 +1323,9 @@ const submitComment = async () => {  // 发表评论
             replay_to_floor: reply_to_floor,
             reply_to_username: reply_to_username,
             replys: [],
-            ellipsisShow: true
+            ellipsisShow: true,
+            overflowAuto: true,
+            showCommentPopover: false
         })
         articleCommentCnt.value += 1
         commentContentPlaceHolder.value = {
@@ -1295,7 +1369,9 @@ const submitComment = async () => {  // 发表评论
             cue_who: cue_who,
             reply_to_floor: reply_to_floor,
             reply_to_username: reply_to_username,
-            ellipsisShow: true
+            ellipsisShow: true,
+            showCommentPopover: false,
+            overflowAuto: true
         })
         // 回复成功，当前评论的一级评论的子评论数量+1
         commentsList.value[commentContentPlaceHolder.value.index].reply_cnt += 1
@@ -2298,8 +2374,10 @@ img {
 
 /* 添加这段样式后，Primary Button 会变成红色 */
 // :root:root {
-//     --van-popup-round-radius: 2px;
+//     // --van-popup-round-radius: 2px;
+//     --van-popover-action-width: 20px;
 // }
+
 
 .van-text-ellipsis /deep/ .van-text-ellipsis__action {
     cursor: pointer;
