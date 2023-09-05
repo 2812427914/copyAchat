@@ -14,13 +14,14 @@ const createWindow = () => {
         y: 200, // 设置窗口的y坐标，使其位于屏幕的顶部
         // title: 'copyAchat', 
         webPreferences: {
-        contextIsolation: false,
-        preload: path.join(__dirname, 'preload.js'), // '/Users/tangzihang1/copyAchat/electron/main/preload.js',
-        nodeIntegration: true
-    },
-    frame:false,
-    // titleBarStyle: 'customButtonsOnHover'
-})
+            contextIsolation: false,
+            preload: path.join(__dirname, 'preload.js'), // '/Users/tangzihang1/copyAchat/electron/main/preload.js',
+            nodeIntegration: true
+        },
+        frame:false,
+        // titleBarStyle: 'customButtonsOnHover'
+    })
+    // win.webContents.openDevTools();
     // and load the index.html of the app.
     // win.webContents.setUserAgent("Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko; googleweblight) Chrome/38.0.1025.166 Mobile Safari/535.19");
     // win.loadURL('https://www.xiaohongshu.com/')

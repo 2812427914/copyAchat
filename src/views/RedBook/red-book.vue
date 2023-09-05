@@ -397,8 +397,8 @@
                         <textarea v-model="text"> </textarea>
                     </Mentionable> -->
                     <van-checkbox-group v-if="bottomShowList[0]" v-model="checkedClipBoard"
-                        style="max-height: 150px; overflow: auto;">
-                        <van-cell-group>
+                        style="max-height: 150px; overflow: auto;" ref="clipBoardCheckboxGroup">
+                        <!-- <van-cell-group> -->
                             <van-cell v-for="(item, idx) in clipBoardList" clickable :key="item"
                                 @click="toggleClipBoard(idx)">
                                 <template #title>
@@ -411,7 +411,7 @@
                                     <van-checkbox :name="item" :ref="el => checkboxRefsClipBoard[idx] = el" @click.stop />
                                 </template>
                             </van-cell>
-                        </van-cell-group>
+                        <!-- </van-cell-group> -->
                     </van-checkbox-group>
                     <!-- <van-checkbox-group v-if="bottomShowList[1]" v-model="checkedAgent"
                         style="max-height: 150px; overflow: auto;">
@@ -581,6 +581,9 @@ const changeOverflowAuto = (index, floor) => {
     }else{
         commentsList.value[index].replys[floor-2].overflowAuto = !commentsList.value[index].replys[floor-2].overflowAuto
     }
+    if (!isMobile){
+        commentField.value.focus()  //聚焦到输入框
+    }
 }
 
 const commentPopoverValue = ref({
@@ -669,6 +672,7 @@ const commentField = ref(null)
 const commentFieldPopup = ref(null)
 
 const onClickLeft = async () => {
+    getClipBoardHIstoryFlag.value = true
     await submitArticle()
     router.go(-1)
 }
@@ -735,7 +739,7 @@ const scrollTop = () => {
     if (!isMobile){
         setTimeout(() => {
             commentField.value.focus()  //聚焦到输入框
-        }, 2000)
+        }, 500)
     }
 }
 
@@ -964,14 +968,6 @@ const toggleClipBoard = (index) => {
     }
 }
 
-if (!isMobile){
-    window.ipcRenderer.on('clipboard-history', (e, history) => {
-        clipBoardList.value = history.slice(0, 10)
-    })
-    window.ipcRenderer.on('electron_focus', (e) => {
-        commentField.value.focus()
-    })
-}
 
 
 const agentListOri = ref([
@@ -1033,12 +1029,10 @@ watch(checkedAgent, (newValue) => {
 const bottomShow = (index) => {
     // console.log(index, fromButton.value, preShowIndex.value, bottomShowList.value)
     // fromButton.value = true
-    if (!isMobile){
-        commentField.value.focus()  //聚焦到输入框
-    }
+    
     if (preShowIndex.value == -1) {
-        bottomShowList.value[preShowIndex.value] = false
-        preShowIndex.value = -1
+        // bottomShowList.value[preShowIndex.value] = false
+        // preShowIndex.value = -1
         bottomShowList.value[index] = true
         preShowIndex.value = index
     }
@@ -1058,6 +1052,12 @@ const bottomShow = (index) => {
     // if (!isMobile){
         // commentField.value.focus()  //聚焦到输入框
     // }
+    if (!isMobile){
+        nextTick(() => {
+            commentField.value.focus()  //聚焦到输入框
+        });
+        
+    }
 }
 
 const getAgent = async () => {
@@ -1156,6 +1156,7 @@ const submitArticle = async () => {
     }
     oldArticle.title = article.value.title
     oldArticle.description = article.value.description
+    // showToast('更新标题描述')
 }
 
 // const handleEnter = (event) => {
@@ -1267,10 +1268,7 @@ const submitComment = async () => {  // 发表评论
 
     // 检测是否有改动，有则提交修改
     submitArticle()
-    // 内容为空，点击无效
-    if (commentContent.value == '') {
-        return ''
-    }
+    
     // console.log(checkedAgent.value)
     let prefix = '@'
     // let agentRole = checkedAgent.value.map(item => prefix + agentList.value[item]['role'])
@@ -1281,6 +1279,13 @@ const submitComment = async () => {  // 发表评论
     let commentContent_ = commentContent.value
     // let composedComment = agentRole + ' ' + clipboard_ + commentContent_
     let composedComment = clipboard_ + '\n' +commentContent_
+
+    // 内容为空，点击无效
+    if (composedComment == '') {
+        showToast('评论内容为空')
+        return ''
+    }
+
     let avatar = 'https://i2.hdslb.com/bfs/face/27ec942e8d4e6e024d3a9f11240d81a0aa90caca.jpg@60w_60h_1c.png'
     let username = '唐某人'
     let date = '08-11'
@@ -1547,7 +1552,9 @@ const llmResponse = async (messages) => {
         cue_who: [],
         reply_to_floor: reply_to_floor,
         reply_to_username: reply_to_username,
-        ellipsisShow: false
+        ellipsisShow: false,
+        overflowAuto: true,
+        showCommentPopover: false
     })
     let { body, status } = await chat(messages.value, apiKey)
 
@@ -1687,6 +1694,9 @@ const history = ref([])
 //     console.log(history.value)
 //     }
 
+
+
+
 // 声明一个 ref 来存放该元素的引用
 // 必须和模板里的 ref 同名
 onMounted(() => {
@@ -1695,6 +1705,7 @@ onMounted(() => {
     getAgent()
     if (!isMobile){
         window.ipcRenderer.send('getClipBoardHistory', '')
+        getClipBoardHIstoryFlag.value = true
     }
     if (!isMobile){
         commentField.value.focus()  //聚焦到输入框
@@ -1726,13 +1737,43 @@ onMounted(() => {
     // console.log('剪贴板历史', clipboardItems.value)
 });
 
-
 onBeforeUpdate(() => {
     checkboxRefsClipBoard.value = []
     commentListRef.value = []
     // checkboxRefsAgent.value = []
 });
 
+
+const getClipBoardHIstoryFlag = ref(false)
+const clipBoardCheckboxGroup = ref(null)
+const clipBoardAllFalse = (val) => {
+    clipBoardCheckboxGroup.value.toggleAll(false)
+}
+
+
+if (!isMobile){
+        window.ipcRenderer.on('clipboard-history', (e, history) => {
+            clipBoardList.value = history.slice(0, 10)
+            if (preShowIndex.value!=-1){
+                bottomShowList.value[preShowIndex.value] = false
+                preShowIndex.value = -1
+            }
+            if(!getClipBoardHIstoryFlag.value){
+                bottomShow(0)
+                nextTick(() => {
+                    console.log('toggle')
+                    toggleClipBoard(0)
+                })
+            }
+            getClipBoardHIstoryFlag.value = false
+        })
+        window.ipcRenderer.on('electron_focus', (e) => {
+            console.log('electron_focus')
+            setTimeout(() => {
+                commentField.value.focus()
+            }, 200);
+        })
+    }
 
 </script>
 
