@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, clipboard, screen } = require('electron')
+const { app, BrowserWindow, ipcMain, clipboard, screen, globalShortcut } = require('electron')
 const path = require('path')
 
 const createWindow = () => {
@@ -66,13 +66,25 @@ const createWindow = () => {
           win.setAlwaysOnTop(alwaysOnTop);
         }
       })
+    return win
 }
+
 app.whenReady().then(() => {
-    createWindow()
+    let win = createWindow()
     app.on('activate', () => {
-        if (BrowserWindow.getAllWindows().length === 0) createWindow()
+        if (BrowserWindow.getAllWindows().length === 0){
+            win = createWindow()
+        }
+    })
+    globalShortcut.register('Control+x+p', () => {
+        // console.log('win foucs')
+        win.show()
+        win.focus()
     })
 })
 app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') app.quit()
+    if (process.platform !== 'darwin') {
+        app.quit()
+        globalShortcut.unregisterAll()
+    }
 })
