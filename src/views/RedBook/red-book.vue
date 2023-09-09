@@ -1769,9 +1769,11 @@ if (!isMobile){
         })
         window.ipcRenderer.on('electron_focus', (e) => {
             console.log('electron_focus')
-            setTimeout(() => {
-                commentField.value.focus()
-            }, 200);
+            if (articleDescriptionPreview.value){
+                setTimeout(() => {
+                    commentField.value.focus()
+                }, 200);
+            }
         })
     }
 

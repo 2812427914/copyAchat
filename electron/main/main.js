@@ -76,7 +76,7 @@ app.whenReady().then(() => {
             win = createWindow()
         }
     })
-    globalShortcut.register('Control+x+p', () => {
+    globalShortcut.register('Command+;', () => {
         // console.log('win foucs')
         win.show()
         win.focus()
