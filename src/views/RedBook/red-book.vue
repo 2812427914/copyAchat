@@ -1170,23 +1170,21 @@ const submitArticle = async () => {
 // }
 
 
-// shift+enter 发送，enter 换行
+// // shift+enter 发送，enter 换行
 const handleKeyBoard = (event) => {
-    console.log(handleKeyBoard)
+    console.log('handleKeyBoard')
     // console.log(searchAgent.value, agentList.value.length)
     if (searchAgent.value == true && agentList.value.length == 1){
-        
-        checkedAgent.value = 0
-        let curpos = event.target.selectionStart
-        console.log(commentContent.value, pos_alta.value)
-        console.log(commentContent.value.substring(0, pos_alta.value), commentContent.value.substring(curpos))
-        commentContent.value = commentContent.value.substring(0, pos_alta.value) + '@'+agentList.value[checkedAgent.value]['role']+' ' + commentContent.value.substring(curpos) 
-        searchAgent.value = false
-        // event.target.selectionStart = (commentContent.value.substring(0, pos_alta.value) + '@'+agentList.value[checkedAgent.value]['role']+' ').length-1
-        event.target.focus();
-        nextTick (() => {
-            event.target.selectionStart = (commentContent.value.substring(0, pos_alta.value) + '@'+agentList.value[checkedAgent.value]['role']+' ').length
-        })
+        setTimeout (() => {
+            checkedAgent.value = 0
+            let curpos = event.target.selectionStart           
+            commentContent.value = commentContent.value.substring(0, pos_alta.value) + '@'+agentList.value[checkedAgent.value]['role']+' ' + commentContent.value.substring(curpos) 
+            searchAgent.value = false
+            event.target.focus();
+            nextTick(() => {
+                event.target.selectionStart = pos_alta.value + ('@'+agentList.value[checkedAgent.value]['role']+' ').length
+            })      
+        }, 300)
         event.preventDefault()
         return 
     }
@@ -1196,6 +1194,36 @@ const handleKeyBoard = (event) => {
     
     submitComment()
 }
+
+// shift+enter 发送，enter 换行
+// const handleKeyBoard = (event) => {
+//     console.log('handleKeyBoard')
+//     // console.log(searchAgent.value, agentList.value.length)
+//     if (searchAgent.value == true && agentList.value.length == 1){
+        
+//         checkedAgent.value = 0
+//         let curpos = event.target.selectionStart
+//         // console.log(commentContent.value, pos_alta.value)
+//         // console.log(commentContent.value.substring(0, pos_alta.value), commentContent.value.substring(curpos))
+//         let tmp_content = commentContent.value.substring(0, pos_alta.value) + '@'+agentList.value[checkedAgent.value]['role']+' ' + commentContent.value.substring(curpos) 
+//         searchAgent.value = false
+//         // event.target.selectionStart = (commentContent.value.substring(0, pos_alta.value) + '@'+agentList.value[checkedAgent.value]['role']+' ').length-1
+//         event.target.focus();
+//         // console.log('tmp_content2', commentContent.value.substring(event.target.selectionStart))
+        
+//         event.preventDefault()
+//         nextTick (() => {
+//             // console.log('tmp3',commentContent.value)
+//             event.target.selectionStart = (commentContent.value.substring(0, pos_alta.value) + '@'+agentList.value[checkedAgent.value]['role']+' ').length      
+//         })
+//         return 
+//     }
+//     if (!event.shiftKey) {
+//         return
+//     }
+    
+//     submitComment()
+// }
 
 const scrollToComment = () => {
     let index_ = commentContentPlaceHolder.value.index
@@ -1265,8 +1293,47 @@ const handleKeyDown = (event) => {
 
 const submitComment = async () => {  // 发表评论
     // console.log('submitComment', commentContent.value)
-
-
+    if (commentContent.value == ':new' || commentContent.value == '：new'){
+        clearReplyTo()
+        showToast('新的回复')
+        setTimeout(()=>{
+            commentContent.value = ''
+        }, 300)
+        return 
+    }
+    else if (commentContent.value == ':clear_0'|| commentContent.value == '：clear_0'){
+        clipBoardAllFalse()
+        showToast('清楚剪贴板勾选成功')
+        setTimeout(()=>{
+            commentContent.value = ''
+        }, 300)
+        return 
+    }
+    else if (commentContent.value == ':pin'|| commentContent.value == '：pin'){
+        setAlwaysOnTop()
+        let message = alwaysOnTop.value ? '置顶' : '取消置顶'
+        showToast(message)
+        setTimeout(()=>{
+            commentContent.value = ''
+        }, 300)
+        return 
+    }
+    else if (commentContent.value == ':top'|| commentContent.value == '：top'){
+        scrollTop()
+        showToast('返回顶部')
+        setTimeout(()=>{
+            commentContent.value = ''
+        }, 300)
+        return 
+    }
+    else if (commentContent.value == ':current'|| commentContent.value == '：current'){
+        scrollToComment()
+        showToast('定位当前回复')
+        setTimeout(()=>{
+            commentContent.value = ''
+        }, 300)
+        return 
+    }
     // 检测是否有改动，有则提交修改
     submitArticle()
     
@@ -1282,7 +1349,7 @@ const submitComment = async () => {  // 发表评论
     let composedComment = clipboard_ + '\n' +commentContent_
 
     // 内容为空，点击无效
-    if (composedComment == '') {
+    if (checkedClipBoard.value.length ==0 && commentContent_=='') {
         showToast('评论内容为空')
         return ''
     }
@@ -1748,18 +1815,25 @@ onBeforeUpdate(() => {
 const getClipBoardHIstoryFlag = ref(false)
 const clipBoardCheckboxGroup = ref(null)
 const clipBoardAllFalse = (val) => {
-    clipBoardCheckboxGroup.value.toggleAll(false)
-}
-const removeDuplicate = (arr) => {
-  const newArr = []
-  arr.forEach(item => {
-    if (newArr.indexOf(item) === -1) {
-      newArr.push(item)
+    if (checkedClipBoard.value.length != 0){
+        clipBoardCheckboxGroup.value.toggleAll(false)
     }
-  })
-  return newArr // 返回一个新数组
+    if (preShowIndex.value == 0){
+        bottomShow(0)
+    }
 }
+// const removeDuplicate = (arr) => {
+//   const newArr = []
+//   arr.forEach(item => {
+//     if (newArr.indexOf(item) === -1) {
+//       newArr.push(item)
+//     }
+//   })
+//   return newArr // 返回一个新数组
+// }
 
+var clipboard_timegap = -1
+var timeoutid = ''
 if (!isMobile){
         window.ipcRenderer.on('clipboard-history', (e, history) => {
             // history = removeDuplicate(history.splice(0, 10))
@@ -1798,6 +1872,16 @@ if (!isMobile){
                 })
             }
             getClipBoardHIstoryFlag.value = false
+            clipboard_timegap = 1000*60
+            if (timeoutid != ''){
+                clearTimeout(timeoutid)
+            }
+            timeoutid = setTimeout(() => {
+                if (checkedClipBoard.value.length > 0){
+                    clipBoardAllFalse()
+                }
+            }, clipboard_timegap);
+            // timeoutid()
         })
         window.ipcRenderer.on('electron_focus', (e) => {
             console.log('electron_focus')
