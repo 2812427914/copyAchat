@@ -529,6 +529,7 @@ import useClipboard from "vue-clipboard3";
 import { nextTick } from 'vue';
 import pinyin from 'pinyin';
 import { showToast } from 'vant';
+import { remove } from '@vue/shared';
 
 // import {ipcRenderer} from 'electron'
 
@@ -1749,11 +1750,31 @@ const clipBoardCheckboxGroup = ref(null)
 const clipBoardAllFalse = (val) => {
     clipBoardCheckboxGroup.value.toggleAll(false)
 }
-
+const removeDuplicate = (arr) => {
+  const newArr = []
+  arr.forEach(item => {
+    if (newArr.indexOf(item) === -1) {
+      newArr.push(item)
+    }
+  })
+  return newArr // 返回一个新数组
+}
 
 if (!isMobile){
         window.ipcRenderer.on('clipboard-history', (e, history) => {
-            clipBoardList.value = history.slice(0, 10)
+            // history = removeDuplicate(history.splice(0, 10))
+            // let index = history.lastIndexOf(history[0])
+            // while (index != 0){
+            //     console.log(index, history)
+            //     history.splice(index)
+            //     index = history.lastIndexOf(history[0])
+            //     // console.log(history)
+            // }
+            clipBoardList.value = history
+            // clipBoardList.value = [...new Set(history)]
+            // let index = history.splice(1, 10).indexOf(history[0])
+
+            // console.log(clipBoardList.value)
             if (preShowIndex.value!=-1){
                 bottomShowList.value[preShowIndex.value] = false
                 preShowIndex.value = -1
@@ -1762,7 +1783,18 @@ if (!isMobile){
                 bottomShow(0)
                 nextTick(() => {
                     console.log('toggle')
-                    toggleClipBoard(0)
+                    // console.log(checkboxRefsClipBoard.value[0].check)
+                    // let index = clipBoardList.value.indexOf(history[0])
+                    // if (!checkboxRefsClipBoard.value[index].checked){
+                    //     toggleClipBoard(0)
+                    // }
+                    // console.log(checkedClipBoard.value)
+                    if (checkedClipBoard.value.indexOf(history[0])==-1){
+                        // console.log(index)
+                        toggleClipBoard(0)
+                    }
+                    // console.log(checkboxRefsClipBoard.value[index])
+                    // checkboxRefsClipBoard.value[index].checked = true
                 })
             }
             getClipBoardHIstoryFlag.value = false

@@ -1,6 +1,14 @@
 const { app, BrowserWindow, ipcMain, clipboard, screen, globalShortcut } = require('electron')
 const path = require('path')
-
+const removeDuplicate = (arr) => {
+    const newArr = []
+    arr.forEach(item => {
+      if (newArr.indexOf(item) === -1) {
+        newArr.push(item)
+      }
+    })
+    return newArr // 返回一个新数组
+  }
 const createWindow = () => {
     // Create the browser window.
     const {width, height} = screen.getPrimaryDisplay().workAreaSize
@@ -34,16 +42,32 @@ const createWindow = () => {
     win.loadURL('http://localhost:5173/')
     // 开启开发者工具
     // win.webContents.openDevTools()
-    const history = []
+    var history = []
 
     // 定时任务，每 500 毫秒监听一次剪贴板变化
     setInterval(() => {
         const text = clipboard.readText()
         if (text){
-            if (history.length != 0 && text == history[0]) {
+            if (history.length>0 && text == history[0]){
                 return 
             }
+            history = history.splice(0, 100)
+            history = removeDuplicate(history)
+            let index = history.indexOf(text)
+            if (index!=-1){
+                history.splice(index,1)
+            }
+            history = history.splice(0, 10)
+            
+            // let index = history.lastIndexOf(text)
+            // while (index != 0){
+            //     // console.log(index, history)
+            //     history.splice(index)
+            //     index = history.lastIndexOf(text)
+            //     // console.log(history)
+            // }
             history.unshift(text)
+            // console.log(history)
             win.webContents.send('clipboard-history', history)
         }
         
