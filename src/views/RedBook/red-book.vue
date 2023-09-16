@@ -168,7 +168,7 @@
                                                     class="list-container">
                                                     <div data-v-67377e58="" data-v-6b20f11f="" data-v-67377e58-s=""
                                                         class="comment-item" v-for="(comment_reply, idx) in item.replys"
-                                                        :key="comment_reply.id">
+                                                        :key="comment_reply.id" :ref="subCommentListRef">
                                                         <div data-v-67377e58="" class="comment-inner-container">
                                                             <!-- <div data-v-67377e58="" class="avatar"><a data-v-1d0a8701=""
                                                                     data-v-67377e58=""
@@ -458,7 +458,25 @@
                             </van-field> -->
                         </van-cell-group>
                     </van-radio-group>
-                    <van-row style="padding-bottom:8px;">
+                    
+                    <!-- <van-field @keydown.enter.native="handleKeyBoard" :border="false" v-model="commentContent"
+                        :placeholder=commentContentPlaceHolder.content type="textarea" rows="1" autosize ref="commentFieldPopup" /> -->
+                    <van-field v-if="!commentContentPreview" @keydown="handleKeyDown" @input="handleInput" @keydown.enter.native="handleKeyBoard"
+                        id="commentFieldFocus" ref="commentField" type="textarea" :autosize="{ maxHeight: 200 }" rows="1"
+                        style="background-color: rgba(0, 0, 0, 0.03); border-radius: 8px;" v-model="commentContent"
+                        :placeholder=commentContentPlaceHolder.content>
+                    </van-field>
+                    <v-md-preview v-if="commentContentPreview" @copy-code-success="handleCopyCodeSuccess" :text="commentContent"
+                        data-v-5245913a="" style="padding: 10px; font-size: 14px;" class="desc"></v-md-preview>
+                    <!-- <v-md-editor :placeholder="commentContentPlaceHolder.content" id="commentFieldFocus" 
+                        ref="commentField" @keydown="handleKeyDown" @input="handleInput" 
+                        @keydown.enter.native="handleKeyBoard"
+                        mode="edit"  
+                        left-toolbar=""
+                        right-toolbar=""
+                        @change="handleInput"
+                        v-model="commentContent" /> -->
+                        <van-row style="padding-bottom:8px;">
                         <van-col span="20">
 
                             <!-- <svg @click="bottomShow(0)" class="reds-icon" width="24" height="24"
@@ -490,28 +508,13 @@
                                     border-radius: 18px;
                                     padding-top: 3px;
                                     padding-bottom: 3px;
-                                    padding-left: 10px;
-                                    padding-right: 10px;">回复</div>
+                                    padding-left: 12px;
+                                    padding-right: 12px;
+                                    margin-top: 3px;
+                                    "
+                                >回复</div>
                         </van-col>
                     </van-row>
-                    <!-- <van-field @keydown.enter.native="handleKeyBoard" :border="false" v-model="commentContent"
-                        :placeholder=commentContentPlaceHolder.content type="textarea" rows="1" autosize ref="commentFieldPopup" /> -->
-                    <van-field v-if="!commentContentPreview" @keydown="handleKeyDown" @input="handleInput" @keydown.enter.native="handleKeyBoard"
-                        id="commentFieldFocus" ref="commentField" type="textarea" :autosize="{ maxHeight: 200 }" rows="1"
-                        style="background-color: rgba(0, 0, 0, 0.03); border-radius: 8px;" v-model="commentContent"
-                        :placeholder=commentContentPlaceHolder.content>
-                    </van-field>
-                    <v-md-preview v-if="commentContentPreview" @copy-code-success="handleCopyCodeSuccess" :text="commentContent"
-                        data-v-5245913a="" style="padding: 10px; font-size: 14px;" class="desc"></v-md-preview>
-                    <!-- <v-md-editor :placeholder="commentContentPlaceHolder.content" id="commentFieldFocus" 
-                        ref="commentField" @keydown="handleKeyDown" @input="handleInput" 
-                        @keydown.enter.native="handleKeyBoard"
-                        mode="edit"  
-                        left-toolbar=""
-                        right-toolbar=""
-                        @change="handleInput"
-                        v-model="commentContent" /> -->
-
                 </div>
             </div>
         </div>
@@ -736,7 +739,7 @@ const getArticle = async () => {
 
 const topRef = ref('')
 const scrollTop = () => {
-    topRef.value.scrollIntoView({behavior: 'instant', block: 'center'})
+    topRef.value.scrollIntoView({behavior: 'instant', block: 'start'})
     if (!isMobile){
         setTimeout(() => {
             commentField.value.focus()  //聚焦到输入框
@@ -748,7 +751,7 @@ const scrollTop = () => {
 const articleCommentCnt = ref(0)
 const getRedBookCommentsList = async () => {
     let query = Bmob.Query(articleTableName.value)
-    query.order("createdAt")
+    query.order("-createdAt")
     query.field('comments', articleId.value)
     query.limit(10)
     query.skip(commentsList.value.length)
@@ -1381,9 +1384,9 @@ const submitComment = async () => {  // 发表评论
             res.save()
         })
 
-        reply_ids.value.push([newCommentRes.objectId])
-        names.value.push([username])
-        commentsList.value.push({
+        reply_ids.value.unshift([newCommentRes.objectId])
+        names.value.unshift([username])
+        commentsList.value.unshift({
             id: newCommentRes.objectId,
             avatar: avatar,
             username: username,
@@ -1404,8 +1407,8 @@ const submitComment = async () => {  // 发表评论
         commentContentPlaceHolder.value = {
             content: `回复 1楼 ${username}`,
             floor: 1,
-            index: commentsList.value.length-1,
-            comment: commentsList.value.at(-1)
+            index: 0,
+            comment: commentsList.value[0]
         }
     } else {                                              // 评论的子评论
         reply_to_floor = commentContentPlaceHolder.value.floor
@@ -1465,17 +1468,24 @@ const submitComment = async () => {  // 发表评论
 
     let index_ = commentContentPlaceHolder.value.index
     if (commentListRef.value.length>0){
+        console.log(index_+1)
         setTimeout(() => {
-            // console.log('submitComment', index_, commentListRef.value.length)
-            // console.log(index_,  commentListRef.value.length)
-            if (index_+1 == commentListRef.value.length){
-                // commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
-                bottomRef.value.scrollIntoView({behavior: 'smooth', block: 'center'})
-            }
-            else if (index_+1 < commentListRef.value.length){
-                commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
+            // if (index_ == commentListRef.value.length){
+            //     // commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
+            //     // bottomRef.value.scrollIntoView({behavior: 'smooth', block: 'center'})
+                
+            // }
+            // else if (index_+1 < commentListRef.value.length){
+            //     commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
+            // }else{
+            //     commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
+            // }
+            let index = commentContentPlaceHolder.value.index
+            if (commentContentPlaceHolder.value.floor == 1 && commentsList.value[index].replys.length==0){  // llm 回复新建的一级评论
+                // topRef.value.scrollIntoView({behavior: 'smooth', block:'center'})
+                commentListRef.value.at(0).scrollIntoView({behavior: 'smooth', block:'center'})
             }else{
-                commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
+                commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
             }
         }, 500)
     }
@@ -1681,17 +1691,41 @@ const llmResponse = async (messages) => {
 }
 
 const commentListRef = ref([])
+const subCommentListRef = ref([])
 
 const setCommentListRef = (el) => {
     // console.log(el)
+    let index = commentContentPlaceHolder.value.index
     if (!commentListRef.value.includes(el)) {
-        commentListRef.value.push(el)
+        if (commentContentPlaceHolder.value.floor == 1 && commentsList.value[index].replys.length==0){  // llm 回复新建的一级评论
+            commentListRef.value.unshift(el)
+        }
+        else{
+            commentListRef.value.push(el)
+        }
+        // console.log(el)
     }
     // commentListRef.value.push(el)
     // console.log('setCommentListRef', commentListRef.value.length)
     // console.log(commentListRef)
 }
 
+const setSubCommentListRef = (el) => {
+    // console.log(el)
+    let index = commentContentPlaceHolder.value.index
+    if (!subCommentListRef.value.includes(el)) {
+        if (commentContentPlaceHolder.value.floor == 1 && commentsList.value[index].replys.length==0){  // llm 回复新建的一级评论
+            subCommentListRef.value.unshift(el)
+        }
+        else{
+            subCommentListRef.value.push(el)
+        }
+        // console.log(el)
+    }
+    // commentListRef.value.push(el)
+    // console.log('setCommentListRef', commentListRef.value.length)
+    // console.log(commentListRef)
+}
 
 
 // 回复某个评论按钮
