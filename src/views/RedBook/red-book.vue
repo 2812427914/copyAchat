@@ -369,11 +369,11 @@
                     </template>
                 </van-popup> -->
 
-                <!-- <div data-v-11b921ce="" class="interactions" 
-                :style="{'padding-bottom': isMobile_ ? '30px' : '12px'}"
-                > -->
                 <div data-v-11b921ce="" class="interactions" 
+                :style="{'padding-bottom': isMobile_ ? '12px' : '0px'}"
                 >
+                <!-- <div data-v-11b921ce="" class="interactions" 
+                > -->
                     <!-- <van-field @input="handleInput" @keydown.enter.native="handleKeyBoard" id="commentFieldFocus"
                         ref="commentField" type="textarea" autosize rows="1"
                         style="background-color: rgba(0, 0, 0, 0.03); border-radius: 22px;" v-model="commentContent"
