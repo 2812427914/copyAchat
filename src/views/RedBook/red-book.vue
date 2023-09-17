@@ -370,7 +370,7 @@
                 </van-popup> -->
 
                 <div data-v-11b921ce="" class="interactions" 
-                :style="{'padding-bottom': isMobile_ ? '12px' : '0px'}"
+                :style="{'padding-bottom': isMobile_ ? '30px' : '0px'}"
                 >
                 <!-- <div data-v-11b921ce="" class="interactions" 
                 > -->
