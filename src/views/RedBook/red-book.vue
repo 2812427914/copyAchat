@@ -301,7 +301,7 @@
                                     </div>
                                 </div>
                             </van-list>
-                                <div style="padding: 130px;"></div>
+                                <div style="padding-bottom: 130px;"></div>
                                 <div ref="bottomRef"></div>
                                 
                             </div>
@@ -369,7 +369,11 @@
                     </template>
                 </van-popup> -->
 
-                <div data-v-11b921ce="" class="interactions" :style="{'padding-bottom': isMobile_ ? '30px' : '12px'}">
+                <!-- <div data-v-11b921ce="" class="interactions" 
+                :style="{'padding-bottom': isMobile_ ? '30px' : '12px'}"
+                > -->
+                <div data-v-11b921ce="" class="interactions" 
+                >
                     <!-- <van-field @input="handleInput" @keydown.enter.native="handleKeyBoard" id="commentFieldFocus"
                         ref="commentField" type="textarea" autosize rows="1"
                         style="background-color: rgba(0, 0, 0, 0.03); border-radius: 22px;" v-model="commentContent"
@@ -2191,7 +2195,8 @@ a {
     flex-basis: 130px;
     background-color: #fff;
     z-index: 1;
-    padding: 8px 8px;
+    // padding: 8px 8px;
+    padding: 8px, 0px;
 }
 
 .interactions[data-v-11b921ce] {
