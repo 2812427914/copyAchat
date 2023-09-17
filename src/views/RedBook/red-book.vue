@@ -467,7 +467,8 @@
                         :placeholder=commentContentPlaceHolder.content type="textarea" rows="1" autosize ref="commentFieldPopup" /> -->
                     <van-field v-if="!commentContentPreview" @keydown="handleKeyDown" @input="handleInput" @keydown.enter.native="handleKeyBoard"
                         id="commentFieldFocus" ref="commentField" type="textarea" :autosize="{ maxHeight: 200 }" rows="1"
-                        style="background-color: rgba(0, 0, 0, 0.03); border-radius: 8px;" v-model="commentContent"
+                        style="border-radius: 8px;" v-model="commentContent"
+                        :border="false" 
                         :placeholder=commentContentPlaceHolder.content>
                     </van-field>
                     <v-md-preview v-if="commentContentPreview" @copy-code-success="handleCopyCodeSuccess" :text="commentContent"
@@ -487,7 +488,7 @@
                                 :style="{ 'color': preShowIndex == 0 ? '#13386c' : '#969799' }">
                                 <use data-v-7c2d5134="" xlink:href="#chat"></use>
                             </svg> -->
-                            <van-icon @click="bottomShow(0)" class="reds-icon"  name="notes-o" :style="{ 'color': preShowIndex == 0 ? '#13386c' : '#969799' }"/>
+                            <van-icon @click="bottomShow(0)" class="reds-icon"  name="notes-o" :style="{ 'margin-left': '12px', 'color': preShowIndex == 0 ? '#13386c' : '#969799' }"/>
                             <!-- <svg @click="bottomShow(1)" class="reds-icon" width="20" height="20"
                                 :style="{ 'margin-left': '8px', 'color': preShowIndex == 1 ? '#13386c' : '#969799' }">
                                 <use data-v-7c2d5134="" xlink:href="#mention"></use>
@@ -496,11 +497,11 @@
                                 :style="{ 'margin-left': '8px', 'color': '#969799' }">
                                 <use xlink:href="#chat"></use>
                             </svg> -->
-                            <van-icon :style="{ 'margin-left': '8px', 'color': preShowIndex == 1 ? '#13386c' : '#969799' }"  @click="bottomShow(1)" class="reds-icon" name="contact" />
-                            <van-icon @click="clearReplyTo" name="comment-o" class="reds-icon" :style="{ 'margin-left': '8px', 'color': '#969799' }"/>
-                            <van-icon  class="reds-icon" :style="{'margin-left': '8px','color': commentContentPreview ? '#13386c' : '#969799'}"  name="eye-o" @click="commentContentPreviewControl"/>
-                            <van-icon  class="reds-icon" :style="{'margin-left': '8px', 'color': '#969799'}"  name="arrow-up" @click="scrollTop"/>
-                            <van-icon  class="reds-icon"  name="aim" :style="{'margin-left': '8px', 'color': '#969799'}" @click="scrollToComment"/>
+                            <van-icon :style="{ 'margin-left': '12px', 'color': preShowIndex == 1 ? '#13386c' : '#969799' }"  @click="bottomShow(1)" class="reds-icon" name="contact" />
+                            <van-icon @click="clearReplyTo" name="comment-o" class="reds-icon" :style="{ 'margin-left': '12px', 'color': '#969799' }"/>
+                            <van-icon  class="reds-icon" :style="{'margin-left': '12px','color': commentContentPreview ? '#13386c' : '#969799'}"  name="eye-o" @click="commentContentPreviewControl"/>
+                            <van-icon  class="reds-icon" :style="{'margin-left': '12px', 'color': '#969799'}"  name="arrow-up" @click="scrollTop"/>
+                            <van-icon  class="reds-icon"  name="aim" :style="{'margin-left': '12px', 'color': '#969799'}" @click="scrollToComment"/>
                         </van-col>
                         <van-col span="4">
                             <div @click="submitComment" style="
@@ -2196,7 +2197,7 @@ a {
     background-color: #fff;
     z-index: 1;
     // padding: 8px 8px;
-    padding: 8px, 0px;
+    padding: 8px, 8px, 0px, 8px;
 }
 
 .interactions[data-v-11b921ce] {
