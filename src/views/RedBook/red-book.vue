@@ -529,7 +529,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUpdate, watch, watchEffect } from 'vue'
+import { ref, onMounted, onBeforeUpdate, watch, watchEffect, computed } from 'vue'
 import { getCommentsReplyList } from "@/api/index";
 import chat from "@/views/RedBook/data"
 import { useRoute, useRouter } from 'vue-router';
@@ -988,7 +988,7 @@ const agentListOri = ref([
 const agentList = ref(agentListOri.value)
 const searchText = ref('')
 // const agentList = ref(['5', '6', '7', '8'])
-const checkedAgent = ref(-1)
+const checkedAgent = ref(0)
 const checkboxRefsAgent = ref([])
 // const toggleAgent = (index) => {
 //     console.log(index, checkboxRefsAgent.value)
@@ -1008,6 +1008,12 @@ const checkboxRefsAgent = ref([])
 // }
 watch(checkedAgent, (newValue) => {
   // 当 checkedAgent 的值变化时执行以下代码
+  let readonly = agentList.value.filter((item) =>
+       item.readonly == false
+  )
+  if (readonly.length > 0){
+    return 
+  }
   commentField.value.focus()
 })
 
@@ -1083,6 +1089,7 @@ const getAgent = async () => {
     })
     // console.log(agentListOri.value)
     agentList.value = agentListOri.value
+    showToast(`默认设置${agentList.value[checkedAgent.value].role}进行对话`)
 }
 
 const addAgent = async () => {
@@ -1255,7 +1262,7 @@ const handleKeyDown = (event) => {
     console.log('handleKeyDown')
     // 输入 @ 或者 /
     if (event.key == '@') {
-        checkedAgent.value = -1
+        // checkedAgent.value = -1
         searchText.value = ''
         bottomShowList.value[preShowIndex.value] = false
         preShowIndex.value = -1
@@ -1296,6 +1303,9 @@ const handleKeyDown = (event) => {
     }
 }
 
+
+const firstClassComment = ref(false)
+
 // 输入框回车激活submitComment
 // 获得最终comment内容
 
@@ -1303,7 +1313,7 @@ const submitComment = async () => {  // 发表评论
     // console.log('submitComment', commentContent.value)
     if (commentContent.value == ':new' || commentContent.value == '：new'){
         clearReplyTo()
-        showToast('新的回复')
+        
         setTimeout(()=>{
             commentContent.value = ''
         }, 300)
@@ -1371,6 +1381,8 @@ const submitComment = async () => {  // 发表评论
     let reply_to = articleId.value
     let reply_to_floor = -1
     let reply_to_username = '-1'
+
+    firstClassComment.value = false
     // 评论上传数据库，请求success，同时更新 names 和 reply_ids
     if (commentContentPlaceHolder.value.index == -1) {  //一级评论    
         let newCommentRes = await newComment({
@@ -1380,7 +1392,7 @@ const submitComment = async () => {  // 发表评论
             'isAgent': false,
             'avatar': avatar
         })
-
+        firstClassComment.value = true
         let relation = Bmob.Relation('sub_comment') // 需要关联的表
         let relID = relation.add(newCommentRes.objectId) //关联表中需要关联的objectId, 返回一个Relation对象, add方法接受string和array的类型参数
         let query = Bmob.Query('article')
@@ -1471,29 +1483,7 @@ const submitComment = async () => {  // 发表评论
     }
     // console.log('回复成功', commentContentPlaceHolder.value.index, commentsList)
 
-    let index_ = commentContentPlaceHolder.value.index
-    if (commentListRef.value.length>0){
-        console.log(index_+1)
-        setTimeout(() => {
-            // if (index_ == commentListRef.value.length){
-            //     // commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
-            //     // bottomRef.value.scrollIntoView({behavior: 'smooth', block: 'center'})
-                
-            // }
-            // else if (index_+1 < commentListRef.value.length){
-            //     commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
-            // }else{
-            //     commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
-            // }
-            let index = commentContentPlaceHolder.value.index
-            if (commentContentPlaceHolder.value.floor == 1 && commentsList.value[index].replys.length==0){  // llm 回复新建的一级评论
-                // topRef.value.scrollIntoView({behavior: 'smooth', block:'center'})
-                commentListRef.value.at(0).scrollIntoView({behavior: 'smooth', block:'center'})
-            }else{
-                commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
-            }
-        }, 500)
-    }
+    
 
     // let agentContent = checkedAgent.value.map(item => agentList.value[item]['content'])
     let agentContent = checkedAgent.value == -1 ? '' : agentList.value[checkedAgent.value]['content']
@@ -1544,10 +1534,41 @@ const submitComment = async () => {  // 发表评论
     //     { "role": "user", "content": clipboard_ + '\n' + commentContent_ },
     // ])
 
+    
+    let index_ = commentContentPlaceHolder.value.index
+    if (commentListRef.value.length>0){
+        console.log(index_+1)
+        setTimeout(() => {
+            // if (index_ == commentListRef.value.length){
+            //     // commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
+            //     // bottomRef.value.scrollIntoView({behavior: 'smooth', block: 'center'})
+                
+            // }
+            // else if (index_+1 < commentListRef.value.length){
+            //     commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
+            // }else{
+            //     commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
+            // }
+            // let index = commentContentPlaceHolder.value.index
+            if (firstClassComment.value == true){ 
+                // topRef.value.scrollIntoView({behavior: 'smooth', block:'center'})
+                commentListRef.value[0].scrollIntoView({behavior: 'smooth', block:'center'})
+                    // topRef.value.scrollIntoView({behavior: 'smooth', block:'center'})
+            }else{
+                commentListRef.value[index_+1].scrollIntoView({behavior: 'smooth', block:'center'})
+                
+            }
+            firstClassComment.value = false
+        }, 500)
+    }
+
 
     // 如果 @ 了agent，或者回复了agent的消息，需要agent做出回应
     // if (checkedAgent.value.length >= 1 || agentList.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
     if (checkedAgent.value != -1 || agentListOri.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
+        // setTimeout(() => {
+        //     llmResponse(messages)
+        // }, 500);
         llmResponse(messages)
     } else {
         
@@ -1582,6 +1603,7 @@ const submitComment = async () => {  // 发表评论
     fromButton.value = false
     preShowIndex.value = -1
     bottomShowList.value = [false, false]
+    
 }
 
 // const agentComment = ref('')
@@ -1698,18 +1720,43 @@ const llmResponse = async (messages) => {
 const commentListRef = ref([])
 const subCommentListRef = ref([])
 
+// const setCommentListRef = (el) => {
+//     // console.log(el)
+//     let index = commentContentPlaceHolder.value.index
+//     console.log('setCommentListRef', index)
+//     if (!commentListRef.value.includes(el)) {
+//         if (index==0){  // llm 回复新建的一级评论
+//             commentListRef.value.unshift(el)
+//             console.log('unshift')
+//         }
+//         else{
+//             commentListRef.value.push(el)
+//             console.log('no unshift')
+//         }
+//         // console.log(el)
+//     }
+//     console.log('ref length', commentListRef.value.length)
+//     // commentListRef.value.push(el)
+//     // console.log('setCommentListRef', commentListRef.value.length)
+//     // console.log(commentListRef)
+// }
+
 const setCommentListRef = (el) => {
     // console.log(el)
     let index = commentContentPlaceHolder.value.index
+    // console.log('setCommentListRef', index)
     if (!commentListRef.value.includes(el)) {
-        if (commentContentPlaceHolder.value.floor == 1 && commentsList.value[index].replys.length==0){  // llm 回复新建的一级评论
+        if (firstClassComment.value == true){  // llm 回复新建的一级评论
             commentListRef.value.unshift(el)
+            // console.log('unshift')
         }
         else{
             commentListRef.value.push(el)
+        //     console.log('no unshift')
         }
         // console.log(el)
     }
+    // console.log('ref length', commentListRef.value.length)
     // commentListRef.value.push(el)
     // console.log('setCommentListRef', commentListRef.value.length)
     // console.log(commentListRef)
@@ -1719,7 +1766,7 @@ const setSubCommentListRef = (el) => {
     // console.log(el)
     let index = commentContentPlaceHolder.value.index
     if (!subCommentListRef.value.includes(el)) {
-        if (commentContentPlaceHolder.value.floor == 1 && commentsList.value[index].replys.length==0){  // llm 回复新建的一级评论
+        if (commentList.value[index].overflowAuto == true && commentsList.value[index].replys.length==0){  // llm 回复新建的一级评论
             subCommentListRef.value.unshift(el)
         }
         else{
@@ -1770,6 +1817,8 @@ const clearReplyTo = () => {
         floor: -1,
         comment: {}
     }
+    checkedAgent.value = 0
+    showToast(`新建回复，默认设置${agentList.value[checkedAgent.value].role}进行对话`)
     // if (!isMobile){
     commentField.value.focus()  //聚焦到输入框
     // }
@@ -1817,7 +1866,7 @@ onMounted(() => {
     if (!isMobile){
         commentField.value.focus()  //聚焦到输入框
     }
-
+    
     // if (isMobile) {
     //     //   const inputElement = document.getElementById('input'); // 假设输入框的id为input
     //     commentField.value.focus()
@@ -1924,6 +1973,15 @@ if (!isMobile){
         })
         window.ipcRenderer.on('electron_focus', (e) => {
             console.log('electron_focus')
+            if (articleDescriptionPreview.value){
+                setTimeout(() => {
+                    commentField.value.focus()
+                }, 200);
+            }
+        })
+
+        window.ipcRenderer.on('commentFidldFocus', (e) => {
+            // console.log('electron_focus')
             if (articleDescriptionPreview.value){
                 setTimeout(() => {
                     commentField.value.focus()

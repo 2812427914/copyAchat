@@ -31,7 +31,11 @@ const getArticleList = async () => {
     let query = Bmob.Query("article")
     query.order("createdAt")
     let res = await query.find()
-    articleList.value = res
+    // articleList.value = res
+    articleList.value = res.map(item => {
+        item.description = item.description?.length > 0 ? item.description.slice(0, 100)+'...' : item.description
+        return item
+    })
 }
 
 const toArticle = (id) => {
@@ -57,3 +61,10 @@ onMounted(() => {
     getArticleList()
 })
 </script>
+
+<style scoped lang="less">
+.label-class {
+    height: 10px;
+    overflow-y: hidden;
+}
+</style>

@@ -29,7 +29,7 @@ const createWindow = () => {
         frame:false,
         // titleBarStyle: 'customButtonsOnHover'
     })
-    win.webContents.openDevTools();
+    // win.webContents.openDevTools();
     // and load the index.html of the app.
     // win.webContents.setUserAgent("Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 5 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko; googleweblight) Chrome/38.0.1025.166 Mobile Safari/535.19");
     // win.loadURL('https://www.xiaohongshu.com/')
@@ -39,7 +39,18 @@ const createWindow = () => {
     //     height: 600
     // })
     
+    win.webContents.on('did-finish-load', () => {
+        win.webContents.insertCSS(`
+          ::-webkit-scrollbar {
+            display: none;
+          }
+        `);
+      });
+
     win.loadURL('http://localhost:5173/')
+
+    
+
     // 开启开发者工具
     // win.webContents.openDevTools()
     var history = []
@@ -90,6 +101,8 @@ const createWindow = () => {
           win.setAlwaysOnTop(alwaysOnTop);
         }
       })
+
+    
     return win
 }
 
@@ -104,6 +117,7 @@ app.whenReady().then(() => {
         // console.log('win foucs')
         win.show()
         win.focus()
+        win.webContents.send('commentFidldFocus')
     })
 })
 app.on('window-all-closed', () => {
