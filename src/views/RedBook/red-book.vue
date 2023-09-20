@@ -61,9 +61,9 @@
                                     @load="getCommentsList"
                                     >
 
-                                <div data-v-67377e58="" data-v-6b20f11f="" class="comment-item"
-                                    v-for="(item, index) in commentsList" :key="item.id" :ref="setCommentListRef">
-                                    <div data-v-67377e58="" class="comment-inner-container">
+                                <div class="comment-item"
+                                    v-for="(item, index) in commentsList" :key="item.id" :id="'comment_'+index">
+                                    <div class="comment-inner-container">
                                         
                                         <div data-v-67377e58="" class="right" style="max-width:100%">
                                             <div data-v-67377e58="" class="author-wrapper">
@@ -167,8 +167,8 @@
                                                 <div data-v-6b20f11f="" data-v-67377e58-s="" tag="div" name="list"
                                                     class="list-container">
                                                     <div data-v-67377e58="" data-v-6b20f11f="" data-v-67377e58-s=""
-                                                        class="comment-item" v-for="(comment_reply, idx) in item.replys"
-                                                        :key="comment_reply.id" :ref="subCommentListRef">
+                                                        class="comment-item" v-for="(comment_reply, idx) in item.replys" :id="'sub_comment_'+idx"
+                                                        :key="comment_reply.id">
                                                         <div data-v-67377e58="" class="comment-inner-container">
                                                             <!-- <div data-v-67377e58="" class="avatar"><a data-v-1d0a8701=""
                                                                     data-v-67377e58=""
@@ -837,21 +837,11 @@ const readStream = async (
     commentsList.value.at(index_).replys.at(-1).content = ''
     while (true) {
         timer++
-        if (timer % 30 == 0 && timer<50){
-            // console.log('readStream', index_, commentListRef.value.length)
-            if (index_+1 == commentListRef.value.length){
-                // commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
-                bottomRef.value.scrollIntoView({behavior: 'smooth', block: 'center'})
-            }
-            else if(index_+1 < commentListRef.value.length){
-                commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
-            }
-            // if (commentContentPlaceHolder.value.floor == 1 && commentsList.value[index].replys.length==0){  // llm 回复新建的一级评论
-            //     bottomRef.value.scrollIntoView({behavior: 'smooth', block: 'center'})
-            // }else{
-            //     commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
-            // }
-            // timer = 0
+        if (timer % 10 == 0 && timer<15){
+            nextTick(() => {
+                var comment_ele = document.getElementById('sub_comment_' + (commentsList.value[index_].replys.length-1).toString())
+                comment_ele.scrollIntoView({behavior: 'smooth', block: 'center'})
+            })
         }
         // eslint-disable-next-line no-await-in-loop
         const { value, done } = await reader.read();
@@ -883,26 +873,15 @@ const readStream = async (
             appendLastMessageContent(content);
         }
     }
-    // setTimeout(() => {
-    //     if (index_+1 == commentListRef.value.length){
-    //         // commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
-    //         bottomRef.value.scrollIntoView({behavior: 'smooth', block: 'center'})
-    //     }
-    //     else if(index_+1 < commentListRef.value.length){
-    //         commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
-    //     }
-    // }, 200);
 };
 
 const appendLastMessageContent = (content) =>
     (commentsList.value.at(commentContentPlaceHolder.value.index).replys.at(-1).content += content)
 
-// 下拉刷新commentList：pagenation
-// getCommentsList()
 
 // 点击 展开更多回复
 const text_expand = async (comment_index) => {
-
+    addSubCommentIndex.value = comment_index
     let query = Bmob.Query('sub_comment')
     query.order("createdAt")
     query.field('replys', reply_ids.value[comment_index][0])
@@ -1017,30 +996,6 @@ watch(checkedAgent, (newValue) => {
   commentField.value.focus()
 })
 
-// const containerRef = ref('')
-
-// const mobileUp = () => {
-//     if (isMobile){
-//         containerRef.value.style.transform = 'translateY(-200px)'; // 可根据实际情况调整上移的距离
-//     }
-// }
-
-// const mobileDown = () => {
-//     if (isMobile){
-//         containerRef.value.style.transform = 'translateY(0)'; // 可根据实际情况调整上移的距离
-//     }
-// }
-
-// watch(commentField, (newValue, oldValue) => {
-//       if (newValue === document.activeElement) {
-//         // commentRef is focused
-//         console.log('commentRef is focused');
-//       } else {
-//         // commentRef is not focused
-//         console.log('commentRef is not focused');
-//       }
-//     })
-
 const bottomShow = (index) => {
     // console.log(index, fromButton.value, preShowIndex.value, bottomShowList.value)
     // fromButton.value = true
@@ -1060,18 +1015,10 @@ const bottomShow = (index) => {
         bottomShowList.value[index] = true
         preShowIndex.value = index
     }
-    // setTimeout(function () {
-    //     commentFieldPopup.value.focus()
-    // })
-    // console.log(index, fromButton.value, preShowIndex.value, bottomShowList.value)
-    // if (!isMobile){
-        // commentField.value.focus()  //聚焦到输入框
-    // }
     if (!isMobile){
         nextTick(() => {
             commentField.value.focus()  //聚焦到输入框
-        });
-        
+        }); 
     }
 }
 
@@ -1242,13 +1189,16 @@ const handleKeyBoard = (event) => {
 
 const scrollToComment = () => {
     let index_ = commentContentPlaceHolder.value.index
-    if (index_+1 == commentListRef.value.length){
-        // commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
-        bottomRef.value.scrollIntoView({behavior: 'smooth', block: 'center'})
+    let floor = commentContentPlaceHolder.value.floor
+    if (floor == -1){
+        return 
     }
-    else if(index_+1 < commentListRef.value.length){
-        commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
+    if (floor == 1){
+        var comment_ele = document.getElementById('comment_' + (index_).toString())
+    }else{
+        var comment_ele = document.getElementById('sub_comment_' + (floor-2).toString())
     }
+    comment_ele.scrollIntoView({behavior: 'smooth', block: 'center'})
 }
 
 const searchAgent = ref(false)
@@ -1427,7 +1377,9 @@ const submitComment = async () => {  // 发表评论
             index: 0,
             comment: commentsList.value[0]
         }
+        addSubCommentIndex.value = 0
     } else {                                              // 评论的子评论
+        addSubCommentIndex.value = commentContentPlaceHolder.value.index
         reply_to_floor = commentContentPlaceHolder.value.floor
         reply_to_username = commentContentPlaceHolder.value.comment.username
         reply_to = commentContentPlaceHolder.value.comment.id
@@ -1468,18 +1420,6 @@ const submitComment = async () => {  // 发表评论
         })
         // 回复成功，当前评论的一级评论的子评论数量+1
         commentsList.value[commentContentPlaceHolder.value.index].reply_cnt += 1
-
-        // setTimeout(() => {
-        //     nextTick(() => {
-        //         console.log(commentContentPlaceHolder.value.index,  commentListRef.value.length)
-        //         if (commentContentPlaceHolder.value.index+1 < commentListRef.value.length){
-        //             commentListRef.value.at(commentContentPlaceHolder.value.index+1).scrollIntoView({behavior: 'smooth', block:'center'})
-        //         }else{
-        //             commentListRef.value.at(commentContentPlaceHolder.value.index).scrollIntoView({behavior: 'smooth', block:'center'})
-        //         }
-                
-        //     })
-        // })
     }
     // console.log('回复成功', commentContentPlaceHolder.value.index, commentsList)
 
@@ -1536,40 +1476,25 @@ const submitComment = async () => {  // 发表评论
 
     
     let index_ = commentContentPlaceHolder.value.index
-    if (commentListRef.value.length>0){
-        console.log(index_+1)
-        setTimeout(() => {
-            // if (index_ == commentListRef.value.length){
-            //     // commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
-            //     // bottomRef.value.scrollIntoView({behavior: 'smooth', block: 'center'})
-                
-            // }
-            // else if (index_+1 < commentListRef.value.length){
-            //     commentListRef.value.at(index_+1).scrollIntoView({behavior: 'smooth', block:'center'})
-            // }else{
-            //     commentListRef.value.at(index_).scrollIntoView({behavior: 'smooth', block:'center'})
-            // }
-            // let index = commentContentPlaceHolder.value.index
-            if (firstClassComment.value == true){ 
-                // topRef.value.scrollIntoView({behavior: 'smooth', block:'center'})
-                commentListRef.value[0].scrollIntoView({behavior: 'smooth', block:'center'})
-                    // topRef.value.scrollIntoView({behavior: 'smooth', block:'center'})
-            }else{
-                commentListRef.value[index_+1].scrollIntoView({behavior: 'smooth', block:'center'})
-                
-            }
-            firstClassComment.value = false
-        }, 500)
-    }
+    let floor_ = commentContentPlaceHolder.value.floor 
+    setTimeout(() => {
+        if (floor_==1){
+            var comment_ele = document.getElementById('comment_'+index_.toString())
+        }else{
+            var comment_ele = document.getElementById('sub_comment_' + (commentsList.value[index_].replys.length-1).toString())
+        }
+        comment_ele.scrollIntoView({behavior: 'smooth', block: 'center'})
+        firstClassComment.value = false
+    }, 500)
 
 
     // 如果 @ 了agent，或者回复了agent的消息，需要agent做出回应
     // if (checkedAgent.value.length >= 1 || agentList.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
     if (checkedAgent.value != -1 || agentListOri.value.map(item => item['role']).includes(commentContentPlaceHolder.value.comment.username)) {
-        // setTimeout(() => {
-        //     llmResponse(messages)
-        // }, 500);
-        llmResponse(messages)
+        setTimeout(() => {
+            llmResponse(messages)
+        }, 500);
+        // llmResponse(messages)
     } else {
         
         // 重置 commentContentPlaceHolder，checkedClipBoard, checkboxRefsClipBoard, checkedAgent, checkboxRefsAgent
@@ -1717,68 +1642,7 @@ const llmResponse = async (messages) => {
     replyComment(index, agentFloor, commentsList.value[index].replys[agentFloor - 2])
 }
 
-const commentListRef = ref([])
-const subCommentListRef = ref([])
-
-// const setCommentListRef = (el) => {
-//     // console.log(el)
-//     let index = commentContentPlaceHolder.value.index
-//     console.log('setCommentListRef', index)
-//     if (!commentListRef.value.includes(el)) {
-//         if (index==0){  // llm 回复新建的一级评论
-//             commentListRef.value.unshift(el)
-//             console.log('unshift')
-//         }
-//         else{
-//             commentListRef.value.push(el)
-//             console.log('no unshift')
-//         }
-//         // console.log(el)
-//     }
-//     console.log('ref length', commentListRef.value.length)
-//     // commentListRef.value.push(el)
-//     // console.log('setCommentListRef', commentListRef.value.length)
-//     // console.log(commentListRef)
-// }
-
-const setCommentListRef = (el) => {
-    // console.log(el)
-    let index = commentContentPlaceHolder.value.index
-    // console.log('setCommentListRef', index)
-    if (!commentListRef.value.includes(el)) {
-        if (firstClassComment.value == true){  // llm 回复新建的一级评论
-            commentListRef.value.unshift(el)
-            // console.log('unshift')
-        }
-        else{
-            commentListRef.value.push(el)
-        //     console.log('no unshift')
-        }
-        // console.log(el)
-    }
-    // console.log('ref length', commentListRef.value.length)
-    // commentListRef.value.push(el)
-    // console.log('setCommentListRef', commentListRef.value.length)
-    // console.log(commentListRef)
-}
-
-const setSubCommentListRef = (el) => {
-    // console.log(el)
-    let index = commentContentPlaceHolder.value.index
-    if (!subCommentListRef.value.includes(el)) {
-        if (commentList.value[index].overflowAuto == true && commentsList.value[index].replys.length==0){  // llm 回复新建的一级评论
-            subCommentListRef.value.unshift(el)
-        }
-        else{
-            subCommentListRef.value.push(el)
-        }
-        // console.log(el)
-    }
-    // commentListRef.value.push(el)
-    // console.log('setCommentListRef', commentListRef.value.length)
-    // console.log(commentListRef)
-}
-
+const addSubCommentIndex = ref(-1)
 
 // 回复某个评论按钮
 const commentContentPlaceHolder = ref({
@@ -1895,7 +1759,6 @@ onMounted(() => {
 
 onBeforeUpdate(() => {
     checkboxRefsClipBoard.value = []
-    commentListRef.value = []
     // checkboxRefsAgent.value = []
 });
 
