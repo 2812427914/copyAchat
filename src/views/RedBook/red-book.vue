@@ -20,12 +20,12 @@
             </path>
         </symbol>
     </svg>
-    <div ref="containerRef" data-v-024e536f="" class="note-detail-mask"
+    <div ref="containerRef" data-v-024e536f="" class="note-detail-mask" 
         style="transition: background-color 0.4s ease 0s; background: var(--mask-paper);">
         <div  data-v-70c71a67="" data-v-024e536f="" id="" data-v-956360f6="" class="note-container" data-type="normal">
             <div data-v-11b921ce="" data-v-70c71a67="" class="">
                 <div data-v-d21d8bf9="" data-v-11b921ce="" class="note-scroller">
-                    <van-nav-bar fixed style="-webkit-app-region: drag" :border="false" title="ChatBranch" :z-index='30' @click-left="onClickLeft">
+                    <!-- <van-nav-bar fixed style="-webkit-app-region: drag" :border="false" title="ChatBranch" :z-index='30' @click-left="onClickLeft">
                         <template #left>
                             <van-icon name="arrow-left" style="-webkit-app-region: no-drag"  @click="onClickLeft">返回</van-icon>
                             
@@ -33,25 +33,26 @@
                         <template #right>
                             <van-icon name="bookmark-o" :style="{'color': alwaysOnTop ? '#13386c' : '#969799', '-webkit-app-region': 'no-drag'}" @click="setAlwaysOnTop"/>
                         </template>
-                    </van-nav-bar>
+                    </van-nav-bar> -->
                     <!-- <van-back-top immediate bottom="16vh"/> -->
                     <div data-v-5245913a="" class="note-content" ref="topRef">
                         <!-- <van-cell-group> -->
                         <van-field style="padding: 0;" :border="false" v-model="article.title" autosize rows="1" type="textarea" placeholder="请输入标题"
                             data-v-5245913a="" id="detail-title" class="title" />
-                        <van-icon :style="{ 'color': articleDescriptionPreview ? '#13386c' : '#969799' }"  name="eye-o" @click="articleDescriptionPreview = !articleDescriptionPreview"/>
+                        <van-icon class="reds-icon reply-icon" :style="{ 'color': articleDescriptionPreview ? '#13386c' : '#969799' }"  name="eye-o" @click="articleDescriptionPreview = !articleDescriptionPreview"/>
+                        <van-icon class="reds-icon reply-icon" :style="{'margin-left':'4px', 'color': articleDescriptionOverflow ? '#969799' : '#13386c' }" name="expand-o" @click="articleDescriptionOverflow = !articleDescriptionOverflow"/>
                         <!-- <van-field v-if="!articleDescriptionPreview" v-model="article.description" autosize rows="1" type="textarea" placeholder="请输入描述"
                             data-v-5245913a="" class="desc" :border="false"/> -->
                         <v-md-editor v-if="!articleDescriptionPreview" mode="edit" left-toolbar="" right-toolbar="" v-model="article.description" />
                         <v-md-preview v-if="articleDescriptionPreview" @copy-code-success="handleCopyCodeSuccess" :text="article.description"
-                        data-v-5245913a="" class="desc"></v-md-preview>
+                        data-v-5245913a="" class="desc" :style="{'overflow': articleDescriptionOverflow ? 'hidden':'auto', 'max-height': articleDescriptionOverflow ? '100px':'100%'}"></v-md-preview>
                         <!-- <v-md-editor mode="edit" left-toolbar="" right-toolbar="preview sync-scroll" placeholder="请输入描述" v-model="article.description" height="400px"></v-md-editor> -->
                         <!-- </van-cell-group> -->
                         <!-- <div data-v-5245913a="" id="detail-title" class="title">其实参加酒局多了，都差不多</div>
                         <div data-v-5245913a="" class="desc">没那么惊讶<br>人生不就是一场行为艺术吗<br> </div> -->
                     </div>
                     <div data-v-6b20f11f="" data-v-11b921ce="" class="comments-el">
-                        <div data-v-6b20f11f="" class="comments-container">
+                        <div data-v-6b20f11f="" class="comments-container" style="max-width: 100%; background-color:#F7F8FA;">
                             <div data-v-6b20f11f="" class="total">共 {{ articleCommentCnt }} 条评论</div>
                             <div data-v-6b20f11f="" tag="div" name="list" class="list-container">
                                 <van-list
@@ -62,12 +63,16 @@
                                     >
 
                                 <div class="comment-item"
-                                    v-for="(item, index) in commentsList" :key="item.id" :id="'comment_'+index">
-                                    <div class="comment-inner-container">
-                                        
-                                        <div data-v-67377e58="" class="right" style="max-width:100%">
+                                    
+                                    v-for="(item, index) in commentsList" :key="item.id" :id="'comment_'+index"
+                                    >
+                                    <div class="comment-inner-container" >
+                                        <div @click="text_expand(index)" style="height: 100%; width: 5%;  position: absolute; display: flex;  align-items: center;">
+                                            <div style="height: 100%; width: 40%; background-color: #dcdee0;"></div>
+                                        </div>
+                                        <div data-v-67377e58="" class="right" style="max-width:100%; padding: 10px 10px 10px 15px; ">
                                             <div data-v-67377e58="" class="author-wrapper">
-                                                <div data-v-67377e58="" class="author" style="margin-top: 4px;">
+                                                <div data-v-67377e58="" class="author">
                                                     <!-- <div data-v-67377e58="" class="avatar"><a data-v-1d0a8701="" data-v-67377e58=""
                                                 href="/user/profile/6042256c000000000100152b" class="" target="_blank"><img
                                                     data-v-1d0a8701="" class="avatar" :src="item.avatar"
@@ -79,7 +84,7 @@
                                                     <a data-v-67377e58=""
                                                         class="name" target="_blank" style="margin-left: 10px;">{{
                                                             item.username }}</a>
-                                                    <span data-v-67377e58=""
+                                                    <span data-v-67377e58="" v-if="item.comment_expand"
                                                         style="color:rgba(51, 51, 51, 0.6); margin-left: 4px;">
                                                         1楼
                                                     </span>
@@ -97,7 +102,7 @@
                                                         <van-icon name="expand-o" @click="changeOverflowAuto(index, 1)"  class="reds-icon reply-icon" :style="{'margin-right': '8px', 'color': item.overflowAuto ? '#13386c' : '#969799'}"/>
                                                         <span style="margin-right: 8px;">
                                                             <van-icon @click="replyComment(index, 1, item)" name="comment-o" style="margin-right: 2px;" class="reds-icon reply-icon" />
-                                                            <span v-if="item.reply_cnt != -1" data-v-67377e58="" 
+                                                            <span v-if="item.reply_cnt != 0" data-v-67377e58="" 
                                                                 >{{ item.reply_cnt }}
                                                             </span>
                                                         </span>
@@ -115,7 +120,7 @@
                                                 <!-- <van-text-ellipsis style="white-space: normal;" rows="5"
                                                     :content="item.content" expand-text="展开" collapse-text="收起"
                                                     position="middle" /> -->
-                                                <v-md-preview :style="{'overflow': item.overflowAuto ? 'auto' : 'hidden', 'max-height': item.overflowAuto ? '300px' : '100px'}"
+                                                <v-md-preview :style="{'overflow': item.overflowAuto ? 'auto' : 'hidden', 'max-height': item.overflowAuto ? '100%' : '100px'}"
                                                     @copy-code-success="handleCopyCodeSuccess" :text="item.content"
                                                     data-v-67377e58="" class="content"></v-md-preview>
                                                 <!-- <vue-ellipsis-3
@@ -125,12 +130,12 @@
                                                 </vue-ellipsis-3> -->
                                             </div>
 
-                                            <div data-v-67377e58="" class="labels"></div>
+                                            <!-- <div data-v-67377e58="" class="labels"></div>
 
                                             <div v-if="item.reply_cnt == -1" data-v-6b20f11f="" data-v-67377e58-s=""
                                                 style="color: #13386c; cursor: pointer;" @click="text_expand(index)">
                                                 展开回复
-                                            </div>
+                                            </div> -->
                                             <!-- <div data-v-67377e58="" class="info">
                                                 <div data-v-67377e58="">
                                                     <span data-v-67377e58="">
@@ -163,12 +168,17 @@
                                                     </div>
                                                 </div>
                                             </div> -->
-                                            <div data-v-67377e58="" style="margin-left: 20px;" class="reply-container">
+                                            <div data-v-67377e58="" 
+                                            
+                                             class="reply-container" v-if="item.comment_expand">
                                                 <div data-v-6b20f11f="" data-v-67377e58-s="" tag="div" name="list"
                                                     class="list-container">
                                                     <div data-v-67377e58="" data-v-6b20f11f="" data-v-67377e58-s=""
                                                         class="comment-item" v-for="(comment_reply, idx) in item.replys" :id="'sub_comment_'+idx"
-                                                        :key="comment_reply.id">
+                                                        :key="comment_reply.id"
+                                                        >
+                                                        <!-- :style="{'background-color': comment_reply.isAgent ? '#F2F3F5': 'white'}" -->
+
                                                         <div data-v-67377e58="" class="comment-inner-container">
                                                             <!-- <div data-v-67377e58="" class="avatar"><a data-v-1d0a8701=""
                                                                     data-v-67377e58=""
@@ -241,7 +251,7 @@
                                                                 <!-- <div  v-else v-html="md.render(comment_reply.content)">
                                                                 </div> -->
                                                                 <!-- <v-md-preview-html :html="xss.process(VMdPreview.vMdParser.themeConfig.markdownParser.render(comment_reply.content))" preview-class="vuepress-markdown-body"></v-md-preview-html> -->
-                                                                <v-md-preview :style="{'overflow': comment_reply.overflowAuto ? 'auto' : 'hidden', 'max-height': comment_reply.overflowAuto ? '300px' : '100px'}"
+                                                                <v-md-preview :style="{'overflow': comment_reply.overflowAuto ? 'auto' : 'hidden', 'max-height': comment_reply.overflowAuto ? '100%' : '100px'}"
                                                                     @copy-code-success="handleCopyCodeSuccess"
                                                                     :text="comment_reply.content" data-v-67377e58=""
                                                                     class="content"></v-md-preview>
@@ -286,10 +296,10 @@
 
                                                     </div>
                                                 </div>
-                                                <div v-if="item.reply_cnt - item.replys.length > 0" data-v-6b20f11f=""
+                                                <!-- <div v-if="item.reply_cnt - item.replys.length > 0" data-v-6b20f11f=""
                                                     data-v-67377e58-s="" class="show-more" @click="text_expand(index)">展开 {{
                                                         item.reply_cnt - item.replys.length }} 条回复
-                                                </div>
+                                                </div> -->
                                                 <!-- <div v-if="item.reply_cnt == -1" data-v-6b20f11f="" data-v-67377e58-s=""
                                                     style="color: #13386c; cursor: pointer;" @click="text_expand(index)">
                                                     展开回复
@@ -483,7 +493,8 @@
                         v-model="commentContent" /> -->
                         <van-row style="padding-bottom:8px;">
                         <van-col span="20">
-
+                            <van-icon name="arrow-left" :style="{'margin-left': '12px','color': '#969799'}" @click="onClickLeft"/>
+                            <van-icon name="bookmark-o" :style="{'margin-left': '12px', 'color': alwaysOnTop ? '#13386c' : '#969799'}" @click="setAlwaysOnTop"/>
                             <!-- <svg @click="bottomShow(0)" class="reds-icon" width="24" height="24"
                                 :style="{ 'color': preShowIndex == 0 ? '#13386c' : '#969799' }">
                                 <use data-v-7c2d5134="" xlink:href="#chat"></use>
@@ -558,6 +569,7 @@ const finished = ref(false);
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 const isMobile_ = ref(isMobile) ///Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 const articleDescriptionPreview = ref(true)
+const articleDescriptionOverflow = ref(true)
 const commentContentPreview = ref(false)
 const bottomRef = ref('')
 
@@ -799,11 +811,12 @@ const getCommentsList = async () => {
     // console.log('commentlist', data)
     for (let i = 0; i < data.results.length; i++) {
         data.results[i].id = data.results[i].objectId
-        data.results[i].reply_cnt = -1//data.results[i].replyCnt
+        data.results[i].reply_cnt = 0//data.results[i].replyCnt
         data.results[i].replys = []
         data.results[i].ellipsisShow = true
         data.results[i].showCommentPopover = false
         data.results[i].overflowAuto = false
+        data.results[i].comment_expand = false
         let replys_length = data.results[i].replys.length;
         let tmp_reply_ids = []
         let tmp_names = []
@@ -881,12 +894,28 @@ const appendLastMessageContent = (content) =>
 
 // 点击 展开更多回复
 const text_expand = async (comment_index) => {
-    addSubCommentIndex.value = comment_index
+    commentsList.value[comment_index].comment_expand = !commentsList.value[comment_index].comment_expand
+    if (commentsList.value[comment_index].comment_expand == false){
+        nextTick(()=>{
+            document.getElementById('comment_'+(comment_index).toString()).scrollIntoView({behavior: 'smooth', block: 'center'})
+        })
+        return 
+    }
+    // if(commentsList.value[comment_index].reply_cnt != 0){
+    //     return 
+    // }
+
+
+    // addSubCommentIndex.value = comment_index
     let query = Bmob.Query('sub_comment')
     query.order("createdAt")
     query.field('replys', reply_ids.value[comment_index][0])
     let data = await query.relation('sub_comment')
     // console.log('sub_comment replys', data)
+
+    if (data.count == commentsList.value[comment_index].reply_cnt){
+        return 
+    }
 
     commentsList.value[comment_index].reply_cnt = data.count
 
@@ -895,6 +924,9 @@ const text_expand = async (comment_index) => {
     let tmp_names = names.value[comment_index]
     // console.log('reply_ids', tmp_reply_ids, tmp_names)
     for (let j = 0; j < data.results.length; j++) {
+        if (tmp_reply_ids.indexOf(data.results[j].objectId) != -1){
+            break 
+        }
         data.results[j].reply_to = data.results[j].replyTo
         data.results[j].id = data.results[j].objectId
         data.results[j].ellipsisShow = true
@@ -904,8 +936,13 @@ const text_expand = async (comment_index) => {
         // console.log('reply_to_floor', data.results[j].reply_to, tmp_reply_ids)
         data.results[j].reply_to_floor = reply_to_floor
         data.results[j].reply_to_username = tmp_names[reply_to_floor - 1]
+
         tmp_reply_ids.push(data.results[j].id)
         tmp_names.push(data.results[j].username)
+
+        // commentsList.value[comment_index].replys.push(data.results[j])
+        // names.value[comment_index].push(data.results[j].username)
+        // reply_ids.value[comment_index].push(data.results[j].id)
     }
     commentsList.value[comment_index].replys = commentsList.value[comment_index].replys.concat(data.results)
     names.value[comment_index] = tmp_names
@@ -1368,7 +1405,8 @@ const submitComment = async () => {  // 发表评论
             replys: [],
             ellipsisShow: true,
             overflowAuto: true,
-            showCommentPopover: false
+            showCommentPopover: false,
+            comment_expand: true
         })
         articleCommentCnt.value += 1
         commentContentPlaceHolder.value = {
@@ -1377,9 +1415,10 @@ const submitComment = async () => {  // 发表评论
             index: 0,
             comment: commentsList.value[0]
         }
-        addSubCommentIndex.value = 0
+        // addSubCommentIndex.value = 0
     } else {                                              // 评论的子评论
-        addSubCommentIndex.value = commentContentPlaceHolder.value.index
+        commentsList.value[commentContentPlaceHolder.value.index].comment_expand = true
+        // addSubCommentIndex.value = commentContentPlaceHolder.value.index
         reply_to_floor = commentContentPlaceHolder.value.floor
         reply_to_username = commentContentPlaceHolder.value.comment.username
         reply_to = commentContentPlaceHolder.value.comment.id
@@ -1642,7 +1681,7 @@ const llmResponse = async (messages) => {
     replyComment(index, agentFloor, commentsList.value[index].replys[agentFloor - 2])
 }
 
-const addSubCommentIndex = ref(-1)
+// const addSubCommentIndex = ref(-1)
 
 // 回复某个评论按钮
 const commentContentPlaceHolder = ref({
@@ -1955,7 +1994,7 @@ a {
 
 .note-content[data-v-5245913a] {
     padding: 10px 14px 20px;
-    margin: 0 5px;
+    // margin: 0 5px;
     color: #333;
     // border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     // padding: 10px 0 0px;
@@ -1963,7 +2002,7 @@ a {
 
 .title[data-v-5245913a] {
     // margin-bottom: 20px;
-    margin-top: 30px;
+    // margin-top: 30px;
     font-weight: 600;
     font-size: 20px;
     line-height: 32px;
@@ -2002,22 +2041,29 @@ a {
 .comments-container[data-v-6b20f11f] {
     // padding: 20px 30px;
     // padding: 0px 20px;
-    padding: 0px 20px 20px 20px;
+    // padding: 0px 20px 20px 20px;
+    
 }
 
 .total[data-v-6b20f11f] {
     font-size: 14px;
     line-height: 18px;
     color: rgba(51, 51, 51, 0.6);
+    padding-left: 20px;
+    padding-top: 10px;
     // font-size: 11px;
     // line-height: 15px;
 }
 
 .list-container[data-v-6b20f11f] {
     position: relative;
+    // background-color:antiquewhite;
+    // margin: 20px;
+    
 }
 
-.comment-inner-container[data-v-67377e58] {
+.comment-inner-container {
+    // padding: 0px 20px 0px 20px;
     position: relative;
     display: flex;
     z-index: 1;
@@ -2058,19 +2104,22 @@ a {
     position: relative;
 }
 
-.comment-item[data-v-67377e58] {
+.comment-item {
+    // padding: 0px 20px 20px 20px;
     position: relative;
     display: flex;
     margin-top: 12px;
+    
+    background-color: white;
 }
 
-.comment-inner-container[data-v-67377e58] {
-    position: relative;
-    display: flex;
-    z-index: 1;
-    width: 100%;
-    flex-shrink: 0;
-}
+// .comment-inner-container[data-v-67377e58] {
+//     position: relative;
+//     display: flex;
+//     z-index: 1;
+//     width: 100%;
+//     flex-shrink: 0;
+// }
 
 .note-scroller[data-v-11b921ce][data-v-d21d8bf9] {
     transition: scroll 0.4s;

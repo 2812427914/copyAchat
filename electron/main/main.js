@@ -27,7 +27,9 @@ const createWindow = () => {
             nodeIntegration: true
         },
         frame:false,
-        // titleBarStyle: 'customButtonsOnHover'
+        titleBarStyle: 'customButtonsOnHover'
+        // titleBarStyle: 'hidden',
+        // titleBarOverlay:true
     })
     // win.webContents.openDevTools();
     // and load the index.html of the app.
